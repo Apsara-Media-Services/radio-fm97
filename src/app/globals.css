@@ -2,27 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'KantumruyPro';
-  src: url(../../public/fonts/KantumruyPro-Regular.ttf);
-  font-weight: 400;
-}
-@font-face {
-  font-family: 'KantumruyPro';
-  src: url(../../public/fonts/KantumruyPro-Medium.ttf);
-  font-weight: 500;
-}
-@font-face {
-  font-family: 'KantumruyPro';
-  src: url(../../public/fonts/KantumruyPro-SemiBold.ttf);
-  font-weight: 600;
-}
-@font-face {
-  font-family: 'KantumruyPro';
-  src: url(../../public/fonts/KantumruyPro-Bold.ttf);
-  font-weight: 700;
-}
-
 body {
   overscroll-behavior: none;
 }

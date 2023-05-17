@@ -9,7 +9,8 @@ import { find, isEmpty, lowerCase, map } from 'lodash';
 import moment from 'moment';
 import 'plyr/dist/plyr.css';
 
-async function getSchedules() {  const response = await fetch(`${process.env.RADIO_API_BASE_URL}/schedules`);
+async function getSchedules() {
+  const response = await fetch(`${process.env.RADIO_API_BASE_URL}/schedules`);
   const schedules = await response.json();
 
   const today = lowerCase(format(new Date(), 'EEEE'));
