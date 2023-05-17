@@ -1,8 +1,14 @@
 'use client';
 
+import { useAppContext } from '@/components/AppContext';
 import { IComponentProps } from '@/types/component';
-import { HomeIcon, PlayCircleIcon } from '@heroicons/react/24/outline';
+import {
+  HomeIcon,
+  PauseCircleIcon,
+  PlayCircleIcon,
+} from '@heroicons/react/24/outline';
 import classNames from 'classnames';
+import { cloneDeep, isEmpty, isNil } from 'lodash';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -12,6 +18,8 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
     home: pathname === '/',
     live: pathname.startsWith('/live'),
   };
+
+  const { player, setPlayer } = useAppContext();
 
   return (
     <div
@@ -36,6 +44,11 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
       <Link
         href={'/live'}
         className="group py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white px-2 border-r-2 border-zinc-400 w-28"
+        onClick={() => {
+          if (isNil(player) || isEmpty(player)) return;
+          if (active.live) player.playing ? player.pause() : player.play();;
+          setPlayer(cloneDeep(player));
+        }}
       >
         <div
           className={classNames(
@@ -43,17 +56,17 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
           )}
         >
           <div className="relative">
-            <PlayCircleIcon className="h-8 w-8 mx-auto" />
+            {player?.playing ? (
+              <PauseCircleIcon className="h-8 w-8 mx-auto" />
+            ) : (
+              <PlayCircleIcon className="h-8 w-8 mx-auto" />
+            )}
             <div
               className={classNames(
-                'text-white dark:text-zinc-400 text-xs absolute bottom-[-6px] w-full'
+                'text-white text-xs absolute bottom-[-6px] w-full'
               )}
             >
-              <span
-                className={classNames(
-                  'mx-auto px-0.5 bg-ams-red',
-                )}
-              >
+              <span className={classNames('mx-auto px-0.5 bg-ams-red')}>
                 Live
               </span>
             </div>

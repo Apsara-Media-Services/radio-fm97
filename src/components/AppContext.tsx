@@ -2,7 +2,8 @@
 
 import { AppContextType } from '@/types/app';
 import { IComponentProps } from '@/types/component';
-import { createContext, useContext } from 'react';
+import type Plyr from 'plyr';
+import { createContext, useContext, useState } from 'react';
 
 const defaultValues: AppContextType = {};
 const AppContext = createContext<AppContextType>(defaultValues);
@@ -14,9 +15,13 @@ export function useAppContext() {
 }
 
 export function AppProvider({ children }: IComponentProps) {
+  const [player, setPlayer] = useState<Plyr>({} as Plyr);
+
   return (
     <>
-      <AppContext.Provider value={{}}>{children}</AppContext.Provider>
+      <AppContext.Provider value={{ player, setPlayer }}>
+        {children}
+      </AppContext.Provider>
     </>
   );
 }

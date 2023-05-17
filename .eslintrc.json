@@ -30,8 +30,8 @@
           "internal",
           "external",
           "builtin",
-          "object",
-          "type"
+          "object"
+          // "type"
         ]
       }
     ]

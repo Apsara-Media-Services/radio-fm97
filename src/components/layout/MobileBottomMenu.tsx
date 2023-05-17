@@ -1,15 +1,18 @@
 'use client';
 
+import { useAppContext } from '@/components/AppContext';
 import HeaderMenuContent from '@/components/layout/header/HeaderMenuContent';
 import { IComponentProps } from '@/types/component';
 import { Menu, Transition } from '@headlessui/react';
 import {
   Bars3Icon,
   HomeIcon,
+  PauseCircleIcon,
   PlayCircleIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
+import { cloneDeep, isEmpty, isNil } from 'lodash';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Fragment } from 'react';
@@ -20,6 +23,7 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
     home: pathname === '/',
     live: pathname.startsWith('/live'),
   };
+  const { player, setPlayer } = useAppContext();
 
   return (
     <div
@@ -45,6 +49,11 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
         <Link
           href={'/live'}
           className="group py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white p-3 w-28 text-center"
+          onClick={() => {
+            if (isNil(player) || isEmpty(player)) return;
+            if (active.live) player.playing ? player.pause() : player.play();
+            setPlayer(cloneDeep(player));
+          }}
         >
           <div
             className={classNames(
@@ -52,10 +61,14 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
             )}
           >
             <div className="relative">
-              <PlayCircleIcon className="h-7 w-7 mx-auto" />
+              {player?.playing ? (
+                <PauseCircleIcon className="h-7 w-7 mx-auto" />
+              ) : (
+                <PlayCircleIcon className="h-7 w-7 mx-auto" />
+              )}
               <div
                 className={classNames(
-                  'text-white dark:text-zinc-400 text-[10px] absolute bottom-[-6px] w-full'
+                  'text-white text-[10px] absolute bottom-[-6px] w-full'
                 )}
               >
                 <span className={classNames('mx-auto px-0.5 bg-ams-red')}>
@@ -68,7 +81,10 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
         </Link>
         <Menu as="div" className="">
           {({ open }) => {
-            // document.body.classList.toggle('overflow-y-hidden', open);
+            if (typeof document !== 'undefined') {
+              document.body.classList.toggle('overflow-y-hidden', open);
+            }
+
             return (
               <>
                 {open ? (

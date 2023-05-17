@@ -1,40 +1,53 @@
 'use client';
 
+import { useAppContext } from '@/components/AppContext';
 import FallbackImage from '@/components/common/FallbackImage';
 import LineSeparator from '@/components/common/LineSeparator';
 import { ClockIcon } from '@heroicons/react/20/solid';
 import Hls from 'hls.js';
-import { isEmpty } from 'lodash';
+import { cloneDeep, get, isEmpty } from 'lodash';
 import moment from 'moment';
 import Plyr from 'plyr';
 import 'plyr/dist/plyr.css';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const RadioLive = (props: any) => {
   const { className, program, nextProgram, radioLiveUrl, radioApiBaseUrl } =
     props;
 
-  const timestampTo12Hour = (timestamp: number | string) => {
-    return moment(timestamp).format('hh:mm A');
-  };
+  const { setPlayer } = useAppContext();
 
   useEffect(() => {
     const source = radioLiveUrl as string;
-    const audio = document.getElementById('plyr') as any;
-    new Plyr(audio, {
-      captions: { active: true, update: true, language: 'en' },
-    });
-    if (!Hls.isSupported()) {
-      audio.src = source;
-    } else {
+    const plyr = new Plyr('#plyr');
+
+    if (Hls.isSupported()) {
       const hls = new Hls();
       hls.loadSource(source);
-      hls.attachMedia(audio);
+      hls.attachMedia(get(plyr, 'media') as any);
       window.hls = hls;
+    } else {
+      plyr.source = {
+        type: 'audio',
+        sources: [
+          {
+            src: source,
+            type: 'audio/m3u8',
+          },
+        ],
+      };
     }
-  });
+
+    plyr.on('play', (event: any) => setPlayer(cloneDeep(event.detail.plyr)));
+    plyr.on('pause', (event: any) => setPlayer(cloneDeep(event.detail.plyr)));
+    plyr.play();
+  }, [radioLiveUrl, setPlayer]);
 
   if (isEmpty(program) && isEmpty(nextProgram)) return <></>;
+
+  const timestampTo12Hour = (timestamp: number | string) => {
+    return moment(timestamp).format('hh:mm A');
+  };
 
   return (
     <div className={className}>
@@ -66,7 +79,7 @@ const RadioLive = (props: any) => {
                 </div>
                 <div className="md:text-lg">{program.program?.description}</div>
                 <div className="mt-2 border">
-                  <audio id="plyr" controls playsInline></audio>
+                  <audio id="plyr"></audio>
                 </div>
               </div>
               <LineSeparator weight="border-b" className="my-4" />
