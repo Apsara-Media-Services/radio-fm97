@@ -9,7 +9,7 @@ import { cloneDeep, get, isEmpty } from 'lodash';
 import moment from 'moment';
 import Plyr from 'plyr';
 import 'plyr/dist/plyr.css';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 
 const RadioLive = (props: any) => {
   const { className, program, nextProgram, radioLiveUrl, radioApiBaseUrl } =

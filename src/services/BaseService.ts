@@ -1,5 +1,5 @@
 import { IObject } from '@/types/app';
-import { get, has, head, isArray, map } from 'lodash';
+import { get, has, head, map } from 'lodash';
 import pluralize from 'pluralize';
 
 export default class BaseService {

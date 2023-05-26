@@ -12,7 +12,7 @@ import { useTheme } from 'next-themes';
 import { Fragment } from 'react';
 
 const HeaderMenuThemeSwitcher = ({ className }: IComponentProps) => {
-  const { systemTheme, theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const themes: any = {
     light: { icon: SunIcon, key: 'light', label: 'Light' },
     dark: { icon: MoonIcon, key: 'dark', label: 'Dark' },

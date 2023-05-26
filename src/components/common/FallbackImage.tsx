@@ -15,7 +15,7 @@ const FallbackImage = (props: IFallbackImageComponentProps) => {
   } = props;
 
   const [imgSrc, setImgSrc] = useState(src);
-  const [imgClassName, setImgClassName] = useState(className);
+  const [imgClassName] = useState(className);
 
   if (!src) return <></>;
 

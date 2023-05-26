@@ -1,6 +1,5 @@
 import { QUERY_ALL_POSTS, QUERY_POST_BY_ID } from '@/gql/queries/post';
 import BaseService from '@/services/BaseService';
-import { IObject } from '@/types/app';
 import { IFetchBody } from '@/types/fetch';
 
 export default class PostService extends BaseService {
