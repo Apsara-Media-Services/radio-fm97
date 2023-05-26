@@ -1,23 +1,20 @@
-import { IComponentProps } from '@/types/component';
 import { Category, Post, User } from '@/gql/graphql';
+import { IComponentProps } from '@/types/component';
 
 export interface IPostConfig {
-  showImage?: Boolean;
-  showTitle?: Boolean;
-  showExcerpt?: Boolean;
-  showMeta?: Boolean;
-  showAuthor?: Boolean;
-  showAuthorAvatar?: Boolean;
-  showAuthorName?: Boolean;
-  showDate?: Boolean;
-  showLineSeparator?: Boolean;
-  showCategoryTag?: Boolean;
-  showCategoryTagMultiple?: Boolean;
-  linkable?: Boolean;
+  showImage?: boolean;
+  showTitle?: boolean;
+  showExcerpt?: boolean;
+  showMeta?: boolean;
+  showAuthor?: boolean;
+  showAuthorAvatar?: boolean;
+  showAuthorName?: boolean;
+  showDate?: boolean;
+  showLineSeparator?: boolean;
+  showCategoryTag?: boolean;
+  showCategoryTagMultiple?: boolean;
+  linkable?: boolean;
   line?: number | string;
-  imageQuality?: number | string;
-  imageSize?: string;
-  imageIsVideo?: Boolean;
 }
 
 export interface IPostComponentProps extends IComponentProps {

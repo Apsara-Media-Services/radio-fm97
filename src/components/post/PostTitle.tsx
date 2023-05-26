@@ -1,8 +1,8 @@
-import Link from 'next/link';
 import { IPostComponentProps } from '@/types/components/post';
+import LineClamp from '@/components/common/LineClamp';
+import Link from 'next/link';
 import { isEmpty, isNil } from 'lodash';
 import classNames from 'classnames';
-import LineClamp from '@/components/common/LineClamp';
 
 const PostTitle = (props: IPostComponentProps) => {
   const { className, classes: _classes, post, config } = props;

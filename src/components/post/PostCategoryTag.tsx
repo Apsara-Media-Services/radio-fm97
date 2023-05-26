@@ -1,19 +1,20 @@
-import { get, isEmpty, isNil, map } from 'lodash';
-import Link from 'next/link';
+import { Caster } from '@/gql/caster';
+import { Category } from '@/gql/graphql';
 import { IPostComponentProps } from '@/types/components/post';
 import classNames from 'classnames';
-import { Category } from '@/gql/graphql';
+import { isEmpty, isNil } from 'lodash';
+import Link from 'next/link';
 
 const PostCategoryTag = (props: IPostComponentProps) => {
   const { className, classes: _classes = {}, config, post } = props;
-  const categories = post?.categories?.nodes || ([] as Category[]);
+  const { categories } = Caster.post(post);
 
   if (isNil(post?.categories) || isEmpty(post?.categories)) return <></>;
 
   const classes = {
     wrapper: '',
-    innerWrapper: 'flex items-center space-x-2',
-    name: 'py-1 px-2 text-white bg-rose-900 hover:bg-rose-700 max-w-[8rem] sm:max-w-none truncate',
+    innerWrapper: 'flex items-center space-x-1',
+    name: 'py-1 px-2 text-white bg-rose-800 hover:bg-ams-red max-w-[8rem] sm:max-w-none truncate',
     ..._classes,
   };
 

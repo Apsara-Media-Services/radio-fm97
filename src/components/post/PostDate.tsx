@@ -1,7 +1,7 @@
 import ClientOnly from '@/components/ClientOnly';
 import { IPostComponentProps } from '@/types/components/post';
 import classNames from 'classnames';
-import { parseISO, format, formatDistance, differenceInWeeks } from 'date-fns';
+import { differenceInWeeks, format, formatDistance, parseISO } from 'date-fns';
 import { km } from 'date-fns/locale';
 import { isEmpty, isNil } from 'lodash';
 

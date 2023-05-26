@@ -6,7 +6,7 @@ import PostExcerpt from '@/components/post/PostExcerpt';
 import PostTitle from '@/components/post/PostTitle';
 import { IPostComponentProps } from '@/types/components/post';
 import classNames from 'classnames';
-import { find, isEmpty, isNil, merge } from 'lodash';
+import { isEmpty, isNil, merge } from 'lodash';
 
 const PostItem = (props: IPostComponentProps) => {
   const { className, classes: _classes = {}, config: _config, post } = props;
@@ -29,22 +29,18 @@ const PostItem = (props: IPostComponentProps) => {
     showLineSeparator: false,
     titleLineClamp: 2,
     excerptLineClamp: 3,
-    imageSize: 'td_485x360',
     ..._config,
   };
-  const { databaseId, postFormats = [] } = post || {};
+  const { databaseId } = post || {};
 
   const classes = merge(
     {
       wrapper: config.listView
-        ? 'sm:flex hover:text-rose-600 dark:hover:text-zinc-300'
-        : 'hover:text-rose-600 dark:hover:text-zinc-300',
+        ? 'sm:flex dark:text-zinc-200 hover:text-ams-red dark:hover:text-white'
+        : 'hover:text-ams-red dark:text-zinc-200 dark:hover:text-white',
       innerWrapper: {
         first: config.listView && config.showImage ? 'sm:w-1/3' : '',
-        second:
-          config.listView && config.showImage
-            ? 'sm:flex-1 sm:pl-4'
-            : '',
+        second: config.listView && config.showImage ? 'sm:flex-1 sm:pl-4' : '',
       },
       image: {
         wrapper: `shadow ${
@@ -54,31 +50,31 @@ const PostItem = (props: IPostComponentProps) => {
           'pb-[56%] aspect-video bg-gradient-to-r from-gray-100 to-white dark:from-gray-700 dark:to-gray-800',
         category: {
           wrapper: 'absolute bottom-0',
-          name: 'text-[11px] text-white bg-rose-900 hover:bg-rose-700 px-1 mr-1',
+          name: 'text-sm text-white bg-rose-800 hover:bg-ams-red px-1',
         },
       },
       title: {
         wrapper: '',
-        title: 'text-lg xl:leading-relaxed dark:text-neutral-50',
+        title: 'text-lg xl:leading-relaxed',
       },
       excerpt: {
         wrapper: 'mt-3',
-        excerpt: 'text-base text-gray-500 dark:text-white',
+        excerpt: 'text-base text-gray-500 dark:text-zinc-300',
       },
       meta: {
         wrapper: 'flex items-center text-sm mt-3',
         author: {
           wrapper: 'flex items-center',
           avatar: 'w-12 h-12 relative mr-4',
-          name: 'font-medium text-black dark:text-white',
+          name: 'font-medium text-black dark:text-zinc-200',
         },
         date: {
           wrapper: '',
-          date: 'text-gray-500 dark:text-white',
+          date: 'text-gray-500 dark:text-zinc-300',
         },
         category: {
           wrapper: 'mr-3',
-          name: 'text-[11px] text-white bg-rose-900 hover:bg-rose-700 p-1 mr-1 dark:bg-gray-700',
+          name: 'text-sm text-white bg-rose-800 hover:bg-ams-red px-1 dark:bg-gray-700',
         },
       },
       lineSeparator: 'border-b pb-4',
@@ -91,7 +87,6 @@ const PostItem = (props: IPostComponentProps) => {
   }
 
   post.link = `/detail/${databaseId}`;
-  const isVideo = !!find(postFormats, ['slug', 'post-format-video']);
 
   return (
     <div
@@ -108,10 +103,9 @@ const PostItem = (props: IPostComponentProps) => {
               post={post}
               classes={classes.image}
               config={{
-                imageIsVideo: isVideo,
                 showCategoryTag: config.showCategoryTagOnImage,
                 showCategoryTagMultiple: config.showCategoryTagMultiple,
-                imageSize: config.imageSize,
+                linkable: true,
               }}
             />
           </div>
@@ -123,6 +117,7 @@ const PostItem = (props: IPostComponentProps) => {
               post={post}
               config={{
                 line: config.titleLineClamp,
+                linkable: true,
               }}
               classes={classes.title}
             />

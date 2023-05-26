@@ -1,7 +1,7 @@
-import { IPostComponentProps } from '@/types/components/post';
-import { isEmpty, isNil } from 'lodash';
-import classNames from 'classnames';
 import LineClamp from '@/components/common/LineClamp';
+import { IPostComponentProps } from '@/types/components/post';
+import classNames from 'classnames';
+import { isEmpty, isNil } from 'lodash';
 
 const PostExcerpt = (props: IPostComponentProps) => {
   const { className, classes, post, config } = props;

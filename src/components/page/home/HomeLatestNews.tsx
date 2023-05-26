@@ -6,7 +6,7 @@ import { Post } from '@/gql/graphql';
 import useBreakpoint from '@/hooks/use-breakpoint';
 import { IPostSectionComponentProps } from '@/types/component';
 import classNames from 'classnames';
-import { head, isEmpty, isNil, remove, take } from 'lodash';
+import { head, isEmpty, isNil, take } from 'lodash';
 
 const HomeLatestNews = (props: IPostSectionComponentProps) => {
   const { className, title, link, posts } = props;
@@ -38,7 +38,6 @@ const HomeLatestNews = (props: IPostSectionComponentProps) => {
           config={{
             showExcerpt: $breakpoints.mdAndDown,
             showLineSeparator: true,
-            imageSize: 'medium_large',
           }}
           classes={{
             lineSeparator: 'pb-3 border-b lg:border-none',

@@ -1,24 +1,15 @@
-import classNames from 'classnames';
-import find from 'lodash/find';
-import Link from 'next/link';
 import ImageWithFallback from '../common/FallbackImage';
-import { IPostComponentProps, IPostConfig } from '@/types/components/post';
-import { isEmpty, isNil } from 'lodash';
-import { PlayIcon } from '@heroicons/react/24/outline';
-import { MediaItem, Post } from '@/gql/graphql';
 import PostCategoryTag from '@/components/post/PostCategoryTag';
+import { MediaItem, Post } from '@/gql/graphql';
+import { IPostComponentProps } from '@/types/components/post';
+import classNames from 'classnames';
+import { isEmpty, isNil } from 'lodash';
+import Link from 'next/link';
 
 const PostCoverImage = (props: IPostComponentProps) => {
-  const { className, classes: _classes, post, config: _config } = props;
+  const { className, classes: _classes, post, config = {} } = props;
 
   if (isNil(post?.featuredImage) || isEmpty(post?.featuredImage)) return <></>;
-
-  const config = {
-    imageQuality: 70,
-    imageSize: 'td_485x360',
-    imageIsVideo: false,
-    ..._config,
-  } as IPostConfig;
 
   const classes = {
     wrapper: '',
@@ -27,20 +18,12 @@ const PostCoverImage = (props: IPostComponentProps) => {
       'hover:shadow-medium transition-shadow duration-200':
         config.linkable && post?.link,
     }),
-    category: null,
+    category: {},
     ..._classes,
   };
 
-  const { link } = post || ({} as Post);
-  const featuredImage = post?.featuredImage.node;
-  let { title, sourceUrl, mediaDetails } = featuredImage || ({} as MediaItem);
-
-  if (mediaDetails) {
-    const imageSource = find(mediaDetails.sizes, ['name', config.imageQuality]);
-    if (imageSource) {
-      sourceUrl = imageSource.sourceUrl;
-    }
-  }
+  const { title, link } = post || ({} as Post);
+  const { sourceUrl } = post?.featuredImage.node || ({} as MediaItem);
 
   const imageElement = (
     <ImageWithFallback
@@ -62,16 +45,12 @@ const PostCoverImage = (props: IPostComponentProps) => {
         </div>
       )}
 
-      {config.imageIsVideo && link && (
-        <Link href={link} className="flex">
-          <div className="flex w-full h-full items-center justify-center absolute top-0">
-            <PlayIcon className="h-12 w-12 text-white drop-shadow-lg" />
-          </div>
-        </Link>
-      )}
-
       {config.showCategoryTag && (
-        <PostCategoryTag post={post} config={config} classes={classes} />
+        <PostCategoryTag
+          post={post}
+          config={config}
+          classes={classes.category}
+        />
       )}
     </div>
   );
