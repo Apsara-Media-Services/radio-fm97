@@ -22,7 +22,7 @@ const Category = async ({ params: { slug } }: IDynamicPage) => {
           <div className="my-2 sm:my-5">
             <SectionHeader
               type="primary"
-              title={category.name as string}
+              title={category?.name as string}
               className="text-xl font-semibold"
             />
           </div>

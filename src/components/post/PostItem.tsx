@@ -55,11 +55,11 @@ const PostItem = (props: IPostComponentProps) => {
       },
       title: {
         wrapper: '',
-        title: 'text-lg xl:leading-relaxed',
+        title: 'text-lg xl:leading-relaxed font-medium',
       },
       excerpt: {
         wrapper: 'mt-3',
-        excerpt: 'text-base text-gray-500 dark:text-zinc-300',
+        excerpt: 'text-base text-gray-500 dark:text-zinc-400',
       },
       meta: {
         wrapper: 'flex items-center text-sm mt-3',
