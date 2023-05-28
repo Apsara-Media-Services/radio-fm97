@@ -3,7 +3,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import InfiniteScrollPosts from '@/components/page/category/InfiniteScrollPosts';
 import { CategoryService } from '@/services';
 import { IDynamicPage } from '@/types/page';
-import { last } from 'lodash';
+import { isNil, last } from 'lodash';
 
 const categoryService = new CategoryService();
 
@@ -14,6 +14,8 @@ const Category = async ({ params: { slug } }: IDynamicPage) => {
       variables: { first: 6 },
     }
   );
+
+  if (isNil(category)) return <></>;
 
   return (
     <div>

@@ -3,6 +3,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import InfiniteScrollPosts from '@/components/page/author/InfiniteScrollPosts';
 import { UserService } from '@/services';
 import { IDynamicPage } from '@/types/page';
+import { isNil } from 'lodash';
 
 const userService = new UserService();
 
@@ -10,6 +11,8 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
   const user = await userService.findBySlugWithPosts(slug as string, {
     variables: { first: 11 },
   });
+
+  if (isNil(user)) return <></>;
 
   return (
     <div>

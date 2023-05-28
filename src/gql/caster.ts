@@ -1,4 +1,4 @@
-import { Category, MediaItem, PageInfo, Tag, User } from '@/gql/graphql';
+import { Category, MediaItem, Tag, User } from '@/gql/graphql';
 import { Post } from '@/gql/graphql';
 import { map } from 'lodash';
 

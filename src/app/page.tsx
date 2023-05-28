@@ -3,7 +3,6 @@ import MainLayout from '@/components/layout/MainLayout';
 import HomeEconomicNews from '@/components/page/home/HomeEconomicNews';
 import HomeLatestNews from '@/components/page/home/HomeLatestNews';
 import { ADS } from '@/constants/app';
-import { Post } from '@/gql/graphql';
 import { PostService } from '@/services';
 import Image from 'next/image';
 
