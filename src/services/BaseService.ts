@@ -10,7 +10,7 @@ export default class BaseService {
   }
 
   submit<T = any>(body: IObject): Promise<T> {
-    const url = `${process.env.WORDPRESS_API_URL}/graphql`;
+    const url = `${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/graphql`;
     const init: RequestInit = {
       method: 'POST',
       headers: {

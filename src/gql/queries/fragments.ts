@@ -7,6 +7,38 @@ export const POST_FIELDS = `
     date
     content
     excerpt
+    featuredImage {
+      node {
+        id
+        sourceUrl
+      }
+    }
+    author {
+      node {
+        id
+        name
+        slug
+        firstName
+        lastName
+        avatar {
+          height
+          url
+          width
+        }
+      }
+    }
+    categories {
+      edges {
+        node {
+          id
+          databaseId
+          name
+          slug
+          uri
+          description
+        }
+      }
+    }
   }
 `;
 
@@ -28,6 +60,7 @@ export const USER_FIELDS = `
     slug
     firstName
     lastName
+    description
     avatar {
       height
       url

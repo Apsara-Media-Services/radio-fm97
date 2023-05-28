@@ -30,7 +30,7 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
     >
       <Link
         href={'/'}
-        className="py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white px-2 border-x-2 border-zinc-400 w-28"
+        className="py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white px-2 border-x border-zinc-400 w-28"
       >
         <div
           className={classNames(
@@ -43,7 +43,7 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
       </Link>
       <Link
         href={'/live'}
-        className="group py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white px-2 border-r-2 border-zinc-400 w-28"
+        className="group py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white px-2 border-r border-zinc-400 w-28"
         onClick={() => {
           if (isNil(player) || isEmpty(player)) return;
           if (active.live) player.playing ? player.pause() : player.play();;

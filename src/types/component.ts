@@ -1,5 +1,5 @@
 import { IObject } from './app';
-import { Post } from '@/gql/graphql';
+import { Post, User } from '@/gql/graphql';
 import { ImageProps } from 'next/image';
 
 export interface IComponentProps {
@@ -7,6 +7,7 @@ export interface IComponentProps {
   classes?: IObject;
   className?: string;
   config?: IObject;
+  [key: string]: any;
 }
 
 export interface ILineClampComponentProps extends IComponentProps {
@@ -42,4 +43,8 @@ export interface IPostSectionComponentProps extends IComponentProps {
 export interface ILineSeparatorComponentProps extends IComponentProps {
   weight?: string;
   color?: string;
+}
+
+export interface IAuthorCardComponentProps extends IComponentProps {
+  user: User;
 }

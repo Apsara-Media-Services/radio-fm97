@@ -9,10 +9,10 @@ import Image from 'next/image';
 
 const Home = async () => {
   const postService = new PostService();
-  const latestPosts: Post[] = await postService.all({
+  const latestPosts = await postService.all({
     variables: { first: 5 },
   });
-  const economyPosts: Post[] = await postService.getByCategorySlug('fm97', {
+  const economyPosts = await postService.getByCategorySlug('fm97', {
     variables: { first: 7 },
   });
 
