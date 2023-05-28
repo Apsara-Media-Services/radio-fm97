@@ -3,27 +3,27 @@
 import PostItem from '@/components/post/PostItem';
 import { SkeletonPostItem } from '@/components/skeleton';
 import { Caster } from '@/gql/caster';
-import { Post, Tag } from '@/gql/graphql';
-import { TagService } from '@/services';
+import { Post, Category } from '@/gql/graphql';
+import { CategoryService } from '@/services';
 import { IComponentProps } from '@/types/component';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
-const tagService = new TagService();
+const categoryService = new CategoryService();
 
-const InfiniteScrollPosts = ({ tag: _tag, slug }: IComponentProps) => {
-  const [tag, setTag] = useState<Tag>(_tag);
-  const [posts, setPosts] = useState<Post[]>(Caster.tag(tag).posts);
+const InfiniteScrollPosts = ({ category: _category, slug }: IComponentProps) => {
+  const [category, setCategory] = useState<Category>(_category);
+  const [posts, setPosts] = useState<Post[]>(Caster.category(category).posts);
   const [loading, setLoading] = useState<boolean>(false);
 
   const loadMore = async () => {
     setLoading(true);
-    const _tag = await tagService.findBySlugWithPosts(slug as string, {
-      variables: { first: 12, after: tag.posts?.pageInfo.endCursor as string },
+    const _category = await categoryService.findBySlugWithPosts(slug as string, {
+      variables: { first: 12, after: category.posts?.pageInfo.endCursor as string },
     });
-    const { posts: _posts } = Caster.tag(_tag);
+    const { posts: _posts } = Caster.category(_category);
 
-    setTag(_tag);
+    setCategory(_category);
     setPosts([...posts, ..._posts]);
     setLoading(false);
   };
@@ -33,7 +33,7 @@ const InfiniteScrollPosts = ({ tag: _tag, slug }: IComponentProps) => {
       <InfiniteScroll
         pageStart={0}
         loadMore={loadMore}
-        hasMore={tag?.posts?.pageInfo?.hasNextPage}
+        hasMore={category?.posts?.pageInfo?.hasNextPage}
       >
         <section className="grid md:grid-cols-3 gap-5 sm:gap-7 mb-5">
           {posts.map((post) => (
@@ -41,7 +41,7 @@ const InfiniteScrollPosts = ({ tag: _tag, slug }: IComponentProps) => {
               key={`post-${post.databaseId}`}
               post={post}
               config={{
-                showCategoryTag: true,
+                showCategoryTag: false,
                 showAuthor: true,
               }}
             />

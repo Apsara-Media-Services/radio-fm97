@@ -6,7 +6,7 @@ import { IDynamicPage } from '@/types/page';
 
 const tagService = new TagService();
 
-const Author = async ({ params: { slug } }: IDynamicPage) => {
+const Tag = async ({ params: { slug } }: IDynamicPage) => {
   const tag = await tagService.findBySlugWithPosts(slug as string, {
     variables: { first: 12 },
   });
@@ -29,7 +29,7 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
   );
 };
 
-export default Author;
+export default Tag;
 
 export async function generateStaticParams() {
   const tags = await tagService.all();

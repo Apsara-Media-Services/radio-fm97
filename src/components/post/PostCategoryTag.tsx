@@ -24,11 +24,13 @@ const PostCategoryTag = (props: IPostComponentProps) => {
         {config?.showCategoryTagMultiple && categories.length ? (
           categories.map((category: Category) => (
             <div className={classes.name} key={category?.databaseId}>
-              <Link href={category.uri as string}>{category.name}</Link>
+              <Link href={category.uri?.replace('/category', '') as string}>
+                {category.name}
+              </Link>
             </div>
           ))
         ) : (
-          <Link href={categories[0].uri as string}>
+          <Link href={categories[0].uri?.replace('/category', '') as string}>
             <div className={classes.name}>{categories[0].name}</div>
           </Link>
         )}

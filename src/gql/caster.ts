@@ -20,6 +20,14 @@ export class Caster {
     };
   }
 
+  static category(category = {} as Category) {
+    const posts: Post[] = map(category?.posts?.edges, ({ node }) => node);
+
+    return {
+      posts,
+    };
+  }
+
   static user(user = {} as User) {
     const posts: Post[] = map(user?.posts?.edges, ({ node }) => node);
 
