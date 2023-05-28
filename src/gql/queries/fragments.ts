@@ -68,3 +68,13 @@ export const USER_FIELDS = `
     }
   }
 `;
+
+export const TAG_FIELDS = `
+  fragment TagFields on Tag {
+    id
+    databaseId
+    name
+    slug
+    description
+  }
+`;

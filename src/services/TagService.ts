@@ -1,26 +1,26 @@
-import { User } from '@/gql/graphql';
+import { Tag } from '@/gql/graphql';
 import {
-  QUERY_ALL_USERS,
-  QUERY_USER_BY_ID_TYPE_WITH_POSTS,
-} from '@/gql/queries/user';
+  QUERY_ALL_TAGS,
+  QUERY_TAG_BY_ID_TYPE_WITH_POSTS,
+} from '@/gql/queries/tag';
 import BaseService from '@/services/BaseService';
 import { IFetchBody } from '@/types/fetch';
 
-export default class UserService extends BaseService {
+export default class TagService extends BaseService {
   constructor() {
-    super('user');
+    super('tag');
   }
 
   all(param: IFetchBody = {}) {
-    return this.submit<User[]>({
-      query: QUERY_ALL_USERS,
+    return this.submit<Tag[]>({
+      query: QUERY_ALL_TAGS,
       ...param,
     });
   }
 
   findBySlugWithPosts(slug: string, param: IFetchBody = {}) {
-    return this.submit<User>({
-      query: QUERY_USER_BY_ID_TYPE_WITH_POSTS,
+    return this.submit<Tag>({
+      query: QUERY_TAG_BY_ID_TYPE_WITH_POSTS,
       ...param,
       variables: {
         ...param.variables,

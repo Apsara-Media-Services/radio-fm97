@@ -1,4 +1,4 @@
-import { Category, MediaItem, PageInfo, User } from '@/gql/graphql';
+import { Category, MediaItem, PageInfo, Tag, User } from '@/gql/graphql';
 import { Post } from '@/gql/graphql';
 import { map } from 'lodash';
 
@@ -22,6 +22,14 @@ export class Caster {
 
   static user(user = {} as User) {
     const posts: Post[] = map(user?.posts?.edges, ({ node }) => node);
+
+    return {
+      posts,
+    };
+  }
+
+  static tag(tag = {} as Tag) {
+    const posts: Post[] = map(tag?.posts?.edges, ({ node }) => node);
 
     return {
       posts,

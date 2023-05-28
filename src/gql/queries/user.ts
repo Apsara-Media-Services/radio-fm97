@@ -14,7 +14,7 @@ export const QUERY_ALL_USERS = `
   }
 `;
 
-export const QUERY_USER_BY_SLUG_WITH_POSTS = `
+export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
   ${USER_FIELDS}
   ${POST_FIELDS}
   query UserByIdTypeWithPosts($id: ID!, $idType: UserNodeIdTypeEnum, $first: Int = ${ITEM_PER_PAGE}, $after: String) {
