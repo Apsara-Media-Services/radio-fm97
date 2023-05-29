@@ -29,4 +29,13 @@ export default class UserService extends BaseService {
       },
     });
   }
+
+  test() {
+    return this.submit<User>({
+      query: QUERY_USER_BY_ID_TYPE_WITH_POSTS,
+      variables: {
+        id: 'dXNlcjox',
+      },
+    });
+  }
 }
