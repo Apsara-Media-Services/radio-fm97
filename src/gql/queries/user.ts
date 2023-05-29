@@ -15,12 +15,14 @@ export const QUERY_ALL_USERS = `
 `;
 
 export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
-  query Test {
-    user(id: "dXNlcjox") {
-      id
-      name
-      slug
-      databaseId
+  ${USER_FIELDS}
+  query AllUsers($first: Int = ${ITEM_PER_PAGE}, $where: RootQueryToUserConnectionWhereArgs) {
+    users(first: $first, where: $where) {
+      edges {
+        node {
+          ...UserFields
+        }
+      }
     }
   }
 `;

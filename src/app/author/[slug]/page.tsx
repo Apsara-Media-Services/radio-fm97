@@ -14,7 +14,7 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
     <div>
       <MainLayout>
         <Container className="py-3 sm:py-5">
-          {user.name}
+          {typeof user}
           <SkeletonPostItem />
           {/* <InfiniteScrollPosts user={user} slug={slug} /> */}
         </Container>
