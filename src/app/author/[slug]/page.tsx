@@ -7,14 +7,40 @@ import { IDynamicPage } from '@/types/page';
 const userService = new UserService();
 
 const Author = async ({ params: { slug } }: IDynamicPage) => {
-  const user = await userService.test();
+  // const user = await userService.test();
+  // console.warn(user);
+  const url = `https://radio.amskh.co/graphql`;
+  const init: RequestInit = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      query: `
+        query Test($id: ID!) {
+          user(id: $id) {
+            id
+            name
+            slug
+            databaseId
+          }
+        }
+      `,
+      variables: {
+        id: 'dXNlcjox',
+      },
+    }),
+  };
+  const res = await fetch(url, init);
+  const user = await res.json();
   console.warn(user);
 
   return (
     <div>
       <MainLayout>
         <Container className="py-3 sm:py-5">
-          {user?.slug}
+          {/* {user?.slug} */}
           <SkeletonPostItem />
         </Container>
       </MainLayout>
