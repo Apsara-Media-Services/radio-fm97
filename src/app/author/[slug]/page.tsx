@@ -2,14 +2,15 @@ import { Container } from '@/components/common';
 import MainLayout from '@/components/layout/MainLayout';
 import InfiniteScrollPosts from '@/components/page/author/InfiniteScrollPosts';
 import { SkeletonPostItem } from '@/components/skeleton';
-import { UserService } from '@/services';
+import { TagService, UserService } from '@/services';
 import { IDynamicPage } from '@/types/page';
 import { isNil } from 'lodash';
 
 const userService = new UserService();
+const tagService = new TagService();
 
 const Author = async ({ params: { slug } }: IDynamicPage) => {
-  const user = await userService.findBySlugWithPosts(slug as string, {
+  const user = await tagService.findBySlugWithPosts(slug as string, {
     variables: { first: 11 },
   });
 
