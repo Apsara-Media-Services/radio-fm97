@@ -14,13 +14,16 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json',
     },
     body: JSON.stringify({
       query: `
         query User {
-          user(id: "minea", idType: SLUG) {
-            id
+          users {
+            edges {
+              node {
+                id
+              }
+            }
           }
         }
       `,
