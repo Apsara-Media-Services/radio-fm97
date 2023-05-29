@@ -18,18 +18,12 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
     },
     body: JSON.stringify({
       query: `
-        query Test($id: ID!) {
-          user(id: $id) {
+        query User {
+          user(id: "minea", idType: SLUG) {
             id
-            name
-            slug
-            databaseId
           }
         }
       `,
-      variables: {
-        id: 'dXNlcjox',
-      },
     }),
   };
   const res = await fetch(url, init);
