@@ -34,10 +34,6 @@ export default class UserService extends BaseService {
   test() {
     return this.submit<User>({
       query: QUERY_TEST,
-      variables: {
-        id: 1,
-        idType: 'DATABASE_ID',
-      },
     });
   }
 }
