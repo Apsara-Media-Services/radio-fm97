@@ -16,9 +16,12 @@ export const QUERY_ALL_USERS = `
 
 export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
   ${USER_FIELDS}
-  query UserByIdTypeWithPosts($id: ID!) {
-    user(id: $id) {
-      ...UserFields
+  query UserByIdTypeWithPosts {
+    user(id: "dXNlcjox") {
+      id
+      name  
+      slug
+      databaseId
     }
   }
 `;
