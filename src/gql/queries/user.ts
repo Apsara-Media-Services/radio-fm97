@@ -18,7 +18,7 @@ export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
   query Test {
     user(id: "dXNlcjox") {
       id
-      name  
+      name
       slug
       databaseId
     }
@@ -26,10 +26,10 @@ export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
 `;
 
 export const QUERY_TEST = `
-  query Test($id: ID! = 1, $idType: UserNodeIdTypeEnum = DATABASE_ID) {
+  query Test($id: ID! = "1", $idType: UserNodeIdTypeEnum = DATABASE_ID) {
     user(id: $id, idType: $idType) {
       id
-      name  
+      name
       slug
       databaseId
     }
