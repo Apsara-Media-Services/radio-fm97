@@ -28,16 +28,12 @@ export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
 `;
 
 export const QUERY_TEST = `
-  query Test {
-    users {
-      edges {
-        node {
-          id
-          name
-          slug
-          databaseId
-        }
-      }
+  query Test($id: ID! = "dGVybToxMg==") {
+    tag(id: $id) {
+      id
+      name
+      slug
+      databaseId
     }
   }
 `;
