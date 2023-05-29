@@ -10,14 +10,14 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
   // const user = await userService.test();
   console.warn(slug);
   const url = `https://radio.amskh.co/graphql`;
-  const init: RequestInit = {
+  const init = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       query: `
-        query AllPosts {
+        query {
           user(id: "minea", idType: SLUG) {
             id
           }
@@ -43,7 +43,7 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
 
 export default Author;
 
-// export async function generateStaticParams() {
-//   const users = await userService.all();
-//   return users.map(({ slug }) => ({ slug }));
-// }
+export async function generateStaticParams() {
+  const users = await userService.all();
+  return users.map(({ slug }) => ({ slug }));
+}
