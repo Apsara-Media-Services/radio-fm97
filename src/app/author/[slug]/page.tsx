@@ -9,6 +9,12 @@ import { isNil } from 'lodash';
 const userService = new UserService();
 
 const Author = async ({ params: { slug } }: IDynamicPage) => {
+  const user = await userService.findBySlugWithPosts(slug as string, {
+    variables: { first: 11 },
+  });
+
+  if (isNil(user)) return <></>;
+
   return (
     <div>
       <MainLayout>
@@ -23,7 +29,7 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
 
 export default Author;
 
-export async function generateStaticParams() {
-  const users = await userService.all();
-  return users.map(({ slug }) => ({ slug }));
-}
+// export async function generateStaticParams() {
+//   const users = await userService.all();
+//   return users.map(({ slug }) => ({ slug }));
+// }
