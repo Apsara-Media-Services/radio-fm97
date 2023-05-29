@@ -18,12 +18,8 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
     body: JSON.stringify({
       query: `
         query User {
-          users {
-            edges {
-              node {
-                id
-              }
-            }
+          user(id: "minea", idType: SLUG) {
+            id
           }
         }
       `,
@@ -47,7 +43,7 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
 
 export default Author;
 
-// export async function generateStaticParams() {
-//   const users = await userService.all();
-//   return users.map(({ slug }) => ({ slug }));
-// }
+export async function generateStaticParams() {
+  const users = await userService.all();
+  return users.map(({ slug }) => ({ slug }));
+}
