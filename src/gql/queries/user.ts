@@ -28,8 +28,8 @@ export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
 `;
 
 export const QUERY_TEST = `
-  query Test($id: ID! = "dGVybToxMg==") {
-    tag(id: $id) {
+  query Test($id: ID!) {
+    user(id: $id) {
       id
       name
       slug

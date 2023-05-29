@@ -34,6 +34,9 @@ export default class UserService extends BaseService {
   test() {
     return this.submit({
       query: QUERY_TEST,
+      variables: {
+        id: 'dXNlcjox',
+      },
     });
   }
 }
