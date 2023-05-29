@@ -3,7 +3,6 @@ import MainLayout from '@/components/layout/MainLayout';
 import InfiniteScrollPosts from '@/components/page/tag/InfiniteScrollPosts';
 import { TagService } from '@/services';
 import { IDynamicPage } from '@/types/page';
-import { isNil } from 'lodash';
 
 const tagService = new TagService();
 
@@ -11,8 +10,6 @@ const Tag = async ({ params: { slug } }: IDynamicPage) => {
   const tag = await tagService.findBySlugWithPosts(slug as string, {
     variables: { first: 12 },
   });
-
-  if (isNil(tag)) return <></>;
 
   return (
     <div>
