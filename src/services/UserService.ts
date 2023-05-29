@@ -32,7 +32,7 @@ export default class UserService extends BaseService {
   }
 
   test() {
-    return this.submit<User>({
+    return this.submit<User[]>({
       query: QUERY_TEST,
     });
   }

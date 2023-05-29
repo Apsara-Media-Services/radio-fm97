@@ -28,12 +28,16 @@ export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
 `;
 
 export const QUERY_TEST = `
-  query Test($id: ID! = "1", $idType: UserNodeIdTypeEnum = DATABASE_ID) {
-    user(id: $id, idType: $idType) {
-      id
-      name
-      slug
-      databaseId
+  query Test {
+    users {
+      edges {
+        node {
+          id
+          name
+          slug
+          databaseId
+        }
+      }
     }
   }
 `;
