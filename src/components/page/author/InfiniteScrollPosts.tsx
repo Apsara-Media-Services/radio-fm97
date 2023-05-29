@@ -31,7 +31,8 @@ const InfiniteScrollPosts = ({ user: _user, slug }: IComponentProps) => {
 
   return (
     <>
-      <InfiniteScroll
+      <SkeletonPostItem />
+      {/* <InfiniteScroll
         pageStart={0}
         loadMore={loadMore}
         hasMore={user?.posts?.pageInfo?.hasNextPage}
@@ -56,7 +57,7 @@ const InfiniteScrollPosts = ({ user: _user, slug }: IComponentProps) => {
           <SkeletonPostItem />
           <SkeletonPostItem />
         </section>
-      )}
+      )} */}
     </>
   );
 };
