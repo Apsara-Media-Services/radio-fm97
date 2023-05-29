@@ -8,7 +8,7 @@ const userService = new UserService();
 
 const Author = async ({ params: { slug } }: IDynamicPage) => {
   // const user = await userService.test();
-  // console.warn(user);
+  console.warn(slug);
   const url = `https://radio.amskh.co/graphql`;
   const init: RequestInit = {
     method: 'POST',
@@ -43,7 +43,7 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
 
 export default Author;
 
-export async function generateStaticParams() {
-  const users = await userService.all();
-  return users.map(({ slug }) => ({ slug }));
-}
+// export async function generateStaticParams() {
+//   const users = await userService.all();
+//   return users.map(({ slug }) => ({ slug }));
+// }
