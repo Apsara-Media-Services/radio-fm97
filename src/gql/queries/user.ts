@@ -16,10 +16,12 @@ export const QUERY_ALL_USERS = `
 
 export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
   query UserByIdTypeWithPosts {
-    user(id: "chetra", idType: SLUG) {
-      id
-      name
-      slug
+    users {
+      edges {
+        node {
+          ...UserFields
+        }
+      }
     }
   }
 `;

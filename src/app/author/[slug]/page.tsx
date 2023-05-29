@@ -8,7 +8,9 @@ import { IDynamicPage } from '@/types/page';
 const userService = new UserService();
 
 const Author = async ({ params: { slug } }: IDynamicPage) => {
-  const users = await userService.all();
+  const user = await userService.findBySlugWithPosts(slug as string, {
+    variables: { first: 12 },
+  });
 
   return (
     <div>
