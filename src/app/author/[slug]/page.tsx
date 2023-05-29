@@ -1,6 +1,7 @@
 import { Container } from '@/components/common';
 import MainLayout from '@/components/layout/MainLayout';
 import InfiniteScrollPosts from '@/components/page/author/InfiniteScrollPosts';
+import { SkeletonPostItem } from '@/components/skeleton';
 import { UserService } from '@/services';
 import { IDynamicPage } from '@/types/page';
 
@@ -15,7 +16,9 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
     <div>
       <MainLayout>
         <Container className="py-3 sm:py-5">
-          <InfiniteScrollPosts user={user} slug={slug} />
+          {user.name}
+          <SkeletonPostItem />
+          {/* <InfiniteScrollPosts user={user} slug={slug} /> */}
         </Container>
       </MainLayout>
     </div>
