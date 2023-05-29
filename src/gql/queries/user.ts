@@ -15,10 +15,11 @@ export const QUERY_ALL_USERS = `
 `;
 
 export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
-  ${USER_FIELDS}
-  query UserByIdTypeWithPosts($id: ID!, $idType: UserNodeIdTypeEnum, $first: Int = ${ITEM_PER_PAGE}, $after: String) {
-    user(idType: $idType, id: $id) {
-      ...UserFields
+  query UserByIdTypeWithPosts {
+    user(id: "chetra", idType: SLUG) {
+      id
+      name
+      slug
     }
   }
 `;
