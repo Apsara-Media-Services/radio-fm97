@@ -7,6 +7,7 @@ import { Caster } from '@/gql/caster';
 import { Post, User } from '@/gql/graphql';
 import { UserService } from '@/services';
 import { IComponentProps } from '@/types/component';
+import { find, head } from 'lodash';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -19,9 +20,16 @@ const InfiniteScrollPosts = ({ user: _user, slug }: IComponentProps) => {
 
   const loadMore = async () => {
     setLoading(true);
-    const _user = await userService.findBySlugWithPosts(slug as string, {
-      variables: { first: 12, after: user.posts?.pageInfo.endCursor as string },
+    const { databaseId } = find(await userService.all(), ['slug', slug]) as User;
+    const users = await userService.allWithPosts({
+      variables: {
+        first: 1,
+        where: { search: databaseId, searchColumns: 'ID' },
+        postFirst: 12,
+        postAfter: user.posts?.pageInfo.endCursor as string,
+      },
     });
+    const _user = head(users) as User;
     const { posts: _posts } = Caster.user(_user);
 
     setUser(_user);
@@ -31,8 +39,7 @@ const InfiniteScrollPosts = ({ user: _user, slug }: IComponentProps) => {
 
   return (
     <>
-      <SkeletonPostItem />
-      {/* <InfiniteScroll
+      <InfiniteScroll
         pageStart={0}
         loadMore={loadMore}
         hasMore={user?.posts?.pageInfo?.hasNextPage}
@@ -57,7 +64,7 @@ const InfiniteScrollPosts = ({ user: _user, slug }: IComponentProps) => {
           <SkeletonPostItem />
           <SkeletonPostItem />
         </section>
-      )} */}
+      )}
     </>
   );
 };

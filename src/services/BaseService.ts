@@ -23,9 +23,6 @@ export default class BaseService {
       fetch(url, init)
         .then((res) => res.json())
         .then(({ data, errors }: any) => {
-          console.warn('data', data);
-          console.warn('errors', errors);
-
           if (errors) {
             return reject(get(head(errors), 'message'));
           }

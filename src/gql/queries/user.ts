@@ -14,26 +14,29 @@ export const QUERY_ALL_USERS = `
   }
 `;
 
-export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
+export const QUERY_ALL_USERS_WITH_POSTS = `
   ${USER_FIELDS}
-  query AllUsers($first: Int = ${ITEM_PER_PAGE}, $where: RootQueryToUserConnectionWhereArgs) {
+  ${POST_FIELDS}
+  query AllUsersWithPosts($first: Int = ${ITEM_PER_PAGE}, $where: RootQueryToUserConnectionWhereArgs, $postFirst: Int = ${ITEM_PER_PAGE}, $postAfter: String) {
     users(first: $first, where: $where) {
       edges {
         node {
           ...UserFields
+          posts(first: $postFirst, after: $postAfter) {
+            edges {
+              node {
+                ...PostFields
+              }
+            }
+            pageInfo {
+              hasNextPage
+              hasPreviousPage
+              endCursor
+              startCursor
+            }
+          }
         }
       }
-    }
-  }
-`;
-
-export const QUERY_TEST = `
-  query Test($id: ID!) {
-    user(id: $id) {
-      id
-      name
-      slug
-      databaseId
     }
   }
 `;
