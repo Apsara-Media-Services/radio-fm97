@@ -8,15 +8,12 @@ import { IDynamicPage } from '@/types/page';
 const userService = new UserService();
 
 const Author = async ({ params: { slug } }: IDynamicPage) => {
-  const user = await userService.findBySlugWithPosts(slug as string, {
-    variables: { first: 11 },
-  });
+  const users = await userService.all();
 
   return (
     <div>
       <MainLayout>
         <Container className="py-3 sm:py-5">
-          {user.name}
           <SkeletonPostItem />
           {/* <InfiniteScrollPosts user={user} slug={slug} /> */}
         </Container>
@@ -27,7 +24,7 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
 
 export default Author;
 
-// export async function generateStaticParams() {
-//   const users = await userService.all();
-//   return users.map(({ slug }) => ({ slug }));
-// }
+export async function generateStaticParams() {
+  const users = await userService.all();
+  return users.map(({ slug }) => ({ slug }));
+}
