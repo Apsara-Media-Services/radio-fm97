@@ -15,13 +15,12 @@ export const QUERY_ALL_USERS = `
 `;
 
 export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
+  ${USER_FIELDS}
   query UserByIdTypeWithPosts {
     users {
       edges {
         node {
-          id
-          name
-          slug
+          ...UserFields
         }
       }
     }
