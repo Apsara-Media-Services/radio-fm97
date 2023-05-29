@@ -17,7 +17,7 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
     },
     body: JSON.stringify({
       query: `
-        query User {
+        query AllPosts {
           user(id: "minea", idType: SLUG) {
             id
           }
