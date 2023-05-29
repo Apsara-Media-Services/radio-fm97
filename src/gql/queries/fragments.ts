@@ -56,6 +56,7 @@ export const CATEGORY_FIELDS = `
 export const USER_FIELDS = `
   fragment UserFields on User {
     id
+    databaseId
     name
     slug
     firstName

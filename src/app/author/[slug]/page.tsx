@@ -9,11 +9,12 @@ const userService = new UserService();
 
 const Author = async ({ params: { slug } }: IDynamicPage) => {
   const _users = await userService.all();
-  const _user = find(_users, ['slug', slug]);
+  const { databaseId } = find(_users, ['slug', slug]) || {};
+
   const users = await userService.allWithPosts({
     variables: {
       first: 1,
-      where: { search: _user?.databaseId, searchColumns: 'ID' },
+      where: { search: String(databaseId), searchColumns: 'ID' },
       postFirst: 11,
     },
   });

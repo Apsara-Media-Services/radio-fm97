@@ -20,7 +20,7 @@ const Home = async () => {
       <MainLayout>
         <Container className="py-3 sm:py-5 body">
           <HomeLatestNews title="ព័ត៌មានថ្មីបំផុត" posts={latestPosts} />
-          <HomeEconomicNews title="សេដ្ឋកិច្ច" posts={economyPosts} />
+          <HomeEconomicNews title="សេដ្ឋកិច្ច" link='/economy' posts={economyPosts} />
           <div className="mt-2 sm:mt-5">
             <Image
               src={ADS.OLATTE}

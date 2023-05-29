@@ -7,24 +7,23 @@ import { Caster } from '@/gql/caster';
 import { Post, User } from '@/gql/graphql';
 import { UserService } from '@/services';
 import { IComponentProps } from '@/types/component';
-import { find, head } from 'lodash';
+import { head } from 'lodash';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 const userService = new UserService();
 
-const InfiniteScrollPosts = ({ user: _user, slug }: IComponentProps) => {
+const InfiniteScrollPosts = ({ user: _user }: IComponentProps) => {
   const [user, setUser] = useState<User>(_user);
   const [posts, setPosts] = useState<Post[]>(Caster.user(user).posts);
   const [loading, setLoading] = useState<boolean>(false);
 
   const loadMore = async () => {
     setLoading(true);
-    const { databaseId } = find(await userService.all(), ['slug', slug]) as User;
     const users = await userService.allWithPosts({
       variables: {
         first: 1,
-        where: { search: databaseId, searchColumns: 'ID' },
+        where: { search: String(user.databaseId), searchColumns: 'ID' },
         postFirst: 12,
         postAfter: user.posts?.pageInfo.endCursor as string,
       },
