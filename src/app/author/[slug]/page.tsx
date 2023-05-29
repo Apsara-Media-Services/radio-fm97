@@ -12,7 +12,7 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
     variables: { first: 11 },
   });
 
-  if (isNil(user)) return <></>;
+  if (isNil(slug) || isNil(user)) return <></>;
 
   return (
     <div>
@@ -27,7 +27,7 @@ const Author = async ({ params: { slug } }: IDynamicPage) => {
 
 export default Author;
 
-export async function generateStaticParams() {
-  const users = await userService.all();
-  return users.map(({ slug }) => ({ slug }));
-}
+// export async function generateStaticParams() {
+//   const users = await userService.all();
+//   return users.map(({ slug }) => ({ slug }));
+// }
