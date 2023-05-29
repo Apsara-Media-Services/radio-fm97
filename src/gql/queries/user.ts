@@ -19,7 +19,9 @@ export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
     users {
       edges {
         node {
-          ...UserFields
+          id
+          name
+          slug
         }
       }
     }
