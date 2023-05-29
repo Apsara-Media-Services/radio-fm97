@@ -1,5 +1,6 @@
 'use client';
 
+import { SectionHeader } from '@/components/common';
 import PostItem from '@/components/post/PostItem';
 import { SkeletonPostItem } from '@/components/skeleton';
 import { Caster } from '@/gql/caster';
@@ -30,6 +31,13 @@ const InfiniteScrollPosts = ({ tag: _tag, slug }: IComponentProps) => {
 
   return (
     <>
+      <div className="my-2 sm:my-5">
+        <SectionHeader
+          type="primary"
+          title={tag?.name as string}
+          className="text-xl font-semibold"
+        />
+      </div>
       <InfiniteScroll
         pageStart={0}
         loadMore={loadMore}

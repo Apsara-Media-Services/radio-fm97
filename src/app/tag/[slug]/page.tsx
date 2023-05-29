@@ -15,13 +15,6 @@ const Tag = async ({ params: { slug } }: IDynamicPage) => {
     <div>
       <MainLayout>
         <Container className="py-3 sm:py-5">
-          <div className="my-2 sm:my-5">
-            <SectionHeader
-              type="primary"
-              title={tag.name as string}
-              className="text-xl font-semibold"
-            />
-          </div>
           <InfiniteScrollPosts tag={tag} slug={slug} />
         </Container>
       </MainLayout>
