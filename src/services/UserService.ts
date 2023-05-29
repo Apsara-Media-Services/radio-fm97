@@ -1,6 +1,7 @@
 import { User } from '@/gql/graphql';
 import {
   QUERY_ALL_USERS,
+  QUERY_TEST,
   QUERY_USER_BY_ID_TYPE_WITH_POSTS,
 } from '@/gql/queries/user';
 import BaseService from '@/services/BaseService';
@@ -32,7 +33,7 @@ export default class UserService extends BaseService {
 
   test() {
     return this.submit<User>({
-      query: QUERY_USER_BY_ID_TYPE_WITH_POSTS,
+      query: QUERY_TEST,
       variables: {
         id: 'dXNlcjox',
       },

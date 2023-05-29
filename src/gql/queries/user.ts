@@ -24,3 +24,15 @@ export const QUERY_USER_BY_ID_TYPE_WITH_POSTS = `
     }
   }
 `;
+
+
+export const QUERY_TEST = `
+  query Test {
+    user(id: dXNlcjox) {
+      id
+      name  
+      slug
+      databaseId
+    }
+  }
+`;
