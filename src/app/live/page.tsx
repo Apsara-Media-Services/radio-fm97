@@ -12,9 +12,7 @@ import 'plyr/dist/plyr.css';
 moment.tz.setDefault('Asia/Phnom_Penh');
 
 async function getSchedules() {
-  const response = await fetch(`${process.env.RADIO_API_BASE_URL}/schedules`, {
-    next: { revalidate: 0 },
-  });
+  const response = await fetch(`${process.env.RADIO_API_BASE_URL}/schedules`);
   const schedules = await response.json();
 
   const today = lowerCase(format(new Date(), 'EEEE'));
@@ -100,5 +98,4 @@ const Live = async () => {
   );
 };
 
-export const revalidate = 0;
 export default Live;

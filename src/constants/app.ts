@@ -7,6 +7,7 @@ export const LOGO = '/images/fm97-logo.webp';
 export const ADS = {
   OLATTE: '/images/ads/ads-olatte.jpeg',
   POCARI_SWEAAT: '/images/ads/ads-pocari-swart.jpeg',
+  CAMMA: '/images/ads/camma.webp',
 };
 
 export const METADATA = {

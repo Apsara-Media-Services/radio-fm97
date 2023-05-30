@@ -4,6 +4,7 @@ import PostCoverImage from './PostCoverImage';
 import PostDate from './PostDate';
 import PostExcerpt from './PostExcerpt';
 import PostTitle from './PostTitle';
+import PostItemDetail from './PostItemDetail';
 
 export {
   PostAuthor,
@@ -12,4 +13,5 @@ export {
   PostDate,
   PostExcerpt,
   PostTitle,
+  PostItemDetail,
 };

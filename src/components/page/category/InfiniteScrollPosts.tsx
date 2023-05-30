@@ -5,6 +5,7 @@ import PostItem from '@/components/post/PostItem';
 import { SkeletonPostItem } from '@/components/skeleton';
 import { Caster } from '@/gql/caster';
 import { Category, Post } from '@/gql/graphql';
+import useBreakpoint from '@/hooks/use-breakpoint';
 import { CategoryService } from '@/services';
 import { IComponentProps } from '@/types/component';
 import { useState } from 'react';
@@ -19,6 +20,8 @@ const InfiniteScrollPosts = ({
   const [category, setCategory] = useState<Category>(_category);
   const [posts, setPosts] = useState<Post[]>(Caster.category(category).posts);
   const [loading, setLoading] = useState<boolean>(false);
+  const { $breakpoints } = useBreakpoint();
+  const itemsPerRow = $breakpoints.lgAndUp ? 3 : $breakpoints.mdAndUp ? 2 : 1;
 
   const loadMore = async () => {
     setLoading(true);
@@ -52,24 +55,26 @@ const InfiniteScrollPosts = ({
         loadMore={loadMore}
         hasMore={category?.posts?.pageInfo?.hasNextPage}
       >
-        <section className="grid md:grid-cols-3 gap-5 sm:gap-7 mb-5">
-          {posts.map((post) => (
+        <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7 mb-5">
+          {posts.map((post, index) => (
             <PostItem
               key={`post-${post.databaseId}`}
               post={post}
               config={{
-                showCategoryTag: false,
-                showAuthor: true,
+                showLineSeparator:
+                  index <
+                  Math.ceil(posts.length / itemsPerRow) * itemsPerRow -
+                    itemsPerRow,
               }}
             />
           ))}
         </section>
       </InfiniteScroll>
       {loading && (
-        <section className="grid md:grid-cols-3 gap-5 sm:gap-7 mb-5">
-          <SkeletonPostItem />
-          <SkeletonPostItem />
-          <SkeletonPostItem />
+        <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7 mb-5">
+          {[...Array(itemsPerRow)].map((key) => (
+            <SkeletonPostItem key={key} />
+          ))}
         </section>
       )}
     </>

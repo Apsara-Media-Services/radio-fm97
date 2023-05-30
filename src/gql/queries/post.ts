@@ -21,3 +21,13 @@ export const QUERY_POST_BY_ID = `
     }
   }
 `;
+
+
+export const QUERY_POST_BY_ID_TYPE = `
+  ${POST_FIELDS}
+  query PostByIdType($id: ID!, $idType: PostIdType = DATABASE_ID) {
+    post(idType: $idType, id: $id) {
+      ...PostFields
+    }
+  }
+`;

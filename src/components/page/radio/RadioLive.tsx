@@ -3,6 +3,7 @@
 import { useAppContext } from '@/components/AppContext';
 import FallbackImage from '@/components/common/FallbackImage';
 import LineSeparator from '@/components/common/LineSeparator';
+import { APP_NAME_ALT } from '@/constants/app';
 import { ClockIcon } from '@heroicons/react/20/solid';
 import Hls from 'hls.js';
 import { cloneDeep, get, isEmpty } from 'lodash';

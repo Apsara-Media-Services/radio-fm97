@@ -1,5 +1,5 @@
 import { Post } from '@/gql/graphql';
-import { QUERY_ALL_POSTS, QUERY_POST_BY_ID } from '@/gql/queries/post';
+import { QUERY_ALL_POSTS, QUERY_POST_BY_ID_TYPE } from '@/gql/queries/post';
 import BaseService from '@/services/BaseService';
 import { IFetchBody } from '@/types/fetch';
 
@@ -29,10 +29,11 @@ export default class PostService extends BaseService {
     });
   }
 
-  find(id: string | number) {
+  find(id: string | number, param: IFetchBody = {}) {
     return this.submit<Post>({
-      query: QUERY_POST_BY_ID,
+      query: QUERY_POST_BY_ID_TYPE,
       variables: { id },
+      ...param,
     });
   }
 }

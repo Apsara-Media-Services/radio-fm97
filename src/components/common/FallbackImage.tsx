@@ -1,6 +1,6 @@
 'use client';
 
-import { LOGO } from '@/constants/app';
+import { APP_NAME_ALT, LOGO } from '@/constants/app';
 import { IFallbackImageComponentProps } from '@/types/component';
 import { useState } from 'react';
 import Image from 'next/image';
@@ -22,7 +22,7 @@ const FallbackImage = (props: IFallbackImageComponentProps) => {
   return (
     <Image
       {...attributes}
-      alt={alt}
+      alt={alt || APP_NAME_ALT}
       src={imgSrc}
       className={imgClassName}
       onLoadingComplete={(result) => {
