@@ -7,6 +7,26 @@ import { PostService } from '@/services';
 import Image from 'next/image';
 
 const Home = async () => {
+  const init = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      query: `
+        query User {
+          user(id: "suo-vanlok", idType: SLUG) {
+            id
+            name
+          }
+        }
+      `,
+    }),
+  };
+  const res = await fetch('https://admin.amskh.co/graphql', init);
+  console.warn(await res.json());
+
   const postService = new PostService();
   const latestPosts = await postService.all({
     variables: { first: 5 },
