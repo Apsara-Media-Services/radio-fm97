@@ -19,7 +19,7 @@ const PostItem = (props: IPostComponentProps) => {
     showTitle: true,
     showExcerpt: true,
     showMeta: true,
-    showAuthor: true,
+    showAuthor: false,
     showAuthorAvatar: false,
     showAuthorName: true,
     showDate: true,
