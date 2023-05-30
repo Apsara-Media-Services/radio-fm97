@@ -43,6 +43,8 @@ async function getSchedules() {
       const timestamp = program?.endTimestamp || moment().valueOf();
       return _program.startTimestamp >= timestamp;
     }) || {};
+
+  console.warn(moment().valueOf(), moment().format('YYYY-MM-DD hh:mm A'));
   console.warn('Program: ', program);
   console.warn('Next Program: ', nextProgram);
   
