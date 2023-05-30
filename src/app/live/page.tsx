@@ -6,8 +6,10 @@ import { APP_NAME_ALT } from '@/constants/app';
 import { LOGO } from '@/constants/app';
 import { format } from 'date-fns';
 import { find, isEmpty, lowerCase, map } from 'lodash';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import 'plyr/dist/plyr.css';
+
+moment.tz.setDefault('Asia/Phnom_Penh');
 
 async function getSchedules() {
   const response = await fetch(`${process.env.RADIO_API_BASE_URL}/schedules`, {
@@ -47,8 +49,7 @@ async function getSchedules() {
   console.warn(moment().valueOf(), moment().format('YYYY-MM-DD hh:mm A'));
   console.warn('Program: ', program);
   console.warn('Next Program: ', nextProgram);
-  
-  
+
   return {
     radioApiBaseUrl: process.env.RADIO_API_BASE_URL,
     radioLiveUrl: process.env.RADIO_LIVE_URL,

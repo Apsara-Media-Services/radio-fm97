@@ -1,6 +1,6 @@
 import { SectionHeader } from '@/components/common';
 import LineSeparator from '@/components/common/LineSeparator';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { isEmpty, isNil } from 'lodash';
 
 const RadioSchedule = (props: any) => {

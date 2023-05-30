@@ -6,7 +6,7 @@ import LineSeparator from '@/components/common/LineSeparator';
 import { ClockIcon } from '@heroicons/react/20/solid';
 import Hls from 'hls.js';
 import { cloneDeep, get, isEmpty } from 'lodash';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import Plyr from 'plyr';
 import 'plyr/dist/plyr.css';
 import { useEffect } from 'react';
