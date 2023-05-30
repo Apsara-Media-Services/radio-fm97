@@ -10,7 +10,9 @@ import moment from 'moment';
 import 'plyr/dist/plyr.css';
 
 async function getSchedules() {
-  const response = await fetch(`${process.env.RADIO_API_BASE_URL}/schedules`);
+  const response = await fetch(`${process.env.RADIO_API_BASE_URL}/schedules`, {
+    next: { revalidate: 0 },
+  });
   const schedules = await response.json();
 
   const today = lowerCase(format(new Date(), 'EEEE'));
@@ -41,7 +43,10 @@ async function getSchedules() {
       const timestamp = program?.endTimestamp || moment().valueOf();
       return _program.startTimestamp >= timestamp;
     }) || {};
-
+  console.warn('Program: ', program);
+  console.warn('Next Program: ', nextProgram);
+  
+  
   return {
     radioApiBaseUrl: process.env.RADIO_API_BASE_URL,
     radioLiveUrl: process.env.RADIO_LIVE_URL,
