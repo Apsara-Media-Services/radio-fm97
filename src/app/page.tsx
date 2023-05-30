@@ -7,6 +7,26 @@ import { PostService } from '@/services';
 import Image from 'next/image';
 
 const Home = async () => {
+  const init = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      query: `
+        query User {
+          user(id: "suo-vanlok", idType: SLUG) {
+            id
+            name
+          }
+        }
+      `,
+    }),
+  };
+  const res = await fetch('https://admin.amskh.co/graphql', init);
+  console.warn(res);
+
   const postService = new PostService();
   const latestPosts = await postService.all({
     variables: { first: 5 },
@@ -20,7 +40,11 @@ const Home = async () => {
       <MainLayout>
         <Container className="py-3 sm:py-5 body">
           <HomeLatestNews title="ព័ត៌មានថ្មីបំផុត" posts={latestPosts} />
-          <HomeEconomicNews title="សេដ្ឋកិច្ច" link='/economy' posts={economyPosts} />
+          <HomeEconomicNews
+            title="សេដ្ឋកិច្ច"
+            link="/economy"
+            posts={economyPosts}
+          />
           <div className="mt-2 sm:mt-5">
             <Image
               src={ADS.OLATTE}
