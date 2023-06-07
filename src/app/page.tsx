@@ -16,7 +16,7 @@ const Home = async () => {
   });
 
   return (
-    <div>
+    <>
       <MainLayout>
         <Container className="py-3 sm:py-5 body">
           <HomeLatestNews title="ព័ត៌មានថ្មីបំផុត" posts={latestPosts} />
@@ -37,7 +37,7 @@ const Home = async () => {
           </div>
         </Container>
       </MainLayout>
-    </div>
+    </>
   );
 };
 
