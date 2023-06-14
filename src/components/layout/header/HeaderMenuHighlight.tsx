@@ -46,7 +46,7 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
         className="group py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white px-2 border-r border-zinc-400 w-28"
         onClick={() => {
           if (isNil(player) || isEmpty(player)) return;
-          if (active.live) player.playing ? player.pause() : player.play();;
+          if (active.live) player.isPlaying() ? player.pause() : player.play();
           setPlayer(cloneDeep(player));
         }}
       >
@@ -56,7 +56,7 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
           )}
         >
           <div className="relative">
-            {player?.playing ? (
+            {!isEmpty(player) && player.isPlaying() ? (
               <PauseCircleIcon className="h-8 w-8 mx-auto" />
             ) : (
               <PlayCircleIcon className="h-8 w-8 mx-auto" />

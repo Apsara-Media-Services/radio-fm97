@@ -2,47 +2,53 @@
 
 import { useAppContext } from '@/components/AppContext';
 import FallbackImage from '@/components/common/FallbackImage';
-import LineSeparator from '@/components/common/LineSeparator';
-import { APP_NAME_ALT } from '@/constants/app';
 import { ClockIcon } from '@heroicons/react/20/solid';
-import Hls from 'hls.js';
-import { cloneDeep, get, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import moment from 'moment-timezone';
-import Plyr from 'plyr';
-import 'plyr/dist/plyr.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import ReactPlayer from 'react-player';
 
 const RadioLive = (props: any) => {
-  const { className, program, nextProgram, radioLiveUrl, radioApiBaseUrl } =
-    props;
+  const { className, program, nextProgram, radioLiveUrl } = props;
+
+  // const { setPlayer } = useAppContext();
+
+  // useEffect(() => {
+  //   const source = radioLiveUrl as string;
+  //   const plyr = new Plyr('#plyr');
+
+  //   if (Hls.isSupported()) {
+  //     const hls = new Hls();
+  //     hls.loadSource(source);
+  //     hls.attachMedia(get(plyr, 'media') as any);
+  //     window.hls = hls;
+  //   } else {
+  //     plyr.source = {
+  //       type: 'audio',
+  //       sources: [
+  //         {
+  //           src: source,
+  //           type: 'audio/m3u8',
+  //         },
+  //       ],
+  //     };
+  //   }
+
+  //   plyr.on('play', (event: any) => setPlayer(cloneDeep(event.detail.plyr)));
+  //   plyr.on('pause', (event: any) => setPlayer(cloneDeep(event.detail.plyr)));
+  //   plyr.play();
+  // }, [radioLiveUrl, setPlayer]);
+  // Create your own media element
+
+  const [isPlaying, setIsPlaying] = useState(true);
 
   const { setPlayer } = useAppContext();
 
-  useEffect(() => {
-    const source = radioLiveUrl as string;
-    const plyr = new Plyr('#plyr');
+  const handleEvent = (e: any) => {
+    console.warn(e);
+  };
 
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(source);
-      hls.attachMedia(get(plyr, 'media') as any);
-      window.hls = hls;
-    } else {
-      plyr.source = {
-        type: 'audio',
-        sources: [
-          {
-            src: source,
-            type: 'audio/m3u8',
-          },
-        ],
-      };
-    }
-
-    plyr.on('play', (event: any) => setPlayer(cloneDeep(event.detail.plyr)));
-    plyr.on('pause', (event: any) => setPlayer(cloneDeep(event.detail.plyr)));
-    plyr.play();
-  }, [radioLiveUrl, setPlayer]);
+  // useEffect(() => {}, [setPlayer]);
 
   if (isEmpty(program) && isEmpty(nextProgram)) return <></>;
 
@@ -56,20 +62,21 @@ const RadioLive = (props: any) => {
         <div className="aspect-video relative rounded-md shadow-lg">
           <FallbackImage
             fill
-            src={`${radioApiBaseUrl}${program.program?.thumbnail?.url || ''} `}
+            src={program?.cover[0].url}
             className="object-cover"
-            alt={program.program?.title}
+            alt={program?.title}
           />
         </div>
         <div>
           {!isEmpty(program) && (
             <>
               <div className="air-now">
-                <span className="bg-ams-red text-white px-3 py-2 rounded-lg inline-block text-sm">
-                  {program.isNext ? 'កម្មវិធីបន្ទាប់' : 'កំពុងផ្សាយ'}
-                </span>
-                <div className="text-xl md:text-2xl mt-3 font-semibold">
-                  {program.program?.title}
+                <div className={'text-white text-sm'}>
+                  <span className={'px-1 bg-ams-red'}>{'កំពុងផ្សាយ'}</span>
+                </div>
+
+                <div className="text-xl md:text-2xl my-1 font-semibold">
+                  {program?.title}
                 </div>
                 <div className="flex gap-1 items-center my-1 text-sm md:text-base">
                   <ClockIcon className="h-4 w-4 md:h-5 md:w-5" />
@@ -78,21 +85,31 @@ const RadioLive = (props: any) => {
                     {timestampTo12Hour(program?.endTimestamp)}
                   </time>
                 </div>
-                <div className="md:text-lg">{program.program?.description}</div>
-                <div className="mt-2 border">
-                  <audio id="plyr"></audio>
-                </div>
+                <div className="md:text-lg">{program?.description}</div>
+
+                <ReactPlayer
+                  className="my-4"
+                  url={radioLiveUrl}
+                  playing={isPlaying}
+                  controls={true}
+                  height={50}
+                  width={'100%'}
+                  config={{ file: { forceAudio: true } }}
+                  onReady={handleEvent}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                />
               </div>
-              <LineSeparator weight="border-b" className="my-4" />
             </>
           )}
           {!isEmpty(nextProgram) && (
             <div className="up-next">
-              <span className="bg-ams-red text-white px-3 py-2 rounded-lg inline-block text-sm">
-                កម្មវិធីបន្ទាប់
-              </span>
-              <div className="text-lg md:text-xl mt-3">
-                {nextProgram.program?.title}
+              <div className="flex gap-1 items-center my-1 text-sm md:text-base">
+                <span>{' កម្មវិធីបន្ទាប់'}</span>
+              </div>
+
+              <div className="text-lg md:text-xl my-1">
+                {nextProgram?.title}
               </div>
               <div className="flex gap-1 items-center my-1 text-sm md:text-base">
                 <ClockIcon className="md:h-4 md:w-4 h-5 w-5" />
