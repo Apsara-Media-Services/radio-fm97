@@ -1,5 +1,6 @@
 export const POST_FIELDS = `
   fragment PostFields on Post {
+    enclosure
     id
     databaseId
     slug
@@ -28,6 +29,18 @@ export const POST_FIELDS = `
       }
     }
     categories {
+      edges {
+        node {
+          id
+          databaseId
+          name
+          slug
+          uri
+          description
+        }
+      }
+    }
+    podcasts {
       edges {
         node {
           id
@@ -77,5 +90,16 @@ export const TAG_FIELDS = `
     name
     slug
     description
+  }
+`;
+
+export const PODCAST_FIELDS = `
+  fragment PodCastFields on Tag {
+    id
+    databaseId
+    name
+    slug
+    description
+    count
   }
 `;

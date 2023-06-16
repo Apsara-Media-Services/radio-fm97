@@ -1,7 +1,9 @@
-// Import WaveSurfer
-import { useAppContext } from '../AppContext';
-import { PauseCircleIcon, PlayCircleIcon } from '@heroicons/react/24/outline';
-import { cloneDeep } from 'lodash';
+import {
+  PauseCircleIcon,
+  PlayCircleIcon,
+  SpeakerWaveIcon,
+  SpeakerXMarkIcon,
+} from '@heroicons/react/24/outline';
 import React from 'react';
 import WaveSurfer from 'wavesurfer.js';
 
@@ -21,11 +23,6 @@ const useWavesurfer = (containerRef: any, options: any) => {
 
     setWavesurfer(ws);
 
-    if (options.media) {
-      containerRef.current.innerHTML = '';
-      containerRef.current.appendChild(options.media);
-    }
-
     return () => {
       ws.destroy();
     };
@@ -34,48 +31,79 @@ const useWavesurfer = (containerRef: any, options: any) => {
   return wavesurfer;
 };
 
-// Create a React component that will render wavesurfer.
-// Props are wavesurfer options.
 const WaveSurferPlayer = (props: any) => {
   const containerRef: any = useRef();
   const wavesurfer: any = useWavesurfer(containerRef, props);
-  const { setPlayer } = useAppContext();
   const [isPlaying, setIsPlaying] = useState(false);
-  // On play button click
-  // const onPlayClick = useCallback(() => {
-  //   wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
-  //   setPlayer(cloneDeep(wavesurfer));
-  // }, [setPlayer, wavesurfer]);
+  const [volume, setVolume] = useState(1);
+  const [mute, setMute] = useState(false);
+
+  const handlePlaying = useCallback(() => {
+    wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
+  }, [wavesurfer]);
+
+  const handleMute = useCallback(() => {
+    const mute = wavesurfer.getMuted();
+    wavesurfer.setMuted(!mute);
+    setMute(!mute);
+  }, [wavesurfer]);
+
+  const handleChange = useCallback(
+    (e: any) => {
+      const val = e.target.value;
+      wavesurfer.setVolume(val);
+      setVolume(val);
+    },
+    [wavesurfer]
+  );
 
   useEffect(() => {
     if (!wavesurfer) return;
-
-    setPlayer(cloneDeep(wavesurfer));
-
     setIsPlaying(false);
-
     const subscriptions = [
       wavesurfer.on('play', () => setIsPlaying(true)),
       wavesurfer.on('pause', () => setIsPlaying(false)),
+      wavesurfer.on('interaction', () => {
+        wavesurfer.play();
+      }),
+      wavesurfer.on('ready', () => {
+        containerRef.current.appendChild(wavesurfer.media);
+      }),
     ];
-
     return () => {
       subscriptions.forEach((unsub) => unsub());
     };
-  }, [setPlayer, wavesurfer]);
+  }, [wavesurfer]);
 
   return (
-    <>
-      <div className="py-4" ref={containerRef} />
-      {/* 
-      <button onClick={onPlayClick}>
-        {isPlaying ? (
-          <PauseCircleIcon className="h-20 w-20" />
-        ) : (
-          <PlayCircleIcon className="h-20 w-20" />
-        )}
-      </button> */}
-    </>
+    <div className="mb-4">
+      <div className="flex items-center">
+        <button className="mr-2" onClick={handlePlaying}>
+          {isPlaying ? (
+            <PauseCircleIcon width={50} height={50} />
+          ) : (
+            <PlayCircleIcon width={50} height={50} />
+          )}
+        </button>
+        <button className="mr-1" onClick={handleMute}>
+          {mute ? (
+            <SpeakerXMarkIcon width={20} />
+          ) : (
+            <SpeakerWaveIcon width={20} />
+          )}
+        </button>
+        <input
+          disabled={mute}
+          onChange={handleChange}
+          type="range"
+          min="0"
+          max="1"
+          step="0.05"
+          value={volume}
+        />
+      </div>
+      <div ref={containerRef} />
+    </div>
   );
 };
 
