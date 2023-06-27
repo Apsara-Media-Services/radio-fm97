@@ -10,6 +10,7 @@
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc.js"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
     "@graphql-codegen/cli": "^3.3.1",
     "@graphql-codegen/client-preset": "^3.0.1",
     "@headlessui/react": "^1.7.14",
@@ -17,6 +18,7 @@
     "@types/node": "20.1.2",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "antd": "^5.6.3",
     "classnames": "^2.3.2",
     "date-fns": "^2.30.0",
     "eslint-config-next": "13.4.1",

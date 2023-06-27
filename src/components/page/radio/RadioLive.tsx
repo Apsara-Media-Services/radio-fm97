@@ -45,7 +45,7 @@ const RadioLive = (props: any) => {
   const { setPlayer } = useAppContext();
 
   const handleEvent = (e: any) => {
-    console.warn(e);
+    // console.warn(e);
   };
 
   // useEffect(() => {}, [setPlayer]);

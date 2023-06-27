@@ -36,26 +36,26 @@ const PostItemDetail = ({ post, className }: IPostComponentProps) => {
       {audios.length > 0 && (
         <WaveSurferPlayer
           height={40}
-          splitChannels={false}
-          normalize={false}
-          waveColor={'#ff0000'}
-          progressColor={'#ff9e9e'}
+          // splitChannels={false}
+          // normalize={false}
+          waveColor={'#545454'}
+          progressColor={'#a6a6a6'}
           cursorColor={'#ddd5e9'}
-          cursorWidth={2}
-          barWidth={2}
-          barGap={2}
-          barRadius={0}
-          barHeight={null}
-          minPxPerSec={10}
-          fillParent={true}
+          cursorWidth={1}
+          barWidth={1}
+          barGap={1}
+          // barRadius={0}
+          // barHeight={null}
+          // minPxPerSec={10}
+          // fillParent={true}
           // media={audio}
-          autoplay={false}
+          // autoplay={false}
           interact={true}
-          hideScrollbar={true}
-          audioRate={1}
-          autoScroll={true}
-          autoCenter={true}
-          sampleRate={8000}
+          // hideScrollbar={true}
+          // audioRate={1}
+          // autoScroll={true}
+          // autoCenter={true}
+          // sampleRate={8000}
           url={audios[0]}
         />
       )}
