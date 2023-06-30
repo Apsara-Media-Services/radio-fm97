@@ -25,12 +25,12 @@ const SectionHeader = ({
         {link ? (
           <>
             <Link href={link}>{title}</Link>
-            <div className={primaryClass} />
+            {/* <div className={primaryClass} /> */}
           </>
         ) : (
           <>
             <div>{title}</div>
-            <div className={primaryClass} />
+            {/* <div className={primaryClass} /> */}
           </>
         )}
       </div>
@@ -43,18 +43,18 @@ const SectionHeader = ({
         {link ? (
           <>
             <Link href={link}>{title}</Link>
-            <div className="relative mt-2">
+            {/* <div className="relative mt-2">
               <div className={`${secondaryClass.line}`}></div>
               <div className={`${secondaryClass.highlight}`}></div>
-            </div>
+            </div> */}
           </>
         ) : (
           <>
             <div>{title}</div>
-            <div className="relative mt-2">
+            {/* <div className="relative mt-2">
               <div className={secondaryClass.line}></div>
               <div className={secondaryClass.highlight}></div>
-            </div>
+            </div> */}
           </>
         )}
       </div>

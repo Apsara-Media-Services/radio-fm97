@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <section className="bg-ams-light dark:bg-zinc-800">
       <Container className="py-3 sm:py-5">
-        <section className="flex justify-center sm:justify-start sm:text-left">
+        <section className="flex justify-center sm:justify-start sm:text-left mb-3">
           <Link href="/" className="inline-block">
             <div className="relative w-40 h-20">
               <Image
@@ -21,12 +21,12 @@ const Footer = () => {
             </div>
           </Link>
         </section>
-        <LineSeparator className="my-5" />
+        {/* <LineSeparator className="my-5" /> */}
         <section className="grid md:grid-cols-7 xl:grid-cols-3 gap-5 md:gap-3 lg:gap-5">
           <div className="md:col-span-2 xl:col-auto">
             <SectionHeader
               type="secondary"
-              title="The Voice of Our Youth"
+              title="វិទ្យុសំឡេងយុវជន ៩៧"
               lineColor="bg-zinc-50"
               className="text-lg lg:text-xl font-semibold mb-5"
             />
@@ -63,7 +63,7 @@ const Footer = () => {
               ))}
             </div>
           </div>
-          <div className="md:col-span-2 xl:col-auto lg:pl-4 lg:border-l-2 border-zinc-200 dark:border-zinc-50">
+          <div className="md:col-span-2 xl:col-auto lg:pl-4 ">
             <SectionHeader
               type="secondary"
               title="ស្វែងយល់បន្ថែម"

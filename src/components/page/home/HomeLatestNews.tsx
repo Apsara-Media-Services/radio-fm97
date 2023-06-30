@@ -6,7 +6,7 @@ import { Post } from '@/gql/graphql';
 import useBreakpoint from '@/hooks/use-breakpoint';
 import { IPostSectionComponentProps } from '@/types/component';
 import classNames from 'classnames';
-import { head, isEmpty, isNil, take } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 const HomeLatestNews = (props: IPostSectionComponentProps) => {
   const { className, title, link, posts } = props;
@@ -14,11 +14,9 @@ const HomeLatestNews = (props: IPostSectionComponentProps) => {
 
   if (isNil(posts) || isEmpty(posts)) return <></>;
 
-  const heroPost = head(posts) || ({} as Post);
-  const otherPosts = take(
-    posts.filter((post) => post.id !== heroPost.id),
-    4
-  );
+  const firstPost = posts[0] || ({} as Post);
+  const secondPost = posts.slice(1, 5) || ({} as Post);
+  const thirdPost = posts.slice(5) || ({} as Post);
 
   return (
     <section className={classNames(['latest-news', className])}>
@@ -27,14 +25,14 @@ const HomeLatestNews = (props: IPostSectionComponentProps) => {
           type="primary"
           title={title}
           link={link}
-          className="text-xl font-semibold"
+          className="text-3xl font-semibold"
         />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-3 xl:gap-5 mb-3 xl:mb-5">
         <PostItem
-          key={heroPost.id}
-          post={heroPost}
+          key={firstPost.id}
+          post={firstPost}
           config={{
             showExcerpt: $breakpoints.mdAndDown,
             showLineSeparator: true,
@@ -48,7 +46,7 @@ const HomeLatestNews = (props: IPostSectionComponentProps) => {
           }}
         />
         <div className="block-latest grid grid-cols-1 sm:grid-cols-2 gap-3 xl:gap-5">
-          {otherPosts.map((post, index) => (
+          {secondPost.map((post) => (
             <PostItem
               key={post.id}
               post={post}
@@ -58,13 +56,27 @@ const HomeLatestNews = (props: IPostSectionComponentProps) => {
                 showImage: $breakpoints.smAndUp,
               }}
               classes={{
-                lineSeparator: `border-b pb-3 xl:pb-3 ${
-                  index > 1 ? 'md:border-none' : ''
-                } ${index > 2 ? 'border-none' : ''}`,
+                lineSeparator: `border-none`,
               }}
             />
           ))}
         </div>
+      </div>
+      <div className="block-latest grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 xl:gap-5">
+        {thirdPost.map((post) => (
+          <PostItem
+            key={post.id}
+            post={post}
+            config={{
+              showExcerpt: $breakpoints.mdAndDown,
+              showLineSeparator: true,
+              showImage: $breakpoints.smAndUp,
+            }}
+            classes={{
+              lineSeparator: `border-none`,
+            }}
+          />
+        ))}
       </div>
     </section>
   );

@@ -28,7 +28,7 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
   return (
     <div
       className={classNames(
-        'bg-ams-light dark:bg-zinc-800 sticky bottom-0 z-10 shadow-[0_-3px_6px_0px_rgba(0,0,0,0.16)] block md:hidden',
+        'bg-ams-light dark:bg-zinc-800 shadow-[0_-3px_6px_0px_rgba(0,0,0,0.16)] block md:hidden',
         className
       )}
     >

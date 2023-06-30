@@ -47,7 +47,7 @@ const InfiniteScrollPosts = ({
         <SectionHeader
           type="primary"
           title={category?.name as string}
-          className="text-xl font-semibold"
+          className="text-3xl font-semibold"
         />
       </div>
       <InfiniteScroll

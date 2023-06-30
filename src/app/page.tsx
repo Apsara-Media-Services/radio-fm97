@@ -9,11 +9,12 @@ import Image from 'next/image';
 const Home = async () => {
   const postService = new PostService();
   const latestPosts = await postService.all({
-    variables: { first: 5 },
+    variables: { first: 13 },
   });
   const economyPosts = await postService.getByCategorySlug('fm97', {
     variables: { first: 7 },
   });
+  // console.warn(latestPosts);
 
   return (
     <>

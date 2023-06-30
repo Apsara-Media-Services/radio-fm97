@@ -24,43 +24,47 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
   return (
     <div
       className={classNames(
-        'hidden md:flex justify-center text-center md:text-md',
+        'hidden md:block text-center md:text-md',
         className
       )}
     >
-      <Link
+      {/* <Link
         href={'/'}
-        className="py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white px-2 border-x border-zinc-400 w-28"
+        className="py-2 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white px-2 w-28"
       >
         <div
           className={classNames(
             active.home ? 'text-ams-red dark:text-white' : ''
           )}
         >
-          <HomeIcon className="h-8 w-8 mx-auto" />
+          <HomeIcon className="h-7 w-7 mx-auto" />
           <div>ទំព័រដើម</div>
         </div>
-      </Link>
+      </Link> */}
       <Link
         href={'/live'}
-        className="group py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white px-2 border-r border-zinc-400 w-28"
-        onClick={() => {
-          if (isNil(player) || isEmpty(player)) return;
-          if (active.live) player.isPlaying() ? player.pause() : player.play();
-          setPlayer(cloneDeep(player));
-        }}
+        className="group1 py-0 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white px-0"
+        // onClick={() => {
+        //   if (isNil(player) || isEmpty(player)) return;
+        //   if (active.live) player.isPlaying() ? player.pause() : player.play();
+        //   setPlayer(cloneDeep(player));
+        // }}
       >
         <div
           className={classNames(
-            active.live ? 'text-ams-red dark:text-white' : ''
+            active.live
+              ? 'text-ams-red dark:text-white flex items-center'
+              : 'flex items-center'
           )}
         >
+          <div className="text-lg">ផ្សាយផ្ទាល់</div>
           <div className="relative">
-            {!isEmpty(player) && player.isPlaying() ? (
+            {/* {!isEmpty(player) && player.isPlaying() ? (
               <PauseCircleIcon className="h-8 w-8 mx-auto" />
             ) : (
               <PlayCircleIcon className="h-8 w-8 mx-auto" />
-            )}
+            )} */}
+            <PlayCircleIcon className="h-8 w-8 mx-auto" />
             <div
               className={classNames(
                 'text-white text-xs absolute bottom-[-6px] w-full'
@@ -71,7 +75,7 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
               </span>
             </div>
           </div>
-          <div>ផ្សាយផ្ទាល់</div>
+          {/* <div>ផ្សាយផ្ទាល់</div> */}
         </div>
       </Link>
     </div>

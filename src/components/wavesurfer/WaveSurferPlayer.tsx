@@ -1,16 +1,14 @@
-import {
-  PauseCircleOutlined,
-  PlayCircleOutlined,
-  StepBackwardOutlined,
-  StepForwardOutlined,
-} from '@ant-design/icons';
+'use client';
+
+import { StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons';
+// eslint-disable-next-line import/order
+import { useAppContext } from '@components/AppContext';
 import {
   PauseCircleIcon,
   PlayCircleIcon,
   SpeakerWaveIcon,
   SpeakerXMarkIcon,
 } from '@heroicons/react/24/outline';
-import { Slider } from 'antd';
 import React from 'react';
 import WaveSurfer from 'wavesurfer.js';
 
@@ -22,8 +20,15 @@ const useWavesurfer = (containerRef: any, options: any) => {
 
   useEffect(() => {
     if (!containerRef.current) return;
-
     const ws: any = WaveSurfer.create({
+      height: 40,
+      waveColor: '#545454',
+      progressColor: '#a6a6a6',
+      cursorColor: '#ddd5e9',
+      cursorWidth: 1,
+      barWidth: 1,
+      barGap: 1,
+      interact: true,
       ...options,
       container: containerRef.current,
     });
@@ -43,7 +48,7 @@ const WaveSurferPlayer = (props: any) => {
   const wavesurfer: any = useWavesurfer(containerRef, props);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
-  const [mute, setMute] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const [ready, setReady] = useState(false);
   const [speed, setSpeed] = useState(1);
 
@@ -73,14 +78,12 @@ const WaveSurferPlayer = (props: any) => {
   const handleMute = useCallback(() => {
     const mute = wavesurfer.getMuted();
     wavesurfer.setMuted(!mute);
-    setMute(!mute);
+    setIsMuted(!mute);
   }, [wavesurfer]);
 
-  const handleChange = useCallback(
-    (val: number) => {
-      if (isNaN(val)) {
-        return;
-      }
+  const handleVolume = useCallback(
+    (e: any) => {
+      const val = e.target.value;
       wavesurfer.setVolume(val);
       setVolume(val);
     },
@@ -107,53 +110,54 @@ const WaveSurferPlayer = (props: any) => {
   }, [wavesurfer]);
 
   return (
-    <>
-      <div className="mb-2 flex items-center">
-        <button className="mr-2" onClick={handlePlaying}>
-          {isPlaying ? (
-            <PauseCircleOutlined style={{ fontSize: '40px' }} />
-          ) : (
-            <PlayCircleOutlined style={{ fontSize: '40px' }} />
-          )}
-        </button>
-        {!ready && 'Loading...'}
-        <div className="w-full" ref={containerRef} />
-      </div>
-
-      <div className="mb-4 flex items-center">
-        <div className="flex me-1">
-          <button onClick={() => handleSpeed(false)} style={{ fontSize: 0 }}>
-            <StepBackwardOutlined style={{ fontSize: '20px' }} />
+    <div className="bg-ams-light dark:bg-zinc-900 block max-w-4xl mx-auto p-3">
+      <div className="">
+        <div className="mb-2 flex items-center">
+          <button className="mr-2" onClick={handlePlaying}>
+            {isPlaying ? (
+              <PauseCircleIcon width={50} />
+            ) : (
+              <PlayCircleIcon width={50} />
+            )}
           </button>
-          <span
-            style={{ fontSize: '14px', width: '35px', textAlign: 'center' }}
-          >
-            {speed}X
-          </span>
-          <button onClick={() => handleSpeed(true)} style={{ fontSize: 0 }}>
-            <StepForwardOutlined style={{ fontSize: '20px' }} />
-          </button>
+          {!ready && 'Loading...'}
+          <div id="containerRef" className="w-full" ref={containerRef} />
         </div>
-        <button className="mr-1" onClick={handleMute}>
-          {mute ? (
-            <SpeakerXMarkIcon width={20} />
-          ) : (
-            <SpeakerWaveIcon width={20} />
-          )}
-        </button>
 
-        <Slider
-          className="w-full"
-          disabled={mute}
-          min={0}
-          max={1}
-          step={0.01}
-          value={typeof volume === 'number' ? volume : 0}
-          onChange={handleChange}
-        />
+        <div className="flex items-center">
+          <div className="flex me-2">
+            <button onClick={() => handleSpeed(false)} style={{ fontSize: 0 }}>
+              <StepBackwardOutlined style={{ fontSize: '20px' }} />
+            </button>
+            <span
+              style={{ fontSize: '14px', width: '30px', textAlign: 'center' }}
+            >
+              {speed}X
+            </span>
+            <button onClick={() => handleSpeed(true)} style={{ fontSize: 0 }}>
+              <StepForwardOutlined style={{ fontSize: '20px' }} />
+            </button>
+          </div>
+          <button className="mr-1" onClick={handleMute}>
+            {isMuted ? (
+              <SpeakerXMarkIcon width={20} />
+            ) : (
+              <SpeakerWaveIcon width={20} />
+            )}
+          </button>
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.01}
+            value={volume}
+            disabled={isMuted}
+            onChange={handleVolume}
+          />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
-export default WaveSurferPlayer;
+export { WaveSurferPlayer, useWavesurfer };
