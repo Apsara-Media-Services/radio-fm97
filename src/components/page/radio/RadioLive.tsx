@@ -6,7 +6,9 @@ import { ClockIcon } from '@heroicons/react/20/solid';
 import { isEmpty } from 'lodash';
 import moment from 'moment-timezone';
 import { useEffect, useState } from 'react';
-import ReactPlayer from 'react-player';
+import {default as _ReactPlayer} from 'react-player';
+import {ReactPlayerProps} from "react-player/types/lib";
+const ReactPlayer = _ReactPlayer as unknown as React.FC<ReactPlayerProps>;
 
 const RadioLive = (props: any) => {
   const { className, program, nextProgram, radioLiveUrl } = props;
