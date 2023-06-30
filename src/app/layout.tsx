@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={kantumruy_pro.className}>
-      <body className="bg-ams-light dark:bg-zinc-800">
+      <body className="bg-ams-light dark:bg-zinc-700">
         <AppProvider>
           <ThemeProvider attribute="class">{children}</ThemeProvider>
           <ToastContainer />

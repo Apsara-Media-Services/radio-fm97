@@ -113,12 +113,10 @@ export const mainMenus = [
 ];
 
 export const footerMenus = [
-  { name: 'ព័ត៌មានទូទៅ', href: '#' },
-  { name: 'Politico 360', href: '#' },
-  { name: 'ក្អែកខ្មៅ', href: '#' },
-  { name: 'បរិស្ថាន', href: '#' },
-  { name: 'វីដេអូ', href: '#' },
-  { name: 'ទូរទស្សន៍', href: '#' },
+  { name: 'កម្សាន្ត', href: 'entertainment' },
+  { name: 'ចំណេះដឹង', href: 'tips' },
+  { name: 'ពត៌មាន', href: 'news' },
+  { name: 'អប់រំ', href: 'education' },
 ];
 
 export const footerLearnMoreMenus = [

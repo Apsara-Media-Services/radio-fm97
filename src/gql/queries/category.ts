@@ -1,7 +1,6 @@
 import { ITEM_PER_PAGE } from '@/constants/query';
 import { CATEGORY_FIELDS, POST_FIELDS } from '@/gql/queries/fragments';
 
-
 export const QUERY_ALL_CATEGORIES = `
   ${CATEGORY_FIELDS}
   query AllCategories($first: Int = ${ITEM_PER_PAGE}, $where: RootQueryToCategoryConnectionWhereArgs) {

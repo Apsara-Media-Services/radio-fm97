@@ -3,7 +3,7 @@
 import {
   HeaderLogo,
   HeaderMenu,
-  HeaderMenuHighlight,
+  HeaderMenuHighlight, // HeaderMenuHighlight,
 } from '@/components/layout/header/index';
 import { IComponentProps } from '@/types/component';
 import Container from '@components/common/Container';
@@ -20,8 +20,10 @@ const Header = ({ className }: IComponentProps) => {
       <Container>
         <div className="hidden md:flex ">
           <HeaderLogo className="flex-1" />
-          <HeaderMenuHighlight className="flex-shrink-0" />
-          <HeaderMenu className="flex-1" />
+          <div className="flex align-middle items-center">
+            <HeaderMenuHighlight className="me-3" />
+            <HeaderMenu />
+          </div>
         </div>
         <div className="grid md:hidden grid-cols-5">
           <div className="col-span-1" />

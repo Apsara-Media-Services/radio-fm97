@@ -9,7 +9,7 @@ const HeaderMenuContent = ({ className }: IComponentProps) => {
       <div className="">
         <SectionHeader
           type="secondary"
-          title="The Voice of Our Youth"
+          title="វិទ្យុសំឡេងយុវជន ៩៧"
           lineColor="bg-zinc-300 dark:bg-zinc-50"
           className="text-lg lg:text-xl font-semibold mb-5"
         />

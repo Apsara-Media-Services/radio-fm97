@@ -9,14 +9,15 @@ import Image from 'next/image';
 const Home = async () => {
   const postService = new PostService();
   const latestPosts = await postService.all({
-    variables: { first: 5 },
+    variables: { first: 13 },
   });
   const economyPosts = await postService.getByCategorySlug('fm97', {
     variables: { first: 7 },
   });
+  // console.warn(latestPosts);
 
   return (
-    <div>
+    <>
       <MainLayout>
         <Container className="py-3 sm:py-5 body">
           <HomeLatestNews title="ព័ត៌មានថ្មីបំផុត" posts={latestPosts} />
@@ -37,7 +38,7 @@ const Home = async () => {
           </div>
         </Container>
       </MainLayout>
-    </div>
+    </>
   );
 };
 

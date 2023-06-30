@@ -77,7 +77,8 @@ const PostItem = (props: IPostComponentProps) => {
           name: 'text-sm text-white bg-rose-800 hover:bg-ams-red px-1 dark:bg-gray-700',
         },
       },
-      lineSeparator: 'border-b pb-4',
+      // lineSeparator: 'border-b pb-4',
+      lineSeparator: 'border-none pb-4',
     },
     _classes
   );
