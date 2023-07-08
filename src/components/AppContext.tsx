@@ -2,7 +2,6 @@
 
 import { AppContextType } from '@/types/app';
 import { IComponentProps } from '@/types/component';
-import type Plyr from 'plyr';
 import { createContext, useContext, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 
@@ -16,12 +15,16 @@ export function useAppContext() {
 }
 
 export function AppProvider({ children }: IComponentProps) {
-  const [player, setPlayer] = useState<Plyr>({} as Plyr);
-  // const [player, setPlayer] = useState<WaveSurfer>({} as WaveSurfer);
-
+  const [player, setPlayer] = useState<WaveSurfer>({} as WaveSurfer);
+  const [control, setControl] = useState({
+    speed: 1,
+    volume: 0.025,
+    muted: false,
+    isPlaying: false,
+  } as any);
   return (
     <>
-      <AppContext.Provider value={{ player, setPlayer }}>
+      <AppContext.Provider value={{ player, setPlayer, control, setControl }}>
         {children}
       </AppContext.Provider>
     </>

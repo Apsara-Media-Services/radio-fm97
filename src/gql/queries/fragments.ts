@@ -94,7 +94,7 @@ export const TAG_FIELDS = `
 `;
 
 export const PODCAST_FIELDS = `
-  fragment PodCastFields on Tag {
+  fragment PodCastFields on Podcast {
     id
     databaseId
     name

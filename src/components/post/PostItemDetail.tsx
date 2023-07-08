@@ -4,29 +4,38 @@ import PostCategoryTag from '@/components/post/PostCategoryTag';
 import PostDate from '@/components/post/PostDate';
 import { IPostComponentProps } from '@/types/components/post';
 import { useAppContext } from '@components/AppContext';
-import { WaveSurferPlayer } from '@components/wavesurfer/WaveSurferPlayer';
-import { PauseCircleIcon, PlayCircleIcon } from '@heroicons/react/24/outline';
+import WaveSurferPlayer from '@components/wavesurfer/WaveSurferPlayer';
+import { Headset, PlaylistAddRounded } from '@mui/icons-material';
 import { split } from 'lodash';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import sanitizeHtml from 'sanitize-html';
 
 const PostItemDetail = ({ post, className }: IPostComponentProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const { player, setPlayer } = useAppContext();
+  const { setPlayer, setControl } = useAppContext();
   const [enclosure, setEnclosure] = useState(null) as any;
+
   const handlePlaying = () => {
-    setPlayer({ url: enclosure, autoPlay: true });
+    const ws = (
+      <WaveSurferPlayer
+        databaseId={post?.databaseId}
+        title={post?.title}
+        url={enclosure}
+        post={post}
+      />
+    );
+    setPlayer(ws);
+    setControl((prev: any) => {
+      return { ...prev, isPlaying: true };
+    });
   };
 
   useEffect(() => {
     if (!post?.enclosure) return;
-    const audios = split(post.enclosure, '\n');
-    if (audios.length < 1) return;
-
+    const audios = split(post.enclosure, '\n', 1);
+    if (!audios) return;
     setEnclosure(audios[0]);
-    setPlayer({ url: audios[0] });
-  }, [post?.enclosure, setPlayer]);
+  }, [post?.enclosure]);
 
   return (
     <article className={className}>
@@ -57,8 +66,14 @@ const PostItemDetail = ({ post, className }: IPostComponentProps) => {
         />
       </div>
       {null != enclosure && (
-        <div className="mb-2">
-          <WaveSurferPlayer url={enclosure} />
+        <div className="py-2 mb-2">
+          <button className="me-2" onClick={handlePlaying}>
+            <Headset style={{ fontSize: 30 }} />
+            <span> ស្តាប់សំលេងផ្សាយ</span>
+          </button>
+          <button title="Add to Your PlayList">
+            <PlaylistAddRounded />
+          </button>
         </div>
       )}
 

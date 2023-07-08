@@ -3,8 +3,8 @@ import { PODCAST_FIELDS, POST_FIELDS } from '@/gql/queries/fragments';
 
 export const QUERY_ALL_PODCASTS = `
   ${PODCAST_FIELDS}
-  query AllPodCasts($first: Int = ${ITEM_PER_PAGE}, $where: RootQueryToPodcastConnectionWhereArgs) {
-    podcasts(first: $first, where: $where) {
+  query AllPodCasts($first: Int = ${ITEM_PER_PAGE}) {
+    podcasts(first: $first) {
       edges {
         node {
           ...PodCastFields
