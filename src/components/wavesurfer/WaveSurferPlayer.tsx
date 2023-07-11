@@ -1,6 +1,5 @@
 'use client';
 
-import { PodcastService } from '@/services';
 import { useAppContext } from '@components/AppContext';
 import {
   CloseRounded,
@@ -16,7 +15,7 @@ import {
   VolumeOffRounded,
   VolumeUpRounded,
 } from '@mui/icons-material';
-import { findIndex, last, split, unionBy } from 'lodash';
+import { findIndex } from 'lodash';
 import React from 'react';
 import WaveSurfer from 'wavesurfer.js';
 
@@ -39,7 +38,6 @@ const useWavesurfer = (containerRef: any, options: any) => {
       ...options,
       container: containerRef.current,
     });
-
     setWavesurfer(ws);
 
     return () => {
@@ -50,78 +48,53 @@ const useWavesurfer = (containerRef: any, options: any) => {
   return wavesurfer;
 };
 
-const podcastService = new PodcastService();
-
-const WaveSurferPlayer = (props: any) => {
-  const [activeProp, setActiveProp] = useState({ ...props });
-  const { control, setControl, setPlayer } = useAppContext();
-
-  const containerRef: any = useRef();
-  const wavesurfer: any = useWavesurfer(containerRef, activeProp);
+const WaveSurferPlayer = ({ control }: any) => {
+  const { setControl } = useAppContext();
   const [ready, setReady] = useState(false);
   const [expandList, setExpandList] = useState(false);
-  const [lists, setLists] = useState([{ ...props }]);
-  const [loadingList, setLoadingList] = useState(true);
 
-  const fetchData = async () => {
-    let podcast_slug = null as any;
-    props?.post?.podcasts?.edges.map(({ node: { slug } }: any) => {
-      if (!podcast_slug) podcast_slug = slug;
-    });
-    if (!podcast_slug) return;
-    return await podcastService.getPodcastPosts(podcast_slug as any, {
-      variables: { first: 10 },
-    });
-  };
+  const { speed, volume, isPlaying, muted, lists } = control;
+  const index = findIndex(lists, { active: true });
 
-  if (loadingList)
-    fetchData()
-      .then(({ posts: { edges } }) => {
-        if (!edges.length) return;
-        setLists((pre: any) => {
-          edges.map(({ node: { enclosure, databaseId, title } }: any) => {
-            if (enclosure) {
-              const url = split(enclosure, '\n', 1);
-              pre.push({ url, databaseId, title });
-            }
-          });
-          const arr = unionBy(pre, 'databaseId');
-          return arr;
-        });
-        setLoadingList(false);
-      })
-      .catch(console.error);
+  const [currentState, setCurrentState] = useState();
+
+  const containerRef: any = useRef();
+  const wavesurfer: any = useWavesurfer(containerRef, currentState);
 
   const handleClose = () => {
     wavesurfer.destroy();
     setReady(false);
-    setPlayer({});
-  };
-
-  const handleSkip = (e: string) => {
-    const i = findIndex(lists, ({ databaseId }: any) => {
-      return databaseId == activeProp.databaseId;
+    setControl((pre: any) => {
+      return { ...pre, lists: [], open: false };
     });
-
-    if (e === 'next') {
-      const arr = lists[i + 1] ? lists[i + 1] : lists[0];
-      wavesurfer.destroy();
-      setReady(false);
-      setActiveProp({ ...arr });
-    }
-
-    if (e === 'prev') {
-      const arr = lists[i - 1] ? lists[i - 1] : last(lists);
-      wavesurfer.destroy();
-      setReady(false);
-      setActiveProp({ ...arr });
-    }
   };
 
-  const handleSetPlayer = (item: object) => {
+  const handleSkip = (i: any) => {
+    if (lists.length <= 1) return;
     wavesurfer.destroy();
     setReady(false);
-    setActiveProp({ ...item });
+    let dest = index + i;
+    if (dest >= lists.length) dest = 0;
+    if (dest <= -1) dest = lists.length - 1;
+
+    setControl((pre: any) => {
+      const { lists } = pre;
+      lists[index].active = false;
+      lists[dest].active = true;
+      return { ...pre, lists };
+    });
+  };
+
+  const handleSetPlayer = (i: any) => {
+    if (i == index) return;
+    wavesurfer.destroy();
+    setReady(false);
+    setControl((pre: any) => {
+      const { lists } = pre;
+      lists[index].active = false;
+      lists[i].active = true;
+      return { ...pre, lists };
+    });
   };
 
   const handleExpandList = () => {
@@ -134,18 +107,21 @@ const WaveSurferPlayer = (props: any) => {
     setControl((prev: any) => {
       let s = prev.speed;
       s < 2 ? (s += 0.5) : (s = 1);
+      wavesurfer.setPlaybackRate(s, true);
       return { ...prev, speed: s };
     });
   };
 
   const handlePlaying = () => {
     setControl((prev: any) => {
+      prev.isPlaying ? wavesurfer.pause() : wavesurfer.play();
       return { ...prev, isPlaying: !prev.isPlaying };
     });
   };
 
   const handleMute = () => {
     setControl((prev: any) => {
+      wavesurfer.setMuted(!prev.muted);
       return { ...prev, muted: !prev.muted };
     });
   };
@@ -153,53 +129,63 @@ const WaveSurferPlayer = (props: any) => {
   const handleVolume = (e: any) => {
     const val = e.target.value;
     setControl((prev: any) => {
-      if (val == 0) return { ...prev, volume: val, muted: true };
-      return { ...prev, volume: val };
+      if (val == 0) {
+        wavesurfer.setMuted(true);
+        return { ...prev, volume: val, muted: true };
+      } else {
+        wavesurfer.setMuted(false);
+        wavesurfer.setVolume(val);
+        return { ...prev, volume: val, muted: false };
+      }
     });
   };
 
   useEffect(() => {
+    setCurrentState(lists[index]);
     if (!wavesurfer) return;
-
-    control.isPlaying ? wavesurfer.play() : wavesurfer.pause();
-    wavesurfer.setVolume(control.volume);
-    wavesurfer.setMuted(control.muted);
-    wavesurfer.setPlaybackRate(control.speed, true);
 
     const subscriptions = [
       wavesurfer.on('play', () => {
-        setControl((prev: any) => {
-          return { ...prev, isPlaying: true };
-        });
+        wavesurfer.setVolume(volume);
+        wavesurfer.setMuted(muted);
+        wavesurfer.setPlaybackRate(speed, true);
       }),
       wavesurfer.on('interaction', () => {
+        wavesurfer.play();
         setControl((prev: any) => {
           return { ...prev, isPlaying: true };
         });
       }),
       wavesurfer.on('ready', () => {
         setReady(true);
-        setControl((prev: any) => {
-          return { ...prev, isPlaying: true };
-        });
         containerRef.current.appendChild(wavesurfer.media);
+        isPlaying ? wavesurfer.play() : wavesurfer.pause();
       }),
       wavesurfer.on('finish', () => {
         setTimeout(() => {
-          const i = findIndex(lists, ({ databaseId }: any) => {
-            return databaseId == activeProp.databaseId;
+          setControl((pre: any) => {
+            const { lists } = pre;
+            if (lists.length > 1) {
+              wavesurfer.destroy();
+              setReady(false);
+              lists[index].active = false;
+              if (lists[index + 1]) {
+                lists[index + 1].active = true;
+              } else {
+                lists[0].active = true;
+              }
+            } else {
+              wavesurfer.play();
+            }
+            return { ...pre, isPlaying: true, lists };
           });
-          const arr = lists[i + 1] ? lists[i + 1] : lists[0];
-          wavesurfer.destroy();
-          setReady(false);
-          setActiveProp({ ...arr });
         }, 3000);
       }),
     ];
     return () => {
       subscriptions.forEach((unsub) => unsub());
     };
-  }, [control, wavesurfer, lists]);
+  }, [index, isPlaying, lists, muted, setControl, speed, volume, wavesurfer]);
 
   return (
     <div className="bg-ams-light dark:bg-zinc-900 block max-w-4xl mx-auto p-3">
@@ -213,7 +199,7 @@ const WaveSurferPlayer = (props: any) => {
               onClick={handleExpandList}
               className="font-semibold text-left"
             >
-              {expandList ? 'Your PlayList' : activeProp?.title}
+              {expandList ? 'Your PlayList' : control.lists[index]?.title}
             </button>
           </div>
           <div className="flex gap-1">
@@ -227,10 +213,10 @@ const WaveSurferPlayer = (props: any) => {
         </div>
         <div className={expandList ? 'block' : 'hidden'}>
           <ul className="list-none">
-            {lists.map((item: any) => (
+            {control.lists.map((item: any, key: any) => (
               <li key={item.databaseId} className="mb-1 flex items-baseline">
                 <button className="me-2">
-                  {item?.databaseId == activeProp?.databaseId ? (
+                  {item.active ? (
                     control.isPlaying ? (
                       <PauseRounded />
                     ) : (
@@ -243,14 +229,10 @@ const WaveSurferPlayer = (props: any) => {
                 <button
                   className="text-left"
                   value={item}
-                  onClick={() => handleSetPlayer(item)}
+                  onClick={() => handleSetPlayer(key)}
                 >
                   <span
-                    className={
-                      item?.databaseId == activeProp?.databaseId
-                        ? 'font-semibold'
-                        : 'font-light'
-                    }
+                    className={item.active ? 'font-semibold' : 'font-light'}
                   >
                     {item.title}
                   </span>
@@ -258,13 +240,13 @@ const WaveSurferPlayer = (props: any) => {
               </li>
             ))}
           </ul>
-          {loadingList && <div className="py-4">Loading...</div>}
+          {/* {loadingList && <div className="py-4">Loading...</div>} */}
         </div>
       </div>
 
       <div className="">
         <div className="flex items-center leading-4 gap-x-2">
-          <button onClick={() => handleSkip('prev')} title="Skip Previous">
+          <button onClick={() => handleSkip(-1)} title="Skip Previous">
             <SkipPreviousRounded />
           </button>
 
@@ -276,7 +258,7 @@ const WaveSurferPlayer = (props: any) => {
             )}
           </button>
 
-          <button onClick={() => handleSkip('next')} title="Skip Next">
+          <button onClick={() => handleSkip(1)} title="Skip Next">
             <SkipNextRounded />
           </button>
           <button className="" onClick={handleSpeed}>

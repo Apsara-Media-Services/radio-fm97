@@ -21,6 +21,8 @@ export function AppProvider({ children }: IComponentProps) {
     volume: 0.025,
     muted: false,
     isPlaying: false,
+    lists: [],
+    open: false,
   } as any);
   return (
     <>

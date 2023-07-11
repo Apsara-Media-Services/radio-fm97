@@ -2,40 +2,67 @@
 
 import PostCategoryTag from '@/components/post/PostCategoryTag';
 import PostDate from '@/components/post/PostDate';
+import { PodcastService } from '@/services';
 import { IPostComponentProps } from '@/types/components/post';
 import { useAppContext } from '@components/AppContext';
-import WaveSurferPlayer from '@components/wavesurfer/WaveSurferPlayer';
 import { Headset, PlaylistAddRounded } from '@mui/icons-material';
-import { split } from 'lodash';
+import { split, unionBy } from 'lodash';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import sanitizeHtml from 'sanitize-html';
 
+const podcastService = new PodcastService();
+
 const PostItemDetail = ({ post, className }: IPostComponentProps) => {
-  const { setPlayer, setControl } = useAppContext();
-  const [enclosure, setEnclosure] = useState(null) as any;
+  const { setControl } = useAppContext();
+  const [lists, setLists] = useState([]);
 
   const handlePlaying = () => {
-    const ws = (
-      <WaveSurferPlayer
-        databaseId={post?.databaseId}
-        title={post?.title}
-        url={enclosure}
-        post={post}
-      />
-    );
-    setPlayer(ws);
+    if (!lists.length) return;
     setControl((prev: any) => {
-      return { ...prev, isPlaying: true };
+      return { ...prev, isPlaying: true, lists, open: true };
     });
   };
 
   useEffect(() => {
     if (!post?.enclosure) return;
-    const audios = split(post.enclosure, '\n', 1);
-    if (!audios) return;
-    setEnclosure(audios[0]);
-  }, [post?.enclosure]);
+    const currentAudio = {} as any;
+    const audiosUrl = post?.enclosure ? split(post.enclosure, '\n', 1) : [];
+    if (!audiosUrl.length) return;
+    currentAudio.info = {
+      url: audiosUrl[0],
+      databaseId: post.databaseId,
+      title: post.title,
+      active: true,
+    };
+
+    const fetchData = async () => {
+      let podcast_slug = null as any;
+      post?.podcasts?.edges.map(({ node: { slug } }: any) => {
+        if (!podcast_slug) podcast_slug = slug;
+      });
+      if (!podcast_slug) return;
+      return await podcastService.getPodcastPosts(podcast_slug as any, {
+        variables: { first: 10 },
+      });
+    };
+
+    fetchData()
+      .then(({ posts: { edges } }) => {
+        if (!edges.length) return;
+        let lists = [] as any;
+        lists.push(currentAudio.info);
+        edges.map(({ node: { enclosure, databaseId, title } }: any) => {
+          if (enclosure) {
+            const url = split(enclosure, '\n', 1);
+            lists.push({ url: url[0], databaseId, title, active: false });
+          }
+        });
+        lists = unionBy(lists, 'databaseId');
+        setLists(lists);
+      })
+      .catch(console.error);
+  }, [post]);
 
   return (
     <article className={className}>
@@ -65,7 +92,7 @@ const PostItemDetail = ({ post, className }: IPostComponentProps) => {
           height={552}
         />
       </div>
-      {null != enclosure && (
+      {lists.length > 0 && (
         <div className="py-2 mb-2">
           <button className="me-2" onClick={handlePlaying}>
             <Headset style={{ fontSize: 30 }} />
