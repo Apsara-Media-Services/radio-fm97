@@ -15,6 +15,7 @@ const nextConfig = {
       'secure.gravatar.com',
     ],
   },
+  output: 'standalone',
 };
 
 module.exports = nextConfig;
