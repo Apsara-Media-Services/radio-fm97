@@ -19,8 +19,8 @@ const PostItemDetail = ({ post, className }: IPostComponentProps) => {
 
   const handlePlaying = () => {
     if (!lists.length) return;
-    setControl((prev: any) => {
-      return { ...prev, isPlaying: true, lists, open: true };
+    setControl((pre: any) => {
+      return { ...pre, lists, open: true, active: 0 };
     });
   };
 
@@ -55,7 +55,13 @@ const PostItemDetail = ({ post, className }: IPostComponentProps) => {
         edges.map(({ node: { enclosure, databaseId, title } }: any) => {
           if (enclosure) {
             const url = split(enclosure, '\n', 1);
-            lists.push({ url: url[0], databaseId, title, active: false });
+            lists.push({
+              url: url[0],
+              databaseId,
+              title,
+              active: false,
+              setTime: 0,
+            });
           }
         });
         lists = unionBy(lists, 'databaseId');

@@ -15,17 +15,14 @@ import {
   VolumeOffRounded,
   VolumeUpRounded,
 } from '@mui/icons-material';
-import { findIndex } from 'lodash';
-import React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
-
-// Import React hooks
-const { useRef, useState, useEffect } = React;
 
 const useWavesurfer = (containerRef: any, options: any) => {
   const [wavesurfer, setWavesurfer] = useState(null);
   useEffect(() => {
     if (!containerRef.current) return;
+    if (!options?.url) return;
     const ws: any = WaveSurfer.create({
       height: 30,
       waveColor: '#545454',
@@ -38,95 +35,96 @@ const useWavesurfer = (containerRef: any, options: any) => {
       ...options,
       container: containerRef.current,
     });
+
     setWavesurfer(ws);
 
     return () => {
       ws.destroy();
     };
-  }, [options, containerRef]);
+  }, [containerRef, options]);
 
   return wavesurfer;
 };
 
-const WaveSurferPlayer = ({ control }: any) => {
-  const { setControl } = useAppContext();
+const WaveSurferPlayer = () => {
+  const { control, setControl } = useAppContext();
+  const { lists, expandList, isPlaying, open, volume, speed, muted, active } =
+    control;
   const [ready, setReady] = useState(false);
-  const [expandList, setExpandList] = useState(false);
 
-  const { speed, volume, isPlaying, muted, lists } = control;
-  const index = findIndex(lists, { active: true });
-
-  const [currentState, setCurrentState] = useState();
+  const [item, setItem] = useState(lists[active]) as any;
 
   const containerRef: any = useRef();
-  const wavesurfer: any = useWavesurfer(containerRef, currentState);
+  const wavesurfer = useWavesurfer(containerRef, item) as any;
+
+  const load = () => {
+    return;
+  };
 
   const handleClose = () => {
-    wavesurfer.destroy();
-    setReady(false);
     setControl((pre: any) => {
-      return { ...pre, lists: [], open: false };
+      return { ...pre, isPlaying: false, open: false };
     });
   };
 
   const handleSkip = (i: any) => {
-    if (lists.length <= 1) return;
-    wavesurfer.destroy();
-    setReady(false);
-    let dest = index + i;
+    if (!ready) return;
+    if (lists.length == 1) return;
+    // if (wavesurfer) wavesurfer.destroy();
+    let dest = active + i;
     if (dest >= lists.length) dest = 0;
     if (dest <= -1) dest = lists.length - 1;
 
     setControl((pre: any) => {
-      const { lists } = pre;
-      lists[index].active = false;
-      lists[dest].active = true;
-      return { ...pre, lists };
+      return { ...pre, active: dest };
     });
   };
 
   const handleSetPlayer = (i: any) => {
-    if (i == index) return;
-    wavesurfer.destroy();
-    setReady(false);
+    if (!ready) return;
+    if (i == active) return;
+    // if (wavesurfer) wavesurfer.destroy();
     setControl((pre: any) => {
-      const { lists } = pre;
-      lists[index].active = false;
-      lists[i].active = true;
-      return { ...pre, lists };
+      return { ...pre, active: i };
     });
   };
 
   const handleExpandList = () => {
-    setExpandList((pre) => {
-      return !pre;
+    setControl((pre: any) => {
+      return { ...pre, expandList: !pre.expandList };
     });
   };
 
-  const handleSpeed = () => {
+  const handleSpeed = useCallback(() => {
+    if (!ready) return;
+    if (!wavesurfer) return;
+    let s = speed;
+    s < 2 ? (s += 0.5) : (s = 1);
+    wavesurfer.setPlaybackRate(s, true);
     setControl((prev: any) => {
-      let s = prev.speed;
-      s < 2 ? (s += 0.5) : (s = 1);
-      wavesurfer.setPlaybackRate(s, true);
       return { ...prev, speed: s };
     });
-  };
+  }, [ready, setControl, speed, wavesurfer]);
 
-  const handlePlaying = () => {
+  const handlePlaying = useCallback(() => {
+    if (!ready) return;
     setControl((prev: any) => {
-      prev.isPlaying ? wavesurfer.pause() : wavesurfer.play();
       return { ...prev, isPlaying: !prev.isPlaying };
     });
-  };
+  }, [setControl, ready]);
 
-  const handleMute = () => {
+  const handleMute = useCallback(() => {
+    if (!ready) return;
+    if (!wavesurfer) return;
+    wavesurfer.setMuted(!muted);
     setControl((prev: any) => {
-      wavesurfer.setMuted(!prev.muted);
       return { ...prev, muted: !prev.muted };
     });
-  };
+  }, [ready, wavesurfer, muted, setControl]);
 
   const handleVolume = (e: any) => {
+    if (!ready) return;
+    if (!wavesurfer) return;
     const val = e.target.value;
     setControl((prev: any) => {
       if (val == 0) {
@@ -141,54 +139,51 @@ const WaveSurferPlayer = ({ control }: any) => {
   };
 
   useEffect(() => {
-    setCurrentState(lists[index]);
+    const { speed, volume, isPlaying, muted, lists, active } = control;
+    const item = lists[active];
+    setItem(item);
+
     if (!wavesurfer) return;
+    isPlaying ? wavesurfer.play() : wavesurfer.pause();
 
     const subscriptions = [
+      wavesurfer.on('destroy', () => {
+        setReady(false);
+      }),
       wavesurfer.on('play', () => {
         wavesurfer.setVolume(volume);
         wavesurfer.setMuted(muted);
         wavesurfer.setPlaybackRate(speed, true);
       }),
-      wavesurfer.on('interaction', () => {
-        wavesurfer.play();
-        setControl((prev: any) => {
-          return { ...prev, isPlaying: true };
-        });
-      }),
       wavesurfer.on('ready', () => {
+        wavesurfer.setVolume(volume);
+        wavesurfer.setMuted(muted);
+        wavesurfer.setPlaybackRate(speed, true);
         setReady(true);
-        containerRef.current.appendChild(wavesurfer.media);
-        isPlaying ? wavesurfer.play() : wavesurfer.pause();
+        // containerRef.current.appendChild(wavesurfer.media);
       }),
       wavesurfer.on('finish', () => {
         setTimeout(() => {
+          const index = lists.length == active + 1 ? 0 : active + 1;
           setControl((pre: any) => {
-            const { lists } = pre;
-            if (lists.length > 1) {
-              wavesurfer.destroy();
-              setReady(false);
-              lists[index].active = false;
-              if (lists[index + 1]) {
-                lists[index + 1].active = true;
-              } else {
-                lists[0].active = true;
-              }
-            } else {
-              wavesurfer.play();
-            }
-            return { ...pre, isPlaying: true, lists };
+            // wavesurfer.destroy();
+            return { ...pre, active: index };
           });
-        }, 3000);
+        }, 2000);
       }),
     ];
     return () => {
       subscriptions.forEach((unsub) => unsub());
     };
-  }, [index, isPlaying, lists, muted, setControl, speed, volume, wavesurfer]);
+  }, [control, setControl, wavesurfer]);
 
+  // if (!open) return <></>;
   return (
-    <div className="bg-ams-light dark:bg-zinc-900 block max-w-4xl mx-auto p-3">
+    <div
+      className={`bg-ams-light dark:bg-zinc-900 p-3 ${
+        open ? 'block' : 'hidden'
+      }`}
+    >
       <div className="mb-3">
         <div className="flex justify-between items-baseline mb-1">
           <div className="flex gap-1 items-baseline">
@@ -199,11 +194,11 @@ const WaveSurferPlayer = ({ control }: any) => {
               onClick={handleExpandList}
               className="font-semibold text-left"
             >
-              {expandList ? 'Your PlayList' : control.lists[index]?.title}
+              {expandList ? 'Your PlayList' : item?.title}
             </button>
           </div>
           <div className="flex gap-1">
-            <button>
+            <button onClick={load}>
               <MinimizeRounded />
             </button>
             <button onClick={handleClose}>
@@ -213,11 +208,11 @@ const WaveSurferPlayer = ({ control }: any) => {
         </div>
         <div className={expandList ? 'block' : 'hidden'}>
           <ul className="list-none">
-            {control.lists.map((item: any, key: any) => (
+            {lists.map((item: any, key: any) => (
               <li key={item.databaseId} className="mb-1 flex items-baseline">
                 <button className="me-2">
-                  {item.active ? (
-                    control.isPlaying ? (
+                  {key == active ? (
+                    isPlaying ? (
                       <PauseRounded />
                     ) : (
                       <PlayArrowRounded />
@@ -232,7 +227,7 @@ const WaveSurferPlayer = ({ control }: any) => {
                   onClick={() => handleSetPlayer(key)}
                 >
                   <span
-                    className={item.active ? 'font-semibold' : 'font-light'}
+                    className={key == active ? 'font-semibold' : 'font-light'}
                   >
                     {item.title}
                   </span>
@@ -240,7 +235,6 @@ const WaveSurferPlayer = ({ control }: any) => {
               </li>
             ))}
           </ul>
-          {/* {loadingList && <div className="py-4">Loading...</div>} */}
         </div>
       </div>
 
@@ -251,7 +245,7 @@ const WaveSurferPlayer = ({ control }: any) => {
           </button>
 
           <button className="" onClick={handlePlaying}>
-            {control.isPlaying ? (
+            {isPlaying ? (
               <PauseCircleFilled style={{ fontSize: 50 }} />
             ) : (
               <PlayCircleFilled style={{ fontSize: 50 }} />
@@ -262,11 +256,11 @@ const WaveSurferPlayer = ({ control }: any) => {
             <SkipNextRounded />
           </button>
           <button className="" onClick={handleSpeed}>
-            {control.speed}X
+            {speed}X
           </button>
           <div className="flex items-center">
             <button className="mr-1" onClick={handleMute}>
-              {control.muted ? <VolumeOffRounded /> : <VolumeUpRounded />}
+              {muted ? <VolumeOffRounded /> : <VolumeUpRounded />}
             </button>
             <input
               className="hidden lg:block"
@@ -274,13 +268,16 @@ const WaveSurferPlayer = ({ control }: any) => {
               min={0}
               max={1}
               step={0.01}
-              value={control.volume}
+              value={volume}
               onChange={handleVolume}
             />
           </div>
-          {!ready && <span>Loading...</span>}
           <div className="w-full">
-            <div ref={containerRef} />
+            {!ready && <span>Loading...</span>}
+            <div
+              className={ready ? 'block' : 'hidden'}
+              ref={containerRef}
+            ></div>
           </div>
         </div>
       </div>

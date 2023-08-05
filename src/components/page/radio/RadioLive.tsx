@@ -90,19 +90,20 @@ const RadioLive = (props: any) => {
                   </time>
                 </div>
                 <div className="md:text-lg">{program?.description}</div>
-
-                <ReactPlayer
-                  className="my-4"
-                  url={radioLiveUrl}
-                  playing={isPlaying}
-                  controls={true}
-                  height={50}
-                  width={'100%'}
-                  config={{ file: { forceAudio: true } }}
-                  onReady={handleEvent}
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
-                />
+                {_ReactPlayer.canPlay(radioLiveUrl) && (
+                  <ReactPlayer
+                    className="my-4"
+                    url={radioLiveUrl}
+                    playing={isPlaying}
+                    controls={true}
+                    height={50}
+                    width={'100%'}
+                    config={{ file: { forceAudio: true } }}
+                    onReady={handleEvent}
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                  />
+                )}
               </div>
             </>
           )}

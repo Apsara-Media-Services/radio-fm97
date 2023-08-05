@@ -5,10 +5,8 @@ import { RadioLive, RadioSchedule } from '@/components/page/radio';
 import { APP_NAME_ALT } from '@/constants/app';
 import { LOGO } from '@/constants/app';
 import ScheduleService from '@/services/ScheduleService';
-import { format } from 'date-fns';
-import { find, isEmpty, lowerCase, map } from 'lodash';
+import { find, isEmpty, map } from 'lodash';
 import moment from 'moment-timezone';
-import 'plyr/dist/plyr.css';
 
 moment.tz.setDefault('Asia/Phnom_Penh');
 const scheduleService = new ScheduleService();

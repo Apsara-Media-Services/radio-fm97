@@ -1,5 +1,5 @@
 import { IObject } from './app';
-import { Post, User } from '@/gql/graphql';
+import { Podcast, Post, User } from '@/gql/graphql';
 import { ImageProps } from 'next/image';
 
 export interface IComponentProps {
@@ -38,6 +38,13 @@ export interface IPostSectionComponentProps extends IComponentProps {
   title?: string;
   link?: string;
   posts?: Post[];
+}
+
+export interface IPodcastComponentProps extends IComponentProps {
+  title?: string;
+  link?: string;
+  term?: any;
+  terms?: Podcast[];
 }
 
 export interface ILineSeparatorComponentProps extends IComponentProps {

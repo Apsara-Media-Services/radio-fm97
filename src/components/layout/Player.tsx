@@ -1,12 +1,15 @@
 'use client';
 
-import { useAppContext } from '@/components/AppContext';
-import WaveSurferPlayer from '@components/wavesurfer/WaveSurferPlayer';
+import { useAppContext } from '@components/AppContext';
+import { isEmpty } from 'lodash';
+
+// import { StrictMode } from 'react';
 
 const Player = () => {
-  const { control } = useAppContext();
-  if (!control.open || !control.lists.length) return <></>;
-  return <WaveSurferPlayer control={control} />;
+  // return <></>;
+  const { Player } = useAppContext();
+  if (isEmpty(Player)) return <></>;
+  return Player;
 };
 
 export default Player;

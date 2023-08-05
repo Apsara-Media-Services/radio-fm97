@@ -97,6 +97,7 @@ export const PODCAST_FIELDS = `
   fragment PodCastFields on Podcast {
     id
     databaseId
+    coverImage
     name
     slug
     description
