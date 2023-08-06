@@ -11,7 +11,7 @@ const Hero = (props: any) => {
   const classes = {
     title: {
       wrapper: '',
-      title: 'text-lg xl:leading-relaxed font-medium',
+      title: 'text-xl xl:leading-relaxed font-medium',
     },
     excerpt: {
       wrapper: 'mt-3',

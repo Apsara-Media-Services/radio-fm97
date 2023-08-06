@@ -1,12 +1,17 @@
 'use client';
 
 import {
+  AddRounded,
   Forward10Rounded,
+  LoopRounded,
   PauseCircleFilled,
   PlayCircleFilled,
+  RemoveRounded,
   Replay10Rounded,
   SkipNextRounded,
   SkipPreviousRounded,
+  VolumeDownRounded,
+  VolumeMuteRounded,
   VolumeOffRounded,
   VolumeUpRounded,
 } from '@mui/icons-material';
@@ -22,8 +27,7 @@ const Player = (props: any) => {
   const { activeListItem, handleSkip } = props;
 
   const [playing, setPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.1);
-  const [muted, setMuted] = useState(false);
+  const [volume, setVolume] = useState(0.05);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [ready, setReady] = useState(false);
   const [seeking, setSeeking] = useState(false);
@@ -45,11 +49,37 @@ const Player = (props: any) => {
   };
 
   const handleMute = () => {
-    setMuted((pre: boolean) => !pre);
+    setVolume(0);
   };
 
-  const handleVolume = ({ value }: any) => {
-    setVolume(Number(value));
+  const handleVolumeDown = () => {
+    setVolume((pre) => {
+      let vol = Math.ceil(pre * 100);
+      if (vol - 5 < 5) {
+        vol -= 1;
+      } else {
+        vol -= 5;
+      }
+      if (vol <= 0) {
+        vol = 0;
+      }
+      return vol / 100;
+    });
+  };
+
+  const handleVolumeUp = () => {
+    setVolume((pre) => {
+      let vol = Math.ceil(pre * 100);
+      if (vol >= 5) {
+        vol += 5;
+      } else {
+        vol += 1;
+      }
+      if (vol >= 100) {
+        vol = 100;
+      }
+      return vol / 100;
+    });
   };
 
   const toHHMMSS = (numSecs: any) => {
@@ -78,6 +108,12 @@ const Player = (props: any) => {
     if (!seeking) setPlayed(e.played);
   };
 
+  let vol = <></>;
+  if (volume <= 0) vol = <VolumeOffRounded />;
+  else if (volume < 0.3) vol = <VolumeMuteRounded />;
+  else if (volume < 0.6) vol = <VolumeDownRounded />;
+  else if (volume <= 1) vol = <VolumeUpRounded />;
+
   return (
     <>
       {ReactPlayer.canPlay(activeListItem.url) && (
@@ -86,7 +122,7 @@ const Player = (props: any) => {
           url={activeListItem.url}
           playing={playing}
           volume={volume}
-          muted={muted}
+          muted={volume ? false : true}
           playbackRate={playbackRate}
           controls={false}
           height={0}
@@ -106,7 +142,8 @@ const Player = (props: any) => {
         />
       )}
       {ready && (
-        <div className="w-full">
+        //  bg-gradient-to-r from-ams-red via-ams-purple to-ams-blue bg-clip-text
+        <div className="w-full text-ams-red dark:text-gray-200">
           <div className="">
             <div className="flex items-center justify-center leading-4 gap-x-2">
               <button onClick={() => handleSkip(-1)} title="Skip Previous">
@@ -130,30 +167,28 @@ const Player = (props: any) => {
                 <SkipNextRounded style={{ fontSize: 30 }} />
               </button>
             </div>
-            <div className="flex justify-between items-center leading-4 gap-x-2">
-              <div>
+            <div className="flex justify-between items-center leading-4 gap-x-2 mb-3">
+              <div className="text-sm">
                 {containerRef?.current &&
                   `${toHHMMSS(
                     containerRef?.current?.getCurrentTime()
                   )} - ${toHHMMSS(containerRef?.current?.getSecondsLoaded())}`}
               </div>
               <div className="flex items-center leading-4 gap-x-2">
+                {/* <button className="bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300">
+                  <LoopRounded />
+                </button> */}
                 <button className="" onClick={handleSpeed}>
-                  Speed {playbackRate}X
+                  {playbackRate}X
                 </button>
                 <div className="flex items-center">
-                  <button className="mr-1" onClick={handleMute}>
-                    {muted ? <VolumeOffRounded /> : <VolumeUpRounded />}
+                  <button onClick={handleVolumeDown}>
+                    <RemoveRounded />
                   </button>
-                  <input
-                    className="hidden lg:block"
-                    type="range"
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={volume}
-                    onChange={({ target }) => handleVolume(target)}
-                  />
+                  <button onClick={handleMute}>{vol}</button>
+                  <button onClick={handleVolumeUp}>
+                    <AddRounded />
+                  </button>
                 </div>
               </div>
             </div>

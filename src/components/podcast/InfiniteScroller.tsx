@@ -1,26 +1,22 @@
 'use client';
 
-import { PostTitle } from '../post';
 import { SectionHeader } from '@/components/common';
 import Hero from '@/components/podcast/Hero';
 import { SkeletonPostItem } from '@/components/skeleton';
 import { Caster } from '@/gql/caster';
-import { Category } from '@/gql/graphql';
+import { Podcast } from '@/gql/graphql';
 import useBreakpoint from '@/hooks/use-breakpoint';
 import { PodcastService } from '@/services';
 import { IComponentProps } from '@/types/component';
-import { PlayArrowRounded } from '@mui/icons-material';
+import { format } from 'date-fns';
+import Image from 'next/image';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 const podcastService = new PodcastService();
 
-const InfiniteScroller = ({
-  podcast: _podcast,
-  slug,
-  podcast: { coverImage, name },
-}: IComponentProps) => {
-  const [podcast, setPodcast] = useState<Category>(_podcast);
+const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
+  const [podcast, setPodcast] = useState<Podcast>(_podcast) as any;
   const [posts, setPosts] = useState(Caster.podcast(podcast).posts) as any;
   const [loading, setLoading] = useState<boolean>(false);
   const { $breakpoints } = useBreakpoint();
@@ -69,13 +65,15 @@ const InfiniteScroller = ({
   //   };
   // }, [active, open, playing, posts]);
 
+  // console.warn(posts);
+
   return (
     <>
       <Hero
         handleSkip={(e: number) => handleSkip(e)}
         activeListItem={activeListItem}
-        coverImage={coverImage}
-        name={name}
+        coverImage={podcast?.coverImage}
+        name={podcast?.name}
       />
       <div className="my-2 sm:my-5">
         <SectionHeader
@@ -90,32 +88,41 @@ const InfiniteScroller = ({
         hasMore={podcast?.posts?.pageInfo?.hasNextPage}
       >
         <section className="">
-          {posts.map((item: any, key: number) => (
-            <div className="mb-3" key={key}>
-              <button
-                className="text-left"
-                value={item}
-                onClick={() => handleSelectPlaying(key)}
-              >
-                <span
-                  className={
-                    key == active ? 'font-semibold flex' : 'font-light flex'
-                  }
-                >
-                  {/* {item.title} */}
-                  <PlayArrowRounded />
-                  <PostTitle
-                    post={item}
-                    config={{
-                      line: 2,
-                      linkable: true,
-                    }}
-                    // classes={classes.title}
+          <ul
+            role="list"
+            className="p-0 divide-y dark:divide-slate-500 divide-slate-200"
+          >
+            {posts.map((item: any, key: number) => (
+              <li key={key} className="flex first:pt-0 last:pb-0 py-4">
+                {item?.featuredImage?.node?.sourceUrl && (
+                  <Image
+                    className="h-10 w-10 rounded-full"
+                    src={item?.featuredImage?.node?.sourceUrl}
+                    width={100}
+                    height={100}
+                    alt=""
                   />
-                </span>
-              </button>
-            </div>
-          ))}
+                )}
+                <div className="ml-3 overflow-hidden">
+                  <p className="text-md font-medium dark:text-slate-200 text-slate-600">
+                    <button
+                      onClick={() => handleSelectPlaying(key)}
+                      className={
+                        key == active
+                          ? 'font-semibold dark:text-white text-slate-900 text-lg text-left'
+                          : 'text-left'
+                      }
+                    >
+                      {item.title}
+                    </button>
+                  </p>
+                  <p className="text-sm dark:text-slate-300 text-slate-500 truncate">
+                    {format(new Date(item.date), 'dd/MMMM/yyyy')}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </section>
       </InfiniteScroll>
       {loading && (
