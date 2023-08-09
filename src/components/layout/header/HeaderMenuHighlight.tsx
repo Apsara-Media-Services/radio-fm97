@@ -22,7 +22,7 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
   return (
     <div
       className={classNames(
-        'hidden md:flex items-center text-center md:text-md gap-x-4',
+        'hidden md:flex items-center text-center md:text-md gap-x-6',
         className
       )}
     >
@@ -60,13 +60,13 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
           )}
         >
           <div className="relative">
-            <span
+            <div
               className={classNames(
                 'bg-ams-red text-xs text-white absolute bottom-[-10px]'
               )}
             >
               LIVE
-            </span>
+            </div>
             <PodcastsRounded />
           </div>
         </div>

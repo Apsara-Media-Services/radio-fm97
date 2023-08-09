@@ -4,7 +4,7 @@ import HeaderMenuContent from '@/components/layout/header/HeaderMenuContent';
 import HeaderMenuThemeSwitcher from '@/components/layout/header/HeaderMenuThemeSwitcher';
 import { IComponentProps } from '@/types/component';
 import { Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { CloseRounded, MenuRounded } from '@mui/icons-material';
 import classNames from 'classnames';
 import { Fragment } from 'react';
 
@@ -19,15 +19,19 @@ const HeaderMenu = ({ className }: IComponentProps) => {
           <>
             <Menu.Button className="flex">
               {open ? (
-                <XMarkIcon
-                  className="h-7 w-7 text-ams-red dark:text-white"
-                  aria-hidden="true"
-                />
+                // <XMarkIcon
+                //   className="h-7 w-7 text-ams-red dark:text-white"
+                //   aria-hidden="true"
+                // />
+                <CloseRounded style={{ fontSize: 30 }} />
               ) : (
-                <Bars3Icon
-                  className="h-7 w-7 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white"
-                  aria-hidden="true"
+                <MenuRounded
+                  style={{ fontSize: 30 }}
+                  className="text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white"
                 />
+                // <Bars3Icon
+                //   aria-hidden="true"
+                // />
               )}
             </Menu.Button>
 

@@ -6,8 +6,10 @@ import {
   LoopRounded,
   PauseCircleFilled,
   PlayCircleFilled,
+  PodcastsRounded,
   RemoveRounded,
   Replay10Rounded,
+  ShareRounded,
   SkipNextRounded,
   SkipPreviousRounded,
   VolumeDownRounded,
@@ -16,6 +18,7 @@ import {
   VolumeUpRounded,
 } from '@mui/icons-material';
 import { parseInt } from 'lodash';
+import Link from 'next/link';
 import { useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 
@@ -32,6 +35,7 @@ const Player = (props: any) => {
   const [ready, setReady] = useState(false);
   const [seeking, setSeeking] = useState(false);
   const [played, setPlayed] = useState(0);
+  const [loop, setLoop] = useState(false);
   const containerRef = useRef() as any;
 
   if (!containerRef) return <></>;
@@ -127,6 +131,7 @@ const Player = (props: any) => {
           controls={false}
           height={0}
           width={0}
+          loop={loop}
           // config={{ file: { forceAudio: true } }}
           // loop={false}
           // onPlay={() => setPlaying(true)}
@@ -144,7 +149,7 @@ const Player = (props: any) => {
       {ready && (
         //  bg-gradient-to-r from-ams-red via-ams-purple to-ams-blue bg-clip-text
         <div className="w-full text-ams-red dark:text-gray-200">
-          <div className="">
+          <div className="mb-3">
             <div className="flex items-center justify-center leading-4 gap-x-2">
               <button onClick={() => handleSkip(-1)} title="Skip Previous">
                 <SkipPreviousRounded style={{ fontSize: 30 }} />
@@ -175,9 +180,16 @@ const Player = (props: any) => {
                   )} - ${toHHMMSS(containerRef?.current?.getSecondsLoaded())}`}
               </div>
               <div className="flex items-center leading-4 gap-x-2">
-                {/* <button className="bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300">
+                <button
+                  onClick={() => setLoop((pre) => !pre)}
+                  className={
+                    loop
+                      ? 'bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300'
+                      : ''
+                  }
+                >
                   <LoopRounded />
-                </button> */}
+                </button>
                 <button className="" onClick={handleSpeed}>
                   {playbackRate}X
                 </button>
@@ -203,6 +215,22 @@ const Player = (props: any) => {
               onChange={handleSeekChange}
               onMouseUp={handleSeekMouseUp}
             />
+          </div>
+          <div className="flex justify-between">
+            <div className="flex gap-4 items-center">
+              <div>
+                <span>ស្តាប់លើ Apple</span>
+              </div>
+              <div>
+                <span>ស្តាប់លើ Google</span>
+              </div>
+            </div>
+            <div className="text-center">
+              <ShareRounded />
+              <div>
+                <span className="text-xs">ចែករំលែក</span>
+              </div>
+            </div>
           </div>
         </div>
       )}

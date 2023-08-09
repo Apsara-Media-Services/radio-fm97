@@ -1,5 +1,4 @@
 import { Container, SectionHeader } from '@/components/common';
-import LineSeparator from '@/components/common/LineSeparator';
 import { amsGroupSites, footerLearnMoreMenus, footerMenus } from '@/data/menu';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -90,11 +89,11 @@ const Footer = () => {
             ឆ្នាំ{new Date().getFullYear()} © រក្សាសិទ្ធគ្រប់យ៉ាងដោយ
             អប្សរាមេឌាសឺវីស / Apsara Media Services (AMS)
           </div>
-          <div className="md:text-right py-1">
+          {/* <div className="md:text-right py-1">
             <Link href="#">
               គោលការណ៍ភាពឯងជន លក្ខ័ណក្នុងការប្រើប្រាស់ COOKIE (ខូខី)
             </Link>
-          </div>
+          </div> */}
         </section>
       </Container>
     </section>

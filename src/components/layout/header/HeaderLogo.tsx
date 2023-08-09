@@ -30,7 +30,7 @@ const HeaderLogo = ({ className }: IComponentProps) => {
               fill
               sizes="100vw"
               alt={APP_NAME_ALT}
-              src={LOGO}
+              src="/images/logo​97.jpg"
               className="rounded-lg"
             />
           </div>

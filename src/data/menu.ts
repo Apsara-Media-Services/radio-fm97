@@ -113,10 +113,8 @@ export const mainMenus = [
 ];
 
 export const footerMenus = [
-  { name: 'កម្សាន្ត', href: 'audio/entertainment' },
-  { name: 'ចំណេះដឹង', href: 'audio/tips' },
-  { name: 'ពត៌មាន', href: 'audio/news' },
-  { name: 'អប់រំ', href: 'audio/education' },
+  { name: 'កម្មវិធីផ្សាយ', href: 'audio' },
+  { name: 'កម្មវិធីផ្សាយប្រចាំថ្ងៃ', href: 'audio/daily' },
 ];
 
 export const footerLearnMoreMenus = [

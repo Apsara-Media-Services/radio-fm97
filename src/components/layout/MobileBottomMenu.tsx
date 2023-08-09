@@ -5,12 +5,11 @@ import HeaderMenuContent from '@/components/layout/header/HeaderMenuContent';
 import { IComponentProps } from '@/types/component';
 import { Menu, Transition } from '@headlessui/react';
 import {
-  Bars3Icon,
-  HomeIcon,
-  PauseCircleIcon,
-  PlayCircleIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
+  CloseRounded,
+  HomeRounded,
+  MenuRounded,
+  PodcastsRounded,
+} from '@mui/icons-material';
 import classNames from 'classnames';
 import { cloneDeep, isEmpty, isNil } from 'lodash';
 import Link from 'next/link';
@@ -42,7 +41,8 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
               active.home ? 'text-ams-red dark:text-white' : ''
             )}
           >
-            <HomeIcon className="h-7 w-7 mx-auto" />
+            {/* <HomeIcon className="h-7 w-7 mx-auto" /> */}
+            <HomeRounded />
             <div className="text-sm">ទំព័រដើម</div>
           </div>
         </Link>
@@ -61,18 +61,19 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
             )}
           >
             <div className="relative">
-              {player?.playing ? (
+              {/* {player?.playing ? (
                 <PauseCircleIcon className="h-7 w-7 mx-auto" />
               ) : (
                 <PlayCircleIcon className="h-7 w-7 mx-auto" />
-              )}
+              )} */}
+              <PodcastsRounded />
               <div
                 className={classNames(
                   'text-white text-[10px] absolute bottom-[-6px] w-full'
                 )}
               >
                 <span className={classNames('mx-auto px-0.5 bg-ams-red')}>
-                  Live
+                  LIVE
                 </span>
               </div>
             </div>
@@ -89,12 +90,14 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
               <>
                 {open ? (
                   <Menu.Button className="w-28 p-3 text-ams-red dark:text-white">
-                    <XMarkIcon className="h-7 w-7 mx-auto" aria-hidden="true" />
+                    <CloseRounded />
+                    {/* <XMarkIcon className="h-7 w-7 mx-auto" aria-hidden="true" /> */}
                     <div className="text-sm">មីនុយ</div>
                   </Menu.Button>
                 ) : (
                   <Menu.Button className="w-28 p-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white">
-                    <Bars3Icon className="h-7 w-7 mx-auto" aria-hidden="true" />
+                    {/* <Bars3Icon className="h-7 w-7 mx-auto" aria-hidden="true" /> */}
+                    <MenuRounded />
                     <div className="text-sm">មីនុយ</div>
                   </Menu.Button>
                 )}
