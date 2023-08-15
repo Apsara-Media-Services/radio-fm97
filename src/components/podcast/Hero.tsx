@@ -38,12 +38,18 @@ const Hero = (props: any) => {
 
   return (
     <div className={className}>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-6">
-        <div className="aspect-video relative rounded-md shadow-lg">
+      <div className="">
+        {/* <div className="aspect-video relative rounded-md shadow-lg">
           <Image src={coverImage} width={600} height={400} alt={name} />
-        </div>
+        </div> */}
         <div>
-          <div className="air-now">
+          {activeListItem?.url && (
+            <Player activeListItem={activeListItem} handleSkip={handleSkip} />
+          )}
+        </div>
+
+        <div>
+          {/* <div className="air-now">
             <PostPodcastTag
               post={activeListItem}
               config={{
@@ -51,11 +57,6 @@ const Hero = (props: any) => {
               }}
               classes={classes.meta.category}
             />
-
-            {/* <div className="text-xl md:text-2xl my-1 font-semibold">{name}</div> */}
-            {/* <div className="flex gap-1 items-center my-1 text-sm md:text-base">
-              <time></time>
-            </div> */}
             <PostTitle
               post={activeListItem}
               config={{
@@ -79,7 +80,7 @@ const Hero = (props: any) => {
                 />
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

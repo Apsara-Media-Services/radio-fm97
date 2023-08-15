@@ -1,25 +1,16 @@
 'use client';
 
 import { SectionHeader } from '@/components/common';
-import Title from '@/components/podcast/Title';
 import { IPodcastComponentProps } from '@/types/component';
 import classNames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
-// import Image from 'next/image';
-import Link from 'next/link';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Image,
-  Button,
-} from '@nextui-org/react';
-// import { useRouter } from 'next/router';
+import { Card, CardHeader, Image } from '@nextui-org/react';
+
+import { useRouter } from 'next/navigation';
 
 const Terms = (props: IPodcastComponentProps) => {
+  const router = useRouter();
   const { className, terms, title } = props;
-  // const router = useRouter();
   if (isNil(terms) || isEmpty(terms)) return <></>;
 
   return (
@@ -38,29 +29,25 @@ const Terms = (props: IPodcastComponentProps) => {
               <Card
                 key={key}
                 isPressable
-                // onPress={() =>
-                //   router.push(`audio/${term?.slug}`)
-                // }
+                onPress={() => router.push(`audio/${term?.slug}`)}
                 className="col-span-12 sm:col-span-4 h-[300px]"
               >
-                <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                  <p className="text-tiny text-white/60 uppercase font-bold">
-                    What to watch
-                  </p>
-                  <h4 className="text-white font-medium text-large">
-                    Stream the Acme event
-                  </h4>
-                </CardHeader>
-
                 <Image
+                  isZoomed
                   removeWrapper
-                  className="z-0 w-full h-full object-cover opacity-90"
+                  className="z-0 w-full h-full object-cover opacity-100"
                   src={term?.coverImage as string}
                   width={400}
-                  height={300}
                   alt={term?.name as string}
                 />
-                <Link href={`audio/${term?.slug}`}></Link>
+                <CardHeader className="absolute z-auto top-1 flex-col !items-start">
+                  <p className="text-tiny text-white/60 uppercase font-bold">
+                    AMS FM97 podcast
+                  </p>
+                  <h4 className="text-white font-medium text-large bg-ams-red px-2">
+                    {term?.name}
+                  </h4>
+                </CardHeader>
               </Card>
             );
           })}

@@ -1,4 +1,5 @@
 import React from 'react';
+
 export const PauseCircleIcon = ({
   size = 24,
   width,

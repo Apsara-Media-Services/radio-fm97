@@ -1,11 +1,26 @@
 'use client';
 
+import { PauseCircleIcon } from '../my-icon/PauseCircleIcon';
+import { NextIcon } from '../my-icon/NextIcon';
+import { PreviousIcon } from '../my-icon/PreviousIcon';
+import { RepeatOneIcon } from '../my-icon/RepeatOneIcon';
+import { ShuffleIcon } from '../my-icon/ShuffleIcon';
+import {
+  Card,
+  CardBody,
+  Image,
+  Button,
+  Progress,
+  Input,
+} from '@nextui-org/react';
 import {
   AddRounded,
   Forward10Rounded,
   LoopRounded,
   PauseCircleFilled,
+  PauseCircleFilledRounded,
   PlayCircleFilled,
+  PlayCircleFilledRounded,
   PodcastsRounded,
   RemoveRounded,
   Replay10Rounded,
@@ -118,8 +133,126 @@ const Player = (props: any) => {
   else if (volume < 0.6) vol = <VolumeDownRounded />;
   else if (volume <= 1) vol = <VolumeUpRounded />;
 
+  // console.warn(activeListItem);
+
   return (
     <>
+      <div className="block">
+        <Card
+          isBlurred
+          className="border-none bg-background/60 dark:bg-default-100/50 max-w-[800px] mx-auto"
+          shadow="sm"
+        >
+          <CardBody>
+            <div className="flex items-center gap-6">
+              <div className="relative h-[100px] w-[100px]">
+                <Image
+                  radius="full"
+                  isZoomed={true}
+                  removeWrapper
+                  alt="Album cover"
+                  className="min-h-[100px] min-w-[100px] object-cover opacity-1"
+                  height={100}
+                  width={100}
+                  shadow="md"
+                  src={activeListItem?.featuredImage?.node?.sourceUrl}
+                />
+              </div>
+
+              <div className="grow">
+                <h1 className="text-large font-medium mt-2">
+                  {activeListItem?.title}
+                </h1>
+
+                <div className="mt-3">
+                  <Progress
+                    minValue={0}
+                    maxValue={0.9999}
+                    // step={0.001}
+                    value={played}
+                    onMouseDown={handleSeekMouseDown}
+                    onChange={handleSeekChange}
+                    onMouseUp={handleSeekMouseUp}
+                    aria-label="Music progress"
+                    classNames={{
+                      indicator: 'bg-default-800 dark:bg-white',
+                      track: 'bg-default-500/30',
+                    }}
+                    color="default"
+                    size="sm"
+                  />
+                  <div className="flex justify-between">
+                    <p className="text-small">
+                      {containerRef?.current &&
+                        toHHMMSS(containerRef?.current?.getCurrentTime())}
+                    </p>
+                    <p className="text-small text-foreground/50">
+                      {containerRef?.current &&
+                        toHHMMSS(containerRef?.current?.getSecondsLoaded())}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex w-full items-center justify-center gap-2">
+                  <Button
+                    onClick={() => setLoop((pre) => !pre)}
+                    isIconOnly
+                    className={
+                      loop
+                        ? 'bg-foreground/10 p-1'
+                        : 'data-[hover]:bg-foreground/10 p-1'
+                    }
+                    radius="full"
+                    variant="light"
+                  >
+                    <RepeatOneIcon className="text-foreground/80" />
+                  </Button>
+                  <Button
+                    onClick={() => handleSkip(-1)}
+                    isIconOnly
+                    className="data-[hover]:bg-foreground/10 p-1"
+                    radius="full"
+                    variant="light"
+                  >
+                    <PreviousIcon />
+                  </Button>
+
+                  <Button
+                    onClick={handlePlayPause}
+                    isIconOnly
+                    className="w-auto h-auto data-[hover]:bg-foreground/10 p-1"
+                    radius="full"
+                    variant="light"
+                  >
+                    {playing ? (
+                      <PauseCircleFilledRounded style={{ fontSize: 54 }} />
+                    ) : (
+                      <PlayCircleFilledRounded style={{ fontSize: 54 }} />
+                    )}
+                  </Button>
+                  <Button
+                    onClick={() => handleSkip(1)}
+                    isIconOnly
+                    className="data-[hover]:bg-foreground/10 p-1"
+                    radius="full"
+                    variant="light"
+                  >
+                    <NextIcon />
+                  </Button>
+                  <Button
+                    isIconOnly
+                    className="data-[hover]:bg-foreground/10 p-1"
+                    radius="full"
+                    variant="light"
+                  >
+                    <ShuffleIcon className="text-foreground/80" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+
       {ReactPlayer.canPlay(activeListItem.url) && (
         <ReactPlayer
           ref={containerRef}
@@ -148,7 +281,7 @@ const Player = (props: any) => {
       )}
       {ready && (
         //  bg-gradient-to-r from-ams-red via-ams-purple to-ams-blue bg-clip-text
-        <div className="w-full text-ams-red dark:text-gray-200">
+        <div className="hidden w-full text-ams-red dark:text-gray-200">
           <div className="mb-3">
             <div className="flex items-center justify-center leading-4 gap-x-2">
               <button onClick={() => handleSkip(-1)} title="Skip Previous">
