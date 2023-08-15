@@ -5,12 +5,21 @@ import Title from '@/components/podcast/Title';
 import { IPodcastComponentProps } from '@/types/component';
 import classNames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
-import Image from 'next/image';
+// import Image from 'next/image';
 import Link from 'next/link';
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Image,
+  Button,
+} from '@nextui-org/react';
+// import { useRouter } from 'next/router';
 
 const Terms = (props: IPodcastComponentProps) => {
   const { className, terms, title } = props;
-
+  // const router = useRouter();
   if (isNil(terms) || isEmpty(terms)) return <></>;
 
   return (
@@ -23,24 +32,36 @@ const Terms = (props: IPodcastComponentProps) => {
         />
       </div>
       <div className="mb-3 xl:mb-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 xl:gap-5">
+        <div className="gap-2 grid grid-cols-12 grid-rows-2">
           {terms.map((term, key) => {
-            term.link = `audio/${term?.slug}`;
             return (
-              <div key={key}>
-                <div className="mb-1">
-                  <Link href={term?.link}>
-                    <Image
-                      className="w-full"
-                      src={term?.coverImage as string}
-                      width={400}
-                      height={300}
-                      alt={term?.name as string}
-                    />
-                  </Link>
-                </div>
-                <Title term={term} />
-              </div>
+              <Card
+                key={key}
+                isPressable
+                // onPress={() =>
+                //   router.push(`audio/${term?.slug}`)
+                // }
+                className="col-span-12 sm:col-span-4 h-[300px]"
+              >
+                <CardHeader className="absolute z-10 top-1 flex-col !items-start">
+                  <p className="text-tiny text-white/60 uppercase font-bold">
+                    What to watch
+                  </p>
+                  <h4 className="text-white font-medium text-large">
+                    Stream the Acme event
+                  </h4>
+                </CardHeader>
+
+                <Image
+                  removeWrapper
+                  className="z-0 w-full h-full object-cover opacity-90"
+                  src={term?.coverImage as string}
+                  width={400}
+                  height={300}
+                  alt={term?.name as string}
+                />
+                <Link href={`audio/${term?.slug}`}></Link>
+              </Card>
             );
           })}
         </div>
