@@ -1,10 +1,10 @@
 FROM node:18-alpine AS base
 
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+# Check the Node.js Docker documentation for reasons to install libc6-compat
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Installing pnpm and dependencies
+# Installing pnpm, sharp, and dependencies
 FROM base AS deps
 COPY package.json pnpm-lock.yaml* ./
 RUN npm install -g pnpm && \
@@ -18,13 +18,14 @@ RUN npm install -g pnpm && \
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
+# Install pnpm again for this stage
+RUN npm install -g pnpm
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ARG NEXT_PUBLIC_WORDPRESS_API_URL
 ENV NEXT_PUBLIC_WORDPRESS_API_URL=$NEXT_PUBLIC_WORDPRESS_API_URL
-# Uncomment the following line in case you want to disable telemetry during the build.
+# Uncomment the following line if you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
-
 RUN pnpm build
 
 # Production image, copy all the files and run next
@@ -32,7 +33,7 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-# Uncomment the following line in case you want to disable telemetry during runtime.
+# Uncomment the following line if you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
@@ -40,8 +41,7 @@ RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
+# Leverage output traces to reduce image size (Next.js specific optimization)
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
