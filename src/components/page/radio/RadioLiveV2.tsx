@@ -1,12 +1,12 @@
 'use client';
 
+import { Container } from '@/components/common';
 import { useAppContext } from '@/components/AppContext';
 import FallbackImage from '@/components/common/FallbackImage';
 import { ClockIcon } from '@heroicons/react/20/solid';
 import { isEmpty } from 'lodash';
 import moment from 'moment-timezone';
 import { useEffect, useState } from 'react';
-import { Container } from '@/components/common';
 // import { default as _ReactPlayer } from 'react-player';
 // import { ReactPlayerProps } from 'react-player/types/lib';
 import _ReactPlayer, { ReactPlayerProps } from 'react-player';
