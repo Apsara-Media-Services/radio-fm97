@@ -7,10 +7,12 @@ WORKDIR /app
 # Installing pnpm and dependencies
 FROM base AS deps
 COPY package.json pnpm-lock.yaml* ./
-RUN apk add --no-cache curl && \
-    curl -f https://get.pnpm.io/v8.js | node - add --global pnpm && \
-    if [ -f pnpm-lock.yaml ]; then pnpm i --frozen-lockfile; \
-    else echo "pnpm lockfile not found." && exit 1; \
+RUN npm install -g pnpm && \
+    if [ -f pnpm-lock.yaml ]; then \
+      pnpm i --frozen-lockfile && \
+      pnpm add sharp; \
+    else \
+      echo "pnpm lockfile not found." && exit 1; \
     fi
 
 # Rebuild the source code only when needed
