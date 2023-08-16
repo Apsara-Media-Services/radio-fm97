@@ -9,7 +9,11 @@ const useEnhancedEffect =
     ? useLayoutEffect
     : useEffect;
 
-const NoSSR = ({ children, defer = false, fallback = null }: INoSSRComponentProps) => {
+const NoSSR = ({
+  children,
+  defer = false,
+  fallback = null,
+}: INoSSRComponentProps) => {
   const [isMounted, setMountedState] = useState(false);
 
   useEnhancedEffect(() => {
