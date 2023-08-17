@@ -15,7 +15,6 @@ const RadioSchedule = (props: any) => {
   const timestampTo12Hour = (timestamp: number | string) => {
     return moment(timestamp).format('hh:mm A');
   };
-  console.warn(programs);
 
   return (
     <div className={className}>
@@ -50,7 +49,7 @@ const RadioSchedule = (props: any) => {
                       {timestampTo12Hour(item?.endTimestamp)}
                     </time>
                   </p>
-                  <h4 className="text-white font-medium text-large bg-ams-red px-2">
+                  <h4 className="text-white font-medium text-large bg-ams-red/90 px-2">
                     {item?.title}
                   </h4>
                 </CardHeader>

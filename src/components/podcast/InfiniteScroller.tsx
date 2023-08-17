@@ -1,5 +1,6 @@
 'use client';
 
+import { Container } from '@/components/common';
 import { SectionHeader } from '@/components/common';
 import Hero from '@/components/podcast/Hero';
 import { SkeletonPostItem } from '@/components/skeleton';
@@ -56,17 +57,6 @@ const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
     setActive(i);
   };
 
-  // useEffect(() => {
-  //   const control = {
-  //     lists: posts,
-  //     open: open,
-  //     active: active,
-  //     playing: playing,
-  //   };
-  // }, [active, open, playing, posts]);
-
-  // console.warn(posts);
-
   return (
     <>
       <Hero
@@ -75,56 +65,58 @@ const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
         coverImage={podcast?.coverImage}
         name={podcast?.name}
       />
-      <div className="my-2 sm:my-5">
-        <SectionHeader
-          type="primary"
-          title={podcast?.name as string}
-          className="text-3xl font-semibold"
-        />
-      </div>
-      <InfiniteScroll
-        pageStart={0}
-        loadMore={loadMore}
-        hasMore={podcast?.posts?.pageInfo?.hasNextPage}
-      >
-        <section className="">
-          <ul
-            role="list"
-            className="p-0 divide-y dark:divide-slate-500 divide-slate-200"
-          >
-            {posts.map((item: any, key: number) => (
-              <li key={key} className="flex first:pt-0 last:pb-0 py-4">
-                {item?.featuredImage?.node?.sourceUrl && (
-                  <Image
-                    className="h-10 w-10 rounded-full"
-                    src={item?.featuredImage?.node?.sourceUrl}
-                    width={100}
-                    height={100}
-                    alt=""
-                  />
-                )}
-                <div className="ml-3 overflow-hidden">
-                  <p className="text-md font-medium dark:text-slate-200 text-slate-600">
-                    <button
-                      onClick={() => handleSelectPlaying(key)}
-                      className={
-                        key == active
-                          ? 'font-semibold dark:text-white text-slate-900 text-lg text-left'
-                          : 'text-left'
-                      }
-                    >
-                      {item.title}
-                    </button>
-                  </p>
-                  <p className="text-sm dark:text-slate-300 text-slate-500 truncate">
-                    {format(new Date(item.date), 'dd/MMMM/yyyy')}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </InfiniteScroll>
+      <Container className="py-5">
+        <div className="my-2 sm:my-5">
+          <SectionHeader
+            type="primary"
+            title={podcast?.name as string}
+            className="text-3xl font-semibold"
+          />
+        </div>
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={loadMore}
+          hasMore={podcast?.posts?.pageInfo?.hasNextPage}
+        >
+          <section className="">
+            <ul
+              role="list"
+              className="p-0 divide-y dark:divide-slate-500 divide-slate-200"
+            >
+              {posts.map((item: any, key: number) => (
+                <li key={key} className="flex first:pt-0 last:pb-0 py-4">
+                  {item?.featuredImage?.node?.sourceUrl && (
+                    <Image
+                      className="h-10 w-10 rounded-full"
+                      src={item?.featuredImage?.node?.sourceUrl}
+                      width={100}
+                      height={100}
+                      alt=""
+                    />
+                  )}
+                  <div className="ml-3 overflow-hidden">
+                    <p className="text-md font-medium dark:text-slate-200 text-slate-600">
+                      <button
+                        onClick={() => handleSelectPlaying(key)}
+                        className={
+                          key == active
+                            ? 'font-semibold dark:text-white text-slate-900 text-lg text-left'
+                            : 'text-left'
+                        }
+                      >
+                        {item.title}
+                      </button>
+                    </p>
+                    <p className="text-sm dark:text-slate-300 text-slate-500 truncate">
+                      {format(new Date(item.date), 'dd/MMMM/yyyy')}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </InfiniteScroll>
+      </Container>
       {loading && (
         <section className="">
           {[...Array(itemsPerRow)].map((key) => (

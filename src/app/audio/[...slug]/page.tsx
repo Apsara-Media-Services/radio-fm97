@@ -1,4 +1,3 @@
-import { Container } from '@/components/common';
 import MainLayout from '@/components/layout/MainLayout';
 import InfiniteScroller from '@/components/podcast/InfiniteScroller';
 import { PodcastService } from '@/services';
@@ -15,9 +14,7 @@ const Podcast = async ({ params: { slug } }: IDynamicPage) => {
   return (
     <div>
       <MainLayout>
-        <Container className="py-3 sm:py-5">
-          <InfiniteScroller podcast={posts} slug={last(slug)} />
-        </Container>
+        <InfiniteScroller podcast={posts} slug={last(slug)} />
       </MainLayout>
     </div>
   );

@@ -72,6 +72,7 @@ const Live = async () => {
             nextProgram={nextProgram}
             radioApiBaseUrl={radioApiBaseUrl}
             radioLiveUrl={radioLiveUrl}
+            className="mb-12"
           />
           <Container>
             <RadioSchedule

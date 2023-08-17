@@ -6,6 +6,3 @@ html,
 body {
   overscroll-behavior: none;
 }
-.wp-block-audio {
-  display: none;
-}
