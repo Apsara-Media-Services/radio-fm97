@@ -1,10 +1,13 @@
+'use client';
+
 import { SectionHeader } from '@/components/common';
-import LineSeparator from '@/components/common/LineSeparator';
+import { useRouter } from 'next/navigation';
 import { isEmpty, isNil } from 'lodash';
 import moment from 'moment-timezone';
-import Link from 'next/link';
+import { Card, CardHeader, Image } from '@nextui-org/react';
 
 const RadioSchedule = (props: any) => {
+  const router = useRouter();
   const { className, title, programs } = props;
 
   if (isNil(programs) || isEmpty(programs)) return <></>;
@@ -12,28 +15,49 @@ const RadioSchedule = (props: any) => {
   const timestampTo12Hour = (timestamp: number | string) => {
     return moment(timestamp).format('hh:mm A');
   };
+  console.warn(programs);
 
   return (
     <div className={className}>
       <SectionHeader
         type="secondary"
         title={title}
-        className="text-xl md:text-2xl font-semibold"
+        className="text-2xl font-semibold mb-5"
         lineColor="bg-zinc-300 dark:bg-zinc-50"
       />
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-7">
-        {programs.map((item: any, id: any) => (
-          <div key={`${id}-program`} className="">
-            <Link href={`/audio/${item?.categories[0]}`}>
-              <div className="text-lg md:text-xl">{item.title}</div>
-            </Link>
-            <time className="text-sm md:text-base block pt-3">
-              {timestampTo12Hour(item?.startTimestamp)} ~{' '}
-              {timestampTo12Hour(item?.endTimestamp)}
-            </time>
-            <LineSeparator weight="border-b" className="my-5 w-full" />
-          </div>
-        ))}
+      <div className="mb-3 xl:mb-5">
+        <div className="gap-2 grid grid-cols-12 grid-rows-2">
+          {programs.map((item: any, key: any) => {
+            return (
+              <Card
+                key={key}
+                isPressable
+                onPress={() => router.push(`audio/${item?.categories[0]}`)}
+                className="col-span-12 sm:col-span-4 h-[300px]"
+              >
+                <Image
+                  isZoomed
+                  removeWrapper
+                  className="z-0 w-full h-full object-cover opacity-100"
+                  src={item?.cover[0].sizes.large.url as string}
+                  width={400}
+                  alt={item?.title as string}
+                />
+                <CardHeader className="absolute z-auto top-1 flex-col !items-start">
+                  <p className="text-tiny text-white/60 uppercase font-bold">
+                    <time className="text-sm md:text-base block pt-3">
+                      {timestampTo12Hour(item?.startTimestamp)} ~{' '}
+                      {timestampTo12Hour(item?.endTimestamp)}
+                    </time>
+                  </p>
+                  <h4 className="text-white font-medium text-large bg-ams-red px-2">
+                    {item?.title}
+                  </h4>
+                </CardHeader>
+              </Card>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

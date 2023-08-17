@@ -65,22 +65,24 @@ const Live = async () => {
   }: any = await getSchedules();
   return (
     <MainLayout>
-      <Container className="py-3 sm:py-5 body">
-        {programs.length > 0 && (
-          <>
-            <RadioLive
-              program={program}
-              nextProgram={nextProgram}
-              radioApiBaseUrl={radioApiBaseUrl}
-              radioLiveUrl={radioLiveUrl}
-            />
+      {programs.length > 0 && (
+        <>
+          <RadioLive
+            program={program}
+            nextProgram={nextProgram}
+            radioApiBaseUrl={radioApiBaseUrl}
+            radioLiveUrl={radioLiveUrl}
+          />
+          <Container>
             <RadioSchedule
               className="mt-10"
               title="កម្មវិធីផ្សាយប្រចាំថ្ងៃ (ម៉ោងកម្ពុជា)"
               programs={programs}
             />
-          </>
-        )}
+          </Container>
+        </>
+      )}
+      <Container className="py-3 sm:py-5 body">
         {!programs.length && (
           <div className="relative w-72 aspect-square mx-auto">
             <FallbackImage

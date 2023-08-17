@@ -9,11 +9,3 @@ body {
 .wp-block-audio {
   display: none;
 }
-
-/* audio::-webkit-media-controls-panel-container {
-  background-color: #000;
-}
-
-audio::-webkit-media-controls-timeline {
-  display: none;
-} */
