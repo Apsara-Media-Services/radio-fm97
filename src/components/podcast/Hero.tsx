@@ -1,17 +1,21 @@
 'use client';
 
-import { PostExcerpt, PostTitle } from '../post';
 import { Container } from '../common';
-import FallbackImage from '../common/FallbackImage';
 import Player from '@components/player/Player';
-import PostPodcastTag from '@components/podcast/PostPodcastTag';
-// import Image from 'next/image';
-import { Button, Image, Progress } from '@nextui-org/react';
+import { Image } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
 import { format } from 'date-fns';
 
 const Hero = (props: any) => {
-  const { className, coverImage, name, activeListItem, handleSkip } = props;
+  const {
+    className,
+    coverImage,
+    name,
+    activeListItem,
+    handleSkip,
+    playing,
+    setPlaying,
+  } = props;
 
   const classes = {
     title: {
@@ -86,46 +90,15 @@ const Hero = (props: any) => {
 
           <div className="mt-8">
             {activeListItem?.url && (
-              <Player activeListItem={activeListItem} handleSkip={handleSkip} />
+              <Player
+                activeListItem={activeListItem}
+                playing={playing}
+                setPlaying={setPlaying}
+                handleSkip={handleSkip}
+              />
             )}
           </div>
         </Container>
-      </div>
-      <div className="">
-        <div>
-          {/* <div className="air-now">
-            <PostPodcastTag
-              post={activeListItem}
-              config={{
-                showCategoryTagMultiple: true,
-              }}
-              classes={classes.meta.category}
-            />
-            <PostTitle
-              post={activeListItem}
-              config={{
-                line: 2,
-                linkable: true,
-              }}
-              classes={classes.title}
-            />
-            <PostExcerpt
-              post={activeListItem}
-              config={{
-                line: 4,
-              }}
-              classes={classes.excerpt}
-            />
-            <div className="mt-3 flex items-center leading-4 gap-x-2">
-              {activeListItem?.url && (
-                <Player
-                  activeListItem={activeListItem}
-                  handleSkip={handleSkip}
-                />
-              )}
-            </div>
-          </div> */}
-        </div>
       </div>
     </div>
   );

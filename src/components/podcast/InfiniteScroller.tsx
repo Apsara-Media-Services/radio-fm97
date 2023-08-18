@@ -9,8 +9,10 @@ import { Podcast } from '@/gql/graphql';
 import useBreakpoint from '@/hooks/use-breakpoint';
 import { PodcastService } from '@/services';
 import { IComponentProps } from '@/types/component';
+import { PauseRounded, PlayArrowRounded } from '@mui/icons-material';
+import { Button, Image } from '@nextui-org/react';
 import { format } from 'date-fns';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -24,6 +26,7 @@ const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
   const itemsPerRow = $breakpoints.lgAndUp ? 3 : $breakpoints.mdAndUp ? 2 : 1;
   const [active, setActive] = useState(0);
   const activeListItem = posts[active];
+  const [playing, setPlaying] = useState(false);
 
   const handleSkip = (i: any) => {
     const length = posts.length;
@@ -54,7 +57,11 @@ const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
   };
 
   const handleSelectPlaying = (i: any) => {
-    setActive(i);
+    if (i == active) {
+      setPlaying((pre) => !pre);
+    } else {
+      setActive(i);
+    }
   };
 
   return (
@@ -64,9 +71,11 @@ const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
         activeListItem={activeListItem}
         coverImage={podcast?.coverImage}
         name={podcast?.name}
+        playing={playing}
+        setPlaying={setPlaying}
       />
       <Container className="py-5">
-        <div className="my-2 sm:my-5">
+        <div className="my-2 sm:my-6">
           <SectionHeader
             type="primary"
             title={podcast?.name as string}
@@ -86,13 +95,31 @@ const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
               {posts.map((item: any, key: number) => (
                 <li key={key} className="flex first:pt-0 last:pb-0 py-4">
                   {item?.featuredImage?.node?.sourceUrl && (
-                    <Image
-                      className="h-10 w-10 rounded-full"
-                      src={item?.featuredImage?.node?.sourceUrl}
-                      width={100}
-                      height={100}
-                      alt=""
-                    />
+                    <Button
+                      className="relative flex items-center justify-center inset-0 min-h-unit-20 min-w-unit-20 w-20 h-20 outline-none"
+                      radius="full"
+                      onClick={() => handleSelectPlaying(key)}
+                    >
+                      <Image
+                        removeWrapper
+                        className="w-20 h-20 object-cover rounded-full opacity-100 inset-0"
+                        src={item?.featuredImage?.node?.sourceUrl}
+                        width={80}
+                        height={80}
+                        alt=""
+                      />
+                      {key == active && (
+                        <>
+                          <div className="bg-img bg-black/50 absolute inset-0 z-10" />
+                          {playing ? (
+                            <PauseRounded className="absolute z-10 w-10 h-10 text-gray-100" />
+                          ) : (
+                            <PlayArrowRounded className="absolute z-10 w-10 h-10 text-gray-100" />
+                          )}
+                        </>
+                      )}
+                      <div></div>
+                    </Button>
                   )}
                   <div className="ml-3 overflow-hidden">
                     <p className="text-md font-medium dark:text-slate-200 text-slate-600">

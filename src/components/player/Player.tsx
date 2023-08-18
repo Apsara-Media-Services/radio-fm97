@@ -42,9 +42,8 @@ import ReactPlayer from 'react-player';
 // const ReactPlayer = _ReactPlayer as unknown as React.FC<ReactPlayerProps>;
 
 const Player = (props: any) => {
-  const { activeListItem, handleSkip } = props;
+  const { activeListItem, handleSkip, playing, setPlaying } = props;
 
-  const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(0.05);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [ready, setReady] = useState(false);
@@ -191,7 +190,7 @@ const Player = (props: any) => {
           <Button
             onClick={handlePlayPause}
             isIconOnly
-            className="w-auto h-auto data-[hover]:bg-gray-100/10 p-1"
+            className="w-auto h-auto data-[hover]:bg-gray-100/10 p-1 outline-none"
             radius="full"
             variant="light"
           >
