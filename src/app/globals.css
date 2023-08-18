@@ -6,3 +6,6 @@ html,
 body {
   overscroll-behavior: none;
 }
+.btn-profile > * {
+  @apply bg-transparent;
+}
