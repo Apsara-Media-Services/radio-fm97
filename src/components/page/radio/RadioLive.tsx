@@ -8,7 +8,16 @@ import {
   VolumeUpRounded,
   VolumeOffRounded,
 } from '@mui/icons-material';
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Image, Progress, User } from '@nextui-org/react';
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+  Image,
+  Progress,
+  User,
+} from '@nextui-org/react';
 import { isEmpty } from 'lodash';
 import moment from 'moment-timezone';
 import Link from 'next/link';
@@ -107,10 +116,12 @@ const RadioLive = (props: any) => {
                   {muted ? <VolumeOffRounded /> : <VolumeUpRounded />}
                 </Button>
               </div>
-              <div className="border-3 h-6 w-6 rounded-full grid items-center justify-center">
-              <span className="w-3 h-3 bg-white rounded-full animate-pulse"/>
+              <div className="flex gap-1">
+                <div className="border-2 h-5 w-5 rounded-full grid items-center justify-center border-ams-red animate-pulse">
+                  <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                </div>
+                <p className="text-small">Live</p>
               </div>
-              <p className="text-small">Live</p>
             </div>
 
             <div className="flex w-full items-center justify-between gap-2 text-gray-100">
@@ -128,25 +139,7 @@ const RadioLive = (props: any) => {
                   <PlayCircleFilledRounded style={{ fontSize: 70 }} />
                 )}
               </Button>
-              <Dropdown placement="bottom-start">
-                <DropdownTrigger>
-                  <User
-                    as="button"
-                    avatarProps={{
-                      src: "/shareicon.svg",
-                    }}
-                    className="transition-transform btn-profile"
-                    name="ចែករំលែក"
-                  />
-                </DropdownTrigger>
-                <DropdownMenu aria-label="User Actions" variant="flat">
-                  <DropdownItem key="profile" className="h-14 gap-2">
-                    <p className="font-bold">Signed in as</p>
-                    <p className="font-bold">@tonyreichert</p>
-                  </DropdownItem>
-                  
-                </DropdownMenu>
-              </Dropdown>
+              <div />
             </div>
             {ReactPlayer.canPlay(radioLiveUrl) && (
               <ReactPlayer

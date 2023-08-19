@@ -5,6 +5,8 @@ import Player from '@components/player/Player';
 import { Image } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
 import { format } from 'date-fns';
+import { ShareRounded } from '@mui/icons-material';
+import Link from 'next/link';
 
 const Hero = (props: any) => {
   const {
@@ -99,6 +101,46 @@ const Hero = (props: any) => {
             )}
           </div>
         </Container>
+      </div>
+
+      <div className="program-options my-8">
+        <div className="max-w-xl md:max-w-5xl xl:max-w-7xl container mx-auto px-3 sm:px-5 z-10">
+          <div className="grid md:grid-cols-3 gap-y-4 text-base md:text-lg lg:text-xl font-semibold dark:text-white">
+            <div className="current-program">
+              <div className="air-now">
+                <div className="flex flex-col lg:flex-row gap-1 lg:items-center">
+                  <div>
+                    <span className="text-ams-red font-semibold">
+                      {'Google'}
+                    </span>{' '}
+                    :
+                  </div>
+                  <time className="font-normal">
+                    ស្តាប់វិទ្យុនៅលើ Google Podcast
+                  </time>
+                </div>
+              </div>
+            </div>
+            <div className="up-next border-t-2 pt-4 md:border-t-0 md:pt-0 md:border-l-2 md:pl-4 dark:border-white">
+              <div>
+                <div className="flex flex-col lg:flex-row gap-1 lg:items-center">
+                  <div>
+                    <span className="text-ams-red">{'Apple'}</span> :
+                  </div>{' '}
+                  <time className="font-normal">
+                    ស្តាប់វិទ្យុនៅលើ Apple Podcast
+                  </time>
+                </div>
+              </div>
+            </div>
+            <div className="list-programs border-t-2 pt-4 md:border-t-0 md:pt-0 md:border-l-2 md:pl-4 dark:border-white flex gap-x-2 items-center">
+              <div className="flex flex-col lg:flex-row gap-1 lg:items-center">
+                <ShareRounded className="text-ams-red" />
+                <h3 className="">{' ចែករំលែកទៅកាន់បណ្តាញសង្គម'}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

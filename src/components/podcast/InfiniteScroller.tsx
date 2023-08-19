@@ -112,9 +112,15 @@ const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
                         <>
                           <div className="bg-img bg-black/50 absolute inset-0 z-10" />
                           {playing ? (
-                            <PauseRounded className="absolute z-10 w-10 h-10 text-gray-100" />
+                            <PauseRounded
+                              style={{ fontSize: 40 }}
+                              className="absolute z-10 text-gray-100"
+                            />
                           ) : (
-                            <PlayArrowRounded className="absolute z-10 w-10 h-10 text-gray-100" />
+                            <PlayArrowRounded
+                              style={{ fontSize: 40 }}
+                              className="absolute z-10 text-gray-100"
+                            />
                           )}
                         </>
                       )}

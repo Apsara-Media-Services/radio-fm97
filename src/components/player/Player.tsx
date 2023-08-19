@@ -12,6 +12,11 @@ import {
   Button,
   Progress,
   Input,
+  Dropdown,
+  DropdownTrigger,
+  User,
+  DropdownMenu,
+  DropdownItem,
 } from '@nextui-org/react';
 import {
   AddRounded,
@@ -165,58 +170,79 @@ const Player = (props: any) => {
             </p>
           </div>
         </div>
-        <div className="flex w-full items-center justify-center gap-2 text-gray-100">
-          <Button
-            onClick={() => setLoop((pre) => !pre)}
-            isIconOnly
-            className={
-              loop ? 'bg-gray-100/50 p-1' : 'data-[hover]:bg-gray-100/10 p-1'
-            }
-            radius="full"
-            variant="light"
-          >
-            <RepeatOneIcon />
-          </Button>
-          <Button
-            onClick={() => handleSkip(-1)}
-            isIconOnly
-            className="data-[hover]:bg-gray-100/10 p-1"
-            radius="full"
-            variant="light"
-          >
-            <PreviousIcon />
-          </Button>
+        <div className="flex justify-between w-full items-center">
+          <div />
+          <div className="flex items-center gap-2 text-gray-100">
+            <Button
+              onClick={() => setLoop((pre) => !pre)}
+              isIconOnly
+              className={
+                loop ? 'bg-gray-100/50 p-1' : 'data-[hover]:bg-gray-100/10 p-1'
+              }
+              radius="full"
+              variant="light"
+            >
+              <RepeatOneIcon />
+            </Button>
+            <Button
+              onClick={() => handleSkip(-1)}
+              isIconOnly
+              className="data-[hover]:bg-gray-100/10 p-1"
+              radius="full"
+              variant="light"
+            >
+              <PreviousIcon />
+            </Button>
 
-          <Button
-            onClick={handlePlayPause}
-            isIconOnly
-            className="w-auto h-auto data-[hover]:bg-gray-100/10 p-1 outline-none"
-            radius="full"
-            variant="light"
-          >
-            {playing ? (
-              <PauseCircleFilledRounded style={{ fontSize: 70 }} />
-            ) : (
-              <PlayCircleFilledRounded style={{ fontSize: 70 }} />
-            )}
-          </Button>
-          <Button
-            onClick={() => handleSkip(1)}
-            isIconOnly
-            className="data-[hover]:bg-gray-100/10 p-1"
-            radius="full"
-            variant="light"
-          >
-            <NextIcon />
-          </Button>
-          <Button
-            isIconOnly
-            className="data-[hover]:bg-gray-100/10 p-1"
-            radius="full"
-            variant="light"
-          >
-            <ShuffleIcon />
-          </Button>
+            <Button
+              onClick={handlePlayPause}
+              isIconOnly
+              className="w-auto h-auto data-[hover]:bg-gray-100/10 p-1 outline-none"
+              radius="full"
+              variant="light"
+            >
+              {playing ? (
+                <PauseCircleFilledRounded style={{ fontSize: 70 }} />
+              ) : (
+                <PlayCircleFilledRounded style={{ fontSize: 70 }} />
+              )}
+            </Button>
+            <Button
+              onClick={() => handleSkip(1)}
+              isIconOnly
+              className="data-[hover]:bg-gray-100/10 p-1"
+              radius="full"
+              variant="light"
+            >
+              <NextIcon />
+            </Button>
+            <Button
+              isIconOnly
+              className="data-[hover]:bg-gray-100/10 p-1"
+              radius="full"
+              variant="light"
+            >
+              <ShuffleIcon />
+            </Button>
+          </div>
+          <Dropdown placement="bottom-start">
+            <DropdownTrigger>
+              <User
+                as="button"
+                avatarProps={{
+                  src: '/shareicon.svg',
+                }}
+                className="transition-transform btn-profile"
+                name="ចែករំលែក"
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="User Actions" variant="flat">
+              <DropdownItem key="profile" className="h-14 gap-2">
+                <p className="font-bold">Signed in as</p>
+                <p className="font-bold">@tonyreichert</p>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </div>
       </div>
 
