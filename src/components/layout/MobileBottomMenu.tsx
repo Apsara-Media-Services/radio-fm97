@@ -47,7 +47,7 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
           </div>
         </Link>
         <Link
-          href={'/live'}
+          href={'/'}
           className="group py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white p-3 w-28 text-center"
           onClick={() => {
             if (isNil(player) || isEmpty(player)) return;

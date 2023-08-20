@@ -35,11 +35,12 @@ const HeaderLogo = ({ className }: IComponentProps) => {
             />
           </div>
           <div className="text-xl/10 md:text-2xl/10 font-semibold bg-gradient-to-r from-ams-red via-ams-purple to-ams-blue text-transparent bg-clip-text px-1 hidden lg:block relative">
-            <span className="hidden dark:inline absolute left-0 text-white -z-10 blur-2xl">
+            {/* <span className="hidden dark:inline absolute left-0 bg-white -z-10 blur-3xl">
               {APP_NAME}
-            </span>
+            </span> */}
             {APP_NAME}
           </div>
+            {/* <div className='hidden dark:inline absolute w-full h-full bg-white -z-10 blur-[100px]' /> */}
         </div>
       </Link>
     </div>

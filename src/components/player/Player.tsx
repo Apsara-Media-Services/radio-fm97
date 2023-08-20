@@ -55,6 +55,7 @@ const Player = (props: any) => {
   const [seeking, setSeeking] = useState(false);
   const [played, setPlayed] = useState(0);
   const [loop, setLoop] = useState(false);
+  const [muted, setMuted] = useState(false);
   const containerRef = useRef() as any;
 
   if (!containerRef) return <></>;
@@ -170,80 +171,82 @@ const Player = (props: any) => {
             </p>
           </div>
         </div>
-        <div className="flex justify-between w-full items-center">
-          <div />
-          <div className="flex items-center gap-2 text-gray-100">
-            <Button
-              onClick={() => setLoop((pre) => !pre)}
-              isIconOnly
-              className={
-                loop ? 'bg-gray-100/50 p-1' : 'data-[hover]:bg-gray-100/10 p-1'
-              }
-              radius="full"
-              variant="light"
-            >
-              <RepeatOneIcon />
-            </Button>
-            <Button
-              onClick={() => handleSkip(-1)}
-              isIconOnly
-              className="data-[hover]:bg-gray-100/10 p-1"
-              radius="full"
-              variant="light"
-            >
-              <PreviousIcon />
-            </Button>
+        
+        <div className="flex items-center justify-center gap-2 text-gray-100">
+          <Button
+            onClick={() => setLoop((pre) => !pre)}
+            isIconOnly
+            className={
+              loop ? 'bg-gray-100/50 p-1' : 'data-[hover]:bg-gray-100/10 p-1'
+            }
+            radius="full"
+            variant="light"
+          >
+            <LoopRounded />
+          </Button>
+          <Button
+            onClick={() => handleSkip(-1)}
+            isIconOnly
+            className="data-[hover]:bg-gray-100/10 p-1"
+            radius="full"
+            variant="light"
+          >
+            <SkipPreviousRounded />
+          </Button>
 
-            <Button
-              onClick={handlePlayPause}
-              isIconOnly
-              className="w-auto h-auto data-[hover]:bg-gray-100/10 p-1 outline-none"
-              radius="full"
-              variant="light"
-            >
-              {playing ? (
-                <PauseCircleFilledRounded style={{ fontSize: 70 }} />
-              ) : (
-                <PlayCircleFilledRounded style={{ fontSize: 70 }} />
-              )}
-            </Button>
-            <Button
-              onClick={() => handleSkip(1)}
-              isIconOnly
-              className="data-[hover]:bg-gray-100/10 p-1"
-              radius="full"
-              variant="light"
-            >
-              <NextIcon />
-            </Button>
-            <Button
-              isIconOnly
-              className="data-[hover]:bg-gray-100/10 p-1"
-              radius="full"
-              variant="light"
-            >
-              <ShuffleIcon />
-            </Button>
-          </div>
-          <Dropdown placement="bottom-start">
-            <DropdownTrigger>
-              <User
-                as="button"
-                avatarProps={{
-                  src: '/shareicon.svg',
-                }}
-                className="transition-transform btn-profile"
-                name="ចែករំលែក"
-              />
-            </DropdownTrigger>
-            <DropdownMenu aria-label="User Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-bold">Signed in as</p>
-                <p className="font-bold">@tonyreichert</p>
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          <Button 
+            onClick={() => handleSeek(-0.15)} 
+            isIconOnly
+            className="data-[hover]:bg-gray-100/10 p-1 outline-none"
+            radius="full"
+            variant="light">
+              <Replay10Rounded />
+          </Button>
+
+          <Button
+            onClick={handlePlayPause}
+            isIconOnly
+            className="w-auto h-auto data-[hover]:bg-gray-100/10 p-1 outline-none"
+            radius="full"
+            variant="light"
+          >
+            {playing ? (
+              <PauseCircleFilledRounded style={{ fontSize: 70 }} />
+            ) : (
+              <PlayCircleFilledRounded style={{ fontSize: 70 }} />
+            )}
+          </Button>
+
+          <Button 
+            onClick={() => handleSeek(0.15)} 
+            isIconOnly
+            className="data-[hover]:bg-gray-100/10 p-1 outline-none"
+            radius="full"
+            variant="light">
+              <Forward10Rounded />
+          </Button>
+
+          <Button
+            onClick={() => handleSkip(1)}
+            isIconOnly
+            className="data-[hover]:bg-gray-100/10 p-1"
+            radius="full"
+            variant="light"
+          >
+            <SkipNextRounded />
+          </Button>
+          <Button
+            onClick={()=>setMuted(pre=>!pre)}
+            isIconOnly
+            className="data-[hover]:bg-gray-100/10 p-1"
+            radius="full"
+            variant="light"
+          >
+            { muted ? <VolumeOffRounded /> : <VolumeUpRounded /> }
+            
+          </Button>
         </div>
+        
       </div>
 
       {ReactPlayer.canPlay(activeListItem.url) && (
@@ -252,7 +255,8 @@ const Player = (props: any) => {
           url={activeListItem.url}
           playing={playing}
           volume={volume}
-          muted={volume ? false : true}
+          muted={muted}
+          // muted={volume ? false : true}
           playbackRate={playbackRate}
           controls={false}
           height={0}
