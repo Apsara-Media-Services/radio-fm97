@@ -7,6 +7,8 @@ import {
   PlayCircleFilledRounded,
   VolumeUpRounded,
   VolumeOffRounded,
+  VolumeMuteRounded,
+  VolumeDownRounded,
 } from '@mui/icons-material';
 import {
   Dropdown,
@@ -17,6 +19,9 @@ import {
   Image,
   Progress,
   User,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
 import moment from 'moment-timezone';
@@ -32,12 +37,20 @@ const RadioLive = (props: any) => {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
+  const [volume, setVolume] = useState(0.5);
+  const [popOverVolume, setPopOverVolume] = useState(false);
 
   if (isEmpty(program) && isEmpty(nextProgram)) return <></>;
 
   const timestampTo12Hour = (timestamp: number | string) => {
     return moment(timestamp).format('hh:mm A');
   };
+
+  let vol = <></>;
+  if (volume <= 0 || muted) vol = <VolumeOffRounded />;
+  else if (volume < 0.1) vol = <VolumeMuteRounded />;
+  else if (volume < 0.5) vol = <VolumeDownRounded />;
+  else if (volume <= 1) vol = <VolumeUpRounded />;
 
   return (
     <div className={className}>
@@ -106,15 +119,63 @@ const RadioLive = (props: any) => {
 
             <div className="flex items-center justify-end gap-3 text-gray-100">
               <div className="flex items-center gap-0">
-                <Button
-                  onClick={() => setMuted((pre) => !pre)}
-                  isIconOnly
-                  className="data-[hover]:bg-gray-100/10 p-1"
-                  radius="full"
-                  variant="light"
+                <button
+                  onMouseLeave={() => setPopOverVolume(false)}
+                  onMouseOver={() => setPopOverVolume(true)}
                 >
-                  {muted ? <VolumeOffRounded /> : <VolumeUpRounded />}
-                </Button>
+                  <Popover
+                    placement="left"
+                    isOpen={popOverVolume}
+                    offset={1}
+                    showArrow
+                  >
+                    <PopoverTrigger>
+                      <Button
+                        onClick={() => setMuted((pre) => !pre)}
+                        isIconOnly
+                        className="data-[hover]:bg-gray-100/10 p-1"
+                        radius="full"
+                        variant="light"
+                      >
+                        {vol}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="bg-gray-100/10 p-2 hidden md:block rounded-full">
+                      <div className="relative w-20">
+                        <Progress
+                          minValue={0}
+                          maxValue={1}
+                          value={volume}
+                          aria-label="Music progress"
+                          classNames={{
+                            indicator: 'bg-ams-red',
+                            track: 'bg-default-500/30',
+                          }}
+                          color="default"
+                          size="sm"
+                        />
+
+                        <input
+                          className="w-full absolute top-[-6px] opacity-0"
+                          type="range"
+                          min={0}
+                          max={1}
+                          step={0.001}
+                          value={volume}
+                          onChange={(e) => {
+                            const vol = Number(e.target.value);
+                            setVolume(vol);
+                            if (vol == 0) {
+                              setMuted(true);
+                            } else {
+                              setMuted(false);
+                            }
+                          }}
+                        />
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </button>
               </div>
               <div className="flex gap-1">
                 <div className="border-2 h-5 w-5 rounded-full grid items-center justify-center border-ams-red animate-pulse">
@@ -150,6 +211,7 @@ const RadioLive = (props: any) => {
                 height={0}
                 width={0}
                 muted={muted}
+                volume={volume}
                 config={{ file: { forceAudio: true } }}
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}

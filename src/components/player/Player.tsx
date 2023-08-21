@@ -46,7 +46,7 @@ import ReactPlayer from 'react-player';
 const Player = (props: any) => {
   const { activeListItem, handleSkip, playing, setPlaying } = props;
 
-  const [volume, setVolume] = useState(0.05);
+  const [volume, setVolume] = useState(0.5);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [ready, setReady] = useState(false);
   const [seeking, setSeeking] = useState(false);
@@ -133,7 +133,7 @@ const Player = (props: any) => {
   let vol = <></>;
   if (volume <= 0 || muted) vol = <VolumeOffRounded />;
   else if (volume < 0.1) vol = <VolumeMuteRounded />;
-  else if (volume < 0.6) vol = <VolumeDownRounded />;
+  else if (volume < 0.5) vol = <VolumeDownRounded />;
   else if (volume <= 1) vol = <VolumeUpRounded />;
 
   // console.warn(activeListItem);
@@ -288,7 +288,15 @@ const Player = (props: any) => {
                     max={1}
                     step={0.001}
                     value={volume}
-                    onChange={(e) => setVolume(Number(e.target.value))}
+                    onChange={(e) => {
+                      const vol = Number(e.target.value);
+                      setVolume(vol);
+                      if (vol == 0) {
+                        setMuted(true);
+                      } else {
+                        setMuted(false);
+                      }
+                    }}
                   />
                 </div>
               </PopoverContent>
