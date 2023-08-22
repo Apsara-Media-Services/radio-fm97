@@ -9,3 +9,6 @@ body {
 .btn-profile > * {
   @apply bg-transparent;
 }
+.aspect-video svg {
+  @apply fill-white;
+}
