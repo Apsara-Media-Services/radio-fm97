@@ -38,7 +38,7 @@ const RadioSchedule = (props: any) => {
                   isZoomed
                   removeWrapper
                   className="z-0 w-full h-full object-cover opacity-100"
-                  src={item?.cover[0].sizes.large.url as string}
+                  src={item?.cover[0].sizes?.large?.url as string}
                   width={400}
                   alt={item?.title as string}
                 />
