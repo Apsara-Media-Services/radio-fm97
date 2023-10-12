@@ -5,8 +5,6 @@ import Player from '@components/player/Player';
 import { Image } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
 import { format } from 'date-fns';
-import { ShareRounded } from '@mui/icons-material';
-import Link from 'next/link';
 
 const Hero = (props: any) => {
   const {
@@ -19,33 +17,33 @@ const Hero = (props: any) => {
     setPlaying,
   } = props;
 
-  const classes = {
-    title: {
-      wrapper: '',
-      title: 'text-xl xl:leading-relaxed font-medium',
-    },
-    excerpt: {
-      wrapper: 'mt-3',
-      excerpt: 'text-base text-gray-500 dark:text-zinc-400',
-    },
-    meta: {
-      wrapper: 'flex items-center text-sm mt-3',
-      author: {
-        wrapper: 'flex items-center',
-        avatar: 'w-12 h-12 relative mr-4',
-        name: 'font-medium text-black dark:text-zinc-200',
-      },
-      date: {
-        wrapper: '',
-        date: 'text-gray-500 dark:text-zinc-300',
-      },
-      category: {
-        wrapper: 'mr-3 mb-3',
-        name: 'text-sm text-white bg-ams-red',
-      },
-    },
-    lineSeparator: 'border-none pb-4',
-  };
+  // const classes = {
+  //   title: {
+  //     wrapper: '',
+  //     title: 'text-xl xl:leading-relaxed font-medium',
+  //   },
+  //   excerpt: {
+  //     wrapper: 'mt-3',
+  //     excerpt: 'text-base text-gray-500 dark:text-zinc-400',
+  //   },
+  //   meta: {
+  //     wrapper: 'flex items-center text-sm mt-3',
+  //     author: {
+  //       wrapper: 'flex items-center',
+  //       avatar: 'w-12 h-12 relative mr-4',
+  //       name: 'font-medium text-black dark:text-zinc-200',
+  //     },
+  //     date: {
+  //       wrapper: '',
+  //       date: 'text-gray-500 dark:text-zinc-300',
+  //     },
+  //     category: {
+  //       wrapper: 'mr-3 mb-3',
+  //       name: 'text-sm text-white bg-ams-red',
+  //     },
+  //   },
+  //   lineSeparator: 'border-none pb-4',
+  // };
 
   return (
     <div className={className}>
@@ -102,8 +100,8 @@ const Hero = (props: any) => {
           </div>
         </Container>
       </div>
-
-      <div className="program-options my-8">
+      {/* To be develop next version for the feature play via podcast app and sharing. */}
+      {/* <div className="program-options my-8">
         <div className="max-w-xl md:max-w-5xl xl:max-w-7xl container mx-auto px-3 sm:px-5 z-10">
           <div className="grid md:grid-cols-3 gap-y-4 text-base md:text-lg lg:text-xl font-semibold dark:text-white">
             <div className="current-program">
@@ -141,7 +139,7 @@ const Hero = (props: any) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

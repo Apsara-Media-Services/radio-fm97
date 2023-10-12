@@ -1,10 +1,5 @@
 'use client';
 
-import { PauseCircleIcon } from '../my-icon/PauseCircleIcon';
-import { NextIcon } from '../my-icon/NextIcon';
-import { PreviousIcon } from '../my-icon/PreviousIcon';
-import { RepeatOneIcon } from '../my-icon/RepeatOneIcon';
-import { ShuffleIcon } from '../my-icon/ShuffleIcon';
 import {
   Card,
   CardBody,
@@ -17,6 +12,9 @@ import {
   User,
   DropdownMenu,
   DropdownItem,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from '@nextui-org/react';
 import {
   AddRounded,
@@ -38,7 +36,6 @@ import {
   VolumeUpRounded,
 } from '@mui/icons-material';
 import { parseInt } from 'lodash';
-import Link from 'next/link';
 import { useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 
@@ -49,13 +46,14 @@ import ReactPlayer from 'react-player';
 const Player = (props: any) => {
   const { activeListItem, handleSkip, playing, setPlaying } = props;
 
-  const [volume, setVolume] = useState(0.05);
+  const [volume, setVolume] = useState(0.5);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [ready, setReady] = useState(false);
   const [seeking, setSeeking] = useState(false);
   const [played, setPlayed] = useState(0);
   const [loop, setLoop] = useState(false);
   const [muted, setMuted] = useState(false);
+  const [popOverVolume, setPopOverVolume] = useState(false);
   const containerRef = useRef() as any;
 
   if (!containerRef) return <></>;
@@ -133,9 +131,9 @@ const Player = (props: any) => {
   };
 
   let vol = <></>;
-  if (volume <= 0) vol = <VolumeOffRounded />;
-  else if (volume < 0.3) vol = <VolumeMuteRounded />;
-  else if (volume < 0.6) vol = <VolumeDownRounded />;
+  if (volume <= 0 || muted) vol = <VolumeOffRounded />;
+  else if (volume < 0.1) vol = <VolumeMuteRounded />;
+  else if (volume < 0.5) vol = <VolumeDownRounded />;
   else if (volume <= 1) vol = <VolumeUpRounded />;
 
   // console.warn(activeListItem);
@@ -144,22 +142,31 @@ const Player = (props: any) => {
     <>
       <div className="block">
         <div className="mt-3">
-          <Progress
-            minValue={0}
-            maxValue={0.9999}
-            // step={0.001}
-            value={played}
-            onMouseDown={handleSeekMouseDown}
-            onChange={handleSeekChange}
-            onMouseUp={handleSeekMouseUp}
-            aria-label="Music progress"
-            classNames={{
-              indicator: 'bg-ams-red',
-              track: 'bg-default-500/30',
-            }}
-            color="default"
-            size="sm"
-          />
+          <div className="relative">
+            <Progress
+              minValue={0}
+              maxValue={0.9999}
+              value={played}
+              aria-label="Music progress"
+              classNames={{
+                indicator: 'bg-ams-red',
+                track: 'bg-default-500/30',
+              }}
+              color="default"
+              size="sm"
+            />
+            <input
+              className="w-full absolute top-[-6px] opacity-0"
+              type="range"
+              min={0}
+              max={0.9999}
+              step={0.001}
+              value={played}
+              onMouseDown={handleSeekMouseDown}
+              onChange={handleSeekChange}
+              onMouseUp={handleSeekMouseUp}
+            />
+          </div>
           <div className="flex justify-between">
             <p className="text-small text-gray-100">
               {containerRef?.current &&
@@ -171,7 +178,7 @@ const Player = (props: any) => {
             </p>
           </div>
         </div>
-        
+
         <div className="flex items-center justify-center gap-2 text-gray-100">
           <Button
             onClick={() => setLoop((pre) => !pre)}
@@ -194,13 +201,14 @@ const Player = (props: any) => {
             <SkipPreviousRounded />
           </Button>
 
-          <Button 
-            onClick={() => handleSeek(-0.15)} 
+          <Button
+            onClick={() => handleSeek(-0.15)}
             isIconOnly
             className="data-[hover]:bg-gray-100/10 p-1 outline-none"
             radius="full"
-            variant="light">
-              <Replay10Rounded />
+            variant="light"
+          >
+            <Replay10Rounded />
           </Button>
 
           <Button
@@ -217,13 +225,14 @@ const Player = (props: any) => {
             )}
           </Button>
 
-          <Button 
-            onClick={() => handleSeek(0.15)} 
+          <Button
+            onClick={() => handleSeek(0.15)}
             isIconOnly
             className="data-[hover]:bg-gray-100/10 p-1 outline-none"
             radius="full"
-            variant="light">
-              <Forward10Rounded />
+            variant="light"
+          >
+            <Forward10Rounded />
           </Button>
 
           <Button
@@ -235,18 +244,65 @@ const Player = (props: any) => {
           >
             <SkipNextRounded />
           </Button>
-          <Button
-            onClick={()=>setMuted(pre=>!pre)}
-            isIconOnly
-            className="data-[hover]:bg-gray-100/10 p-1"
-            radius="full"
-            variant="light"
+
+          <button
+            onMouseLeave={() => setPopOverVolume(false)}
+            onMouseOver={() => setPopOverVolume(true)}
           >
-            { muted ? <VolumeOffRounded /> : <VolumeUpRounded /> }
-            
-          </Button>
+            <Popover
+              placement="right"
+              isOpen={popOverVolume}
+              offset={1}
+              showArrow
+            >
+              <PopoverTrigger>
+                <Button
+                  onClick={() => setMuted((pre) => !pre)}
+                  isIconOnly
+                  className="data-[hover]:bg-gray-100/10 p-1"
+                  radius="full"
+                  variant="light"
+                >
+                  {vol}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="bg-gray-100/10 p-2 hidden md:block rounded-full">
+                <div className="relative w-20">
+                  <Progress
+                    minValue={0}
+                    maxValue={1}
+                    value={volume}
+                    aria-label="Music progress"
+                    classNames={{
+                      indicator: 'bg-ams-red',
+                      track: 'bg-default-500/30',
+                    }}
+                    color="default"
+                    size="sm"
+                  />
+
+                  <input
+                    className="w-full absolute top-[-6px] opacity-0"
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.001}
+                    value={volume}
+                    onChange={(e) => {
+                      const vol = Number(e.target.value);
+                      setVolume(vol);
+                      if (vol == 0) {
+                        setMuted(true);
+                      } else {
+                        setMuted(false);
+                      }
+                    }}
+                  />
+                </div>
+              </PopoverContent>
+            </Popover>
+          </button>
         </div>
-        
       </div>
 
       {ReactPlayer.canPlay(activeListItem.url) && (
@@ -276,7 +332,7 @@ const Player = (props: any) => {
           onEnded={() => handleSkip(1)}
         />
       )}
-      {ready && (
+      {/* {ready && (
         //  bg-gradient-to-r from-ams-red via-ams-purple to-ams-blue bg-clip-text
         <div className="hidden w-full text-ams-red dark:text-gray-200">
           <div>
@@ -363,7 +419,7 @@ const Player = (props: any) => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 };
