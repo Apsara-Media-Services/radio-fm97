@@ -5,8 +5,10 @@ import { RadioLive, RadioSchedule } from '@/components/page/radio';
 import { APP_NAME_ALT } from '@/constants/app';
 import { LOGO } from '@/constants/app';
 import ScheduleService from '@/services/ScheduleService';
-import { find, isEmpty, map } from 'lodash';
+import { format } from 'date-fns';
+import { find, isEmpty, lowerCase, map } from 'lodash';
 import moment from 'moment-timezone';
+
 
 moment.tz.setDefault('Asia/Phnom_Penh');
 const scheduleService = new ScheduleService();
@@ -14,9 +16,9 @@ const scheduleService = new ScheduleService();
 async function getSchedules() {
   const response = await scheduleService.all();
   const schedules = JSON.parse(response);
-  // console.warn(schedules.monday);
+  const today = lowerCase(format(new Date(), 'EEEE'));
 
-  const programs = map(schedules.monday, (program) => {
+  const programs = map(schedules[today], (program) => {
     const currentDate = moment().format('YYYY-MM-DD');
     const startDateTime = moment(`${currentDate} ${program?.time_range[0]}`);
     const endDateTime = moment(`${currentDate} ${program?.time_range[1]}`);

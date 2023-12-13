@@ -1,10 +1,10 @@
 'use client';
 
 import { SectionHeader } from '@/components/common';
-import { useRouter } from 'next/navigation';
+import { Card, CardHeader, Image } from '@nextui-org/react';
 import { isEmpty, isNil } from 'lodash';
 import moment from 'moment-timezone';
-import { Card, CardHeader, Image } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 
 const RadioSchedule = (props: any) => {
   const router = useRouter();
@@ -38,7 +38,7 @@ const RadioSchedule = (props: any) => {
                   isZoomed
                   removeWrapper
                   className="z-0 w-full h-full object-cover opacity-100"
-                  src={item?.cover[0].sizes?.full?.url as string}
+                  src={item?.cover[0].sizes?.large?.url as string}
                   width={400}
                   alt={item?.title as string}
                 />
