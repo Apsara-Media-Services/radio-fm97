@@ -89,7 +89,7 @@ const RadioLive = (props: any) => {
                         'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-red relative'
                       }
                     >
-                      {'FM97'}
+                      {'FM99'}
                     </span>
                     <h5>{program?.title}</h5>
                     <div className="flex gap-1 items-center my-1">

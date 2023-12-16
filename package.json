@@ -1,9 +1,9 @@
 {
-  "name": "radio-fm97",
+  "name": "radio-fm99",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

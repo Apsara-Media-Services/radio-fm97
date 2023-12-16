@@ -42,7 +42,7 @@ const Terms = (props: IPodcastComponentProps) => {
                 />
                 <CardHeader className="absolute z-auto top-1 flex-col !items-start">
                   <p className="text-tiny text-white/60 uppercase font-bold">
-                    AMS FM97 podcast
+                    AMS FM99 podcast
                   </p>
                   <h4 className="text-white font-medium text-large bg-ams-red/90 px-2">
                     {term?.name}
