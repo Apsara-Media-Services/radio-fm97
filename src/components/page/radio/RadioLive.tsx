@@ -12,16 +12,11 @@ import {
 } from '@mui/icons-material';
 import {
   Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Image,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Progress,
-  User,
 } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
 import moment from 'moment-timezone';
