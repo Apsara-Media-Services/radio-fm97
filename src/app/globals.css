@@ -6,14 +6,9 @@ html,
 body {
   overscroll-behavior: none;
 }
-.wp-block-audio {
-  display: none;
+.btn-profile > * {
+  @apply bg-transparent;
 }
-
-/* audio::-webkit-media-controls-panel-container {
-  background-color: #000;
+.aspect-video svg {
+  @apply fill-white;
 }
-
-audio::-webkit-media-controls-timeline {
-  display: none;
-} */

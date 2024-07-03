@@ -1,6 +1,6 @@
-import { Category, MediaItem, Tag, User } from '@/gql/graphql';
+import { Category, MediaItem, Podcast, Tag, User } from '@/gql/graphql';
 import { Post } from '@/gql/graphql';
-import { map } from 'lodash';
+import { map, split } from 'lodash';
 
 export class Caster {
   static post(post = {} as Post) {
@@ -8,12 +8,14 @@ export class Caster {
       post?.categories?.edges,
       ({ node }) => node
     );
+    const podcasts: Podcast[] = map(post?.podcasts?.edges, ({ node }) => node);
 
     const author = post?.author?.node || ({} as User);
 
     const featuredImage = post?.featuredImage?.node || ({} as MediaItem);
 
     return {
+      podcasts,
       author,
       categories,
       featuredImage,
@@ -22,6 +24,17 @@ export class Caster {
 
   static category(category = {} as Category) {
     const posts: Post[] = map(category?.posts?.edges, ({ node }) => node);
+
+    return {
+      posts,
+    };
+  }
+
+  static podcast(podcast = {} as Category) {
+    const posts: Post[] = map(podcast?.posts?.edges, ({ node }) => {
+      const url = split(node.enclosure, '\n', 1);
+      return { ...node, url: url[0] };
+    });
 
     return {
       posts,

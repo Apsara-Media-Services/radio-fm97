@@ -1,45 +1,104 @@
 import { Container } from '@/components/common';
+import FallbackImage from '@/components/common/FallbackImage';
 import MainLayout from '@/components/layout/MainLayout';
-import HomeEconomicNews from '@/components/page/home/HomeEconomicNews';
-import HomeLatestNews from '@/components/page/home/HomeLatestNews';
-import { ADS } from '@/constants/app';
-import { PostService } from '@/services';
-import Image from 'next/image';
+import { RadioLive, RadioSchedule } from '@/components/page/radio';
+import { APP_NAME_ALT } from '@/constants/app';
+import { LOGO } from '@/constants/app';
+import ScheduleService from '@/services/ScheduleService';
+import { format } from 'date-fns';
+import { find, isEmpty, lowerCase, map } from 'lodash';
+import moment from 'moment-timezone';
 
-const Home = async () => {
-  const postService = new PostService();
-  const latestPosts = await postService.all({
-    variables: { first: 13 },
-  });
-  const economyPosts = await postService.getByCategorySlug('fm97', {
-    variables: { first: 7 },
-  });
-  // console.warn(latestPosts);
 
+moment.tz.setDefault('Asia/Phnom_Penh');
+const scheduleService = new ScheduleService();
+
+async function getSchedules() {
+  const response = await scheduleService.all();
+  const schedules = JSON.parse(response);
+  const today = lowerCase(format(new Date(), 'EEEE'));
+
+  const programs = map(schedules[today], (program) => {
+    const currentDate = moment().format('YYYY-MM-DD');
+    const startDateTime = moment(`${currentDate} ${program?.time_range[0]}`);
+    const endDateTime = moment(`${currentDate} ${program?.time_range[1]}`);
+
+    return {
+      ...program,
+      startTimestamp: startDateTime.valueOf(),
+      endTimestamp: endDateTime.valueOf(),
+    };
+  });
+
+  const program =
+    find(programs, (program) => {
+      const timestamp = moment().valueOf();
+      return (
+        timestamp >= program.startTimestamp && timestamp < program.endTimestamp
+      );
+    }) || {};
+
+  const nextProgram =
+    find(programs, (_program) => {
+      const timestamp = program?.endTimestamp || moment().valueOf();
+      return _program.startTimestamp >= timestamp;
+    }) || {};
+
+  // console.warn(moment().valueOf(), moment().format('YYYY-MM-DD hh:mm A'));
+  // console.warn('Program: ', program);
+  // console.warn('Next Program: ', nextProgram);
+
+  return {
+    radioApiBaseUrl: process.env.RADIO_API_BASE_URL,
+    radioLiveUrl: process.env.RADIO_LIVE_URL,
+    programs,
+    program: isEmpty(program) ? { ...nextProgram, isNext: true } : program,
+    nextProgram: isEmpty(program) ? {} : nextProgram,
+  };
+}
+
+const Live = async () => {
+  const {
+    programs = [],
+    program,
+    nextProgram,
+    radioApiBaseUrl,
+    radioLiveUrl,
+  }: any = await getSchedules();
   return (
-    <>
-      <MainLayout>
-        <Container className="py-3 sm:py-5 body">
-          <HomeLatestNews title="ព័ត៌មានថ្មីបំផុត" posts={latestPosts} />
-          <HomeEconomicNews
-            title="សេដ្ឋកិច្ច"
-            link="/economy"
-            posts={economyPosts}
+    <MainLayout>
+      {programs.length > 0 && (
+        <>
+          <RadioLive
+            program={program}
+            nextProgram={nextProgram}
+            radioApiBaseUrl={radioApiBaseUrl}
+            radioLiveUrl={radioLiveUrl}
+            className="mb-12"
           />
-          <div className="mt-2 sm:mt-5">
-            <Image
-              src={ADS.OLATTE}
-              alt="Olatte"
-              width={0}
-              height={0}
-              sizes="100vw"
-              className="w-full h-auto object-cover"
+          <Container>
+            <RadioSchedule
+              className=""
+              title="កម្មវិធីផ្សាយប្រចាំថ្ងៃ (ម៉ោងកម្ពុជា)"
+              programs={programs}
+            />
+          </Container>
+        </>
+      )}
+      <Container className="py-3 sm:py-5 body">
+        {!programs.length && (
+          <div className="relative w-72 aspect-square mx-auto">
+            <FallbackImage
+              fill
+              src={LOGO as string}
+              alt={APP_NAME_ALT}
+              className="rounded-lg"
             />
           </div>
-        </Container>
-      </MainLayout>
-    </>
+        )}
+      </Container>
+    </MainLayout>
   );
 };
 
-export default Home;
+export default Live;

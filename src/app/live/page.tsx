@@ -8,7 +8,7 @@ import ScheduleService from '@/services/ScheduleService';
 import { format } from 'date-fns';
 import { find, isEmpty, lowerCase, map } from 'lodash';
 import moment from 'moment-timezone';
-import 'plyr/dist/plyr.css';
+
 
 moment.tz.setDefault('Asia/Phnom_Penh');
 const scheduleService = new ScheduleService();
@@ -16,9 +16,9 @@ const scheduleService = new ScheduleService();
 async function getSchedules() {
   const response = await scheduleService.all();
   const schedules = JSON.parse(response);
-  // console.warn(schedules.monday);
+  const today = lowerCase(format(new Date(), 'EEEE'));
 
-  const programs = map(schedules.monday, (program) => {
+  const programs = map(schedules[today], (program) => {
     const currentDate = moment().format('YYYY-MM-DD');
     const startDateTime = moment(`${currentDate} ${program?.time_range[0]}`);
     const endDateTime = moment(`${currentDate} ${program?.time_range[1]}`);
@@ -44,10 +44,6 @@ async function getSchedules() {
       return _program.startTimestamp >= timestamp;
     }) || {};
 
-  // console.warn(moment().valueOf(), moment().format('YYYY-MM-DD hh:mm A'));
-  // console.warn('Program: ', program);
-  // console.warn('Next Program: ', nextProgram);
-
   return {
     radioApiBaseUrl: process.env.RADIO_API_BASE_URL,
     radioLiveUrl: process.env.RADIO_LIVE_URL,
@@ -67,22 +63,24 @@ const Live = async () => {
   }: any = await getSchedules();
   return (
     <MainLayout>
-      <Container className="py-3 sm:py-5 body">
-        {programs.length > 0 && (
-          <>
-            <RadioLive
-              program={program}
-              nextProgram={nextProgram}
-              radioApiBaseUrl={radioApiBaseUrl}
-              radioLiveUrl={radioLiveUrl}
-            />
+      {programs.length > 0 && (
+        <>
+          <RadioLive
+            program={program}
+            nextProgram={nextProgram}
+            radioApiBaseUrl={radioApiBaseUrl}
+            radioLiveUrl={radioLiveUrl}
+          />
+          <Container>
             <RadioSchedule
               className="mt-10"
               title="កម្មវិធីផ្សាយប្រចាំថ្ងៃ (ម៉ោងកម្ពុជា)"
               programs={programs}
             />
-          </>
-        )}
+          </Container>
+        </>
+      )}
+      <Container className="py-3 sm:py-5 body">
         {!programs.length && (
           <div className="relative w-72 aspect-square mx-auto">
             <FallbackImage

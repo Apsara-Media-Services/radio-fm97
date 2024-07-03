@@ -1,4 +1,4 @@
-import { APP_NAME, APP_NAME_ALT, LOGO } from '@/constants/app';
+import { APP_NAME, APP_NAME_ALT } from '@/constants/app';
 import { IComponentProps } from '@/types/component';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -30,13 +30,17 @@ const HeaderLogo = ({ className }: IComponentProps) => {
               fill
               sizes="100vw"
               alt={APP_NAME_ALT}
-              src={LOGO}
+              src="/images/logo​97.jpg"
               className="rounded-lg"
             />
           </div>
-          <div className="text-xl/10 md:text-2xl/10 font-semibold bg-gradient-to-r from-ams-red via-ams-purple to-ams-blue text-transparent bg-clip-text px-1 hidden lg:block">
+          <div className="text-xl/10 md:text-2xl/10 font-semibold bg-gradient-to-r from-ams-red via-ams-purple to-ams-blue text-transparent bg-clip-text px-1 hidden lg:block relative">
+            {/* <span className="hidden dark:inline absolute left-0 bg-white -z-10 blur-3xl">
+              {APP_NAME}
+            </span> */}
             {APP_NAME}
           </div>
+          {/* <div className='hidden dark:inline absolute w-full h-full bg-white -z-10 blur-[100px]' /> */}
         </div>
       </Link>
     </div>

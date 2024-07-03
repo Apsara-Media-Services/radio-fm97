@@ -1,56 +1,50 @@
 'use client';
 
 import { SectionHeader } from '@/components/common';
+import { IPodcastComponentProps } from '@/types/component';
 import { Card, CardHeader, Image } from '@nextui-org/react';
+import classNames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
-import moment from 'moment-timezone';
 import { useRouter } from 'next/navigation';
 
-const RadioSchedule = (props: any) => {
+const Terms = (props: IPodcastComponentProps) => {
   const router = useRouter();
-  const { className, title, programs } = props;
-
-  if (isNil(programs) || isEmpty(programs)) return <></>;
-
-  const timestampTo12Hour = (timestamp: number | string) => {
-    return moment(timestamp).format('hh:mm A');
-  };
+  const { className, terms, title } = props;
+  if (isNil(terms) || isEmpty(terms)) return <></>;
 
   return (
-    <div className={className}>
-      <SectionHeader
-        type="secondary"
-        title={title}
-        className="text-2xl font-semibold mb-5"
-        lineColor="bg-zinc-300 dark:bg-zinc-50"
-      />
+    <section className={classNames(['latest-news', className])}>
+      <div className="my-2 sm:my-5">
+        <SectionHeader
+          type="primary"
+          title={title}
+          className="text-3xl font-semibold"
+        />
+      </div>
       <div className="mb-3 xl:mb-5">
         <div className="gap-2 grid grid-cols-12 grid-rows-2">
-          {programs.map((item: any, key: any) => {
+          {terms.map((term, key) => {
             return (
               <Card
                 key={key}
                 isPressable
-                onPress={() => router.push(`audio/${item?.categories[0]}`)}
+                onPress={() => router.push(`audio/${term?.slug}`)}
                 className="col-span-12 sm:col-span-4 h-[300px]"
               >
                 <Image
                   isZoomed
                   removeWrapper
                   className="z-0 w-full h-full object-cover opacity-100"
-                  src={item?.cover[0].sizes?.medium?.url as string}
+                  src={term?.coverImage as string}
                   width={400}
-                  alt={item?.title as string}
+                  alt={term?.name as string}
                 />
                 <CardHeader className="absolute z-auto top-1 flex-col !items-start">
                   <p className="text-tiny text-white/60 uppercase font-bold">
-                    <time className="text-sm md:text-base block pt-3">
-                      {timestampTo12Hour(item?.startTimestamp)} ~{' '}
-                      {timestampTo12Hour(item?.endTimestamp)}
-                    </time>
+                    AMS FM97 podcast
                   </p>
                   <h4 className="text-white font-medium text-large bg-ams-red/90 px-2">
-                    {item?.title}
+                    {term?.name}
                   </h4>
                 </CardHeader>
               </Card>
@@ -58,8 +52,8 @@ const RadioSchedule = (props: any) => {
           })}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default RadioSchedule;
+export default Terms;

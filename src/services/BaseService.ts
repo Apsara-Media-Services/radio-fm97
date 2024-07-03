@@ -18,6 +18,7 @@ export default class BaseService {
         Accept: 'application/json',
       },
       body: JSON.stringify(body),
+      next: { revalidate: 60 },
     };
     return new Promise((resolve, reject) => {
       fetch(url, init)

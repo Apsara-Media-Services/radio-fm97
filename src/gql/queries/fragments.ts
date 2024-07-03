@@ -12,6 +12,12 @@ export const POST_FIELDS = `
       node {
         id
         sourceUrl
+        mediaDetails {
+          sizes {
+            sourceUrl
+            name
+          }
+        }
       }
     }
     author {
@@ -94,9 +100,10 @@ export const TAG_FIELDS = `
 `;
 
 export const PODCAST_FIELDS = `
-  fragment PodCastFields on Tag {
+  fragment PodCastFields on Podcast {
     id
     databaseId
+    coverImage
     name
     slug
     description
