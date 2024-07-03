@@ -116,7 +116,7 @@ const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
                       <Image
                         removeWrapper
                         className="w-20 h-20 object-cover rounded-full opacity-100 inset-0"
-                        src={getSourceUrl(item)}
+                        src={getSourceUrl(item) as string}
                         width={80}
                         height={80}
                         alt=""
