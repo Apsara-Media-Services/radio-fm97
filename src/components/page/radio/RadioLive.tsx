@@ -57,7 +57,7 @@ const RadioLive = (props: any) => {
           removeWrapper
           alt="Card background"
           className="z-0 w-full h-full object-cover opacity-100 absolute inset-0"
-          src={program?.cover[0].sizes?.full?.url}
+          src={program?.cover[0].sizes?.medium?.url}
         />
 
         <Container>
@@ -73,7 +73,7 @@ const RadioLive = (props: any) => {
                 removeWrapper
                 alt="Card background"
                 className="w-full h-full object-cover opacity-100 rounded-full"
-                src={program?.cover[0].sizes?.large?.url}
+                src={program?.cover[0].sizes?.medium?.url}
               />
             </div>
             <div className="text-white">

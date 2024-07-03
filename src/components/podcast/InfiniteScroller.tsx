@@ -5,13 +5,14 @@ import { SectionHeader } from '@/components/common';
 import Hero from '@/components/podcast/Hero';
 import { SkeletonPostItem } from '@/components/skeleton';
 import { Caster } from '@/gql/caster';
-import { Podcast } from '@/gql/graphql';
+import { Podcast, Post } from '@/gql/graphql';
 import useBreakpoint from '@/hooks/use-breakpoint';
 import { PodcastService } from '@/services';
 import { IComponentProps } from '@/types/component';
 import { PauseRounded, PlayArrowRounded } from '@mui/icons-material';
 import { Button, Image } from '@nextui-org/react';
 import { format } from 'date-fns';
+import { find } from 'lodash';
 // import Image from 'next/image';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -64,6 +65,18 @@ const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
     }
   };
 
+  const getSourceUrl = (post: Post) => {
+    const image = post.featuredImage?.node;
+    let sourceUrl = image?.sourceUrl;
+    if (image?.mediaDetails) {
+      const imageSource = find(image.mediaDetails.sizes, ['name', 'thumbnail']);
+      if (imageSource && imageSource.sourceUrl) {
+        sourceUrl = imageSource.sourceUrl;
+      }
+    }
+    return sourceUrl;
+  };
+
   return (
     <>
       <Hero
@@ -94,7 +107,7 @@ const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
             >
               {posts.map((item: any, key: number) => (
                 <li key={key} className="flex first:pt-0 last:pb-0 py-4">
-                  {item?.featuredImage?.node?.sourceUrl && (
+                  {getSourceUrl(item) && (
                     <Button
                       className="relative flex items-center justify-center inset-0 min-h-unit-20 min-w-unit-20 w-20 h-20 outline-none"
                       radius="full"
@@ -103,7 +116,7 @@ const InfiniteScroller = ({ podcast: _podcast, slug }: IComponentProps) => {
                       <Image
                         removeWrapper
                         className="w-20 h-20 object-cover rounded-full opacity-100 inset-0"
-                        src={item?.featuredImage?.node?.sourceUrl}
+                        src={getSourceUrl(item)}
                         width={80}
                         height={80}
                         alt=""

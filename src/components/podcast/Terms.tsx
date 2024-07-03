@@ -2,10 +2,9 @@
 
 import { SectionHeader } from '@/components/common';
 import { IPodcastComponentProps } from '@/types/component';
+import { Card, CardHeader, Image } from '@nextui-org/react';
 import classNames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
-import { Card, CardHeader, Image } from '@nextui-org/react';
-
 import { useRouter } from 'next/navigation';
 
 const Terms = (props: IPodcastComponentProps) => {

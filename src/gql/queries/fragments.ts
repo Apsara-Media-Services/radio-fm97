@@ -12,6 +12,12 @@ export const POST_FIELDS = `
       node {
         id
         sourceUrl
+        mediaDetails {
+          sizes {
+            sourceUrl
+            name
+          }
+        }
       }
     }
     author {
