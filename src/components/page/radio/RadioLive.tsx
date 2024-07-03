@@ -5,29 +5,30 @@ import {
   AccessTimeRounded,
   PauseCircleFilledRounded,
   PlayCircleFilledRounded,
-  VolumeUpRounded,
-  VolumeOffRounded,
-  VolumeMuteRounded,
   VolumeDownRounded,
+  VolumeMuteRounded,
+  VolumeOffRounded,
+  VolumeUpRounded,
 } from '@mui/icons-material';
 import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
   Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Image,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Progress,
   User,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
 } from '@nextui-org/react';
 import { isEmpty } from 'lodash';
 import moment from 'moment-timezone';
 import Link from 'next/link';
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
+
 // import { ReactPlayerProps } from 'react-player/types/lib';
 // import _ReactPlayer, { ReactPlayerProps } from 'react-player';
 // const ReactPlayer = _ReactPlayer as unknown as React.FC<ReactPlayerProps>;
