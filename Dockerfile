@@ -1,36 +1,34 @@
-# Install dependencies only when needed
-FROM node:alpine AS deps
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
 
-# Rebuild the source code only when needed
-FROM node:alpine AS builder
+FROM node:18-alpine AS base
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY . .
+FROM base AS deps
+COPY package.json yarn.lock ./
+RUN npm install -g yarn && \
+    if [ -f yarn.lock ]; then \
+      yarn install --frozen-lockfile && \
+      yarn add sharp; \
+    else \
+      echo "Yarn lockfile not found." && exit 1; \
+    fi
+FROM base AS builder
+WORKDIR /app
+RUN npm install -g yarn
 COPY --from=deps /app/node_modules ./node_modules
-RUN npm run build
-
-# Production image, copy all the files and run next
-FROM node:alpine AS runner
+COPY . .
+ARG NEXT_PUBLIC_WORDPRESS_API_URL
+ENV NEXT_PUBLIC_WORDPRESS_API_URL=$NEXT_PUBLIC_WORDPRESS_API_URL
+RUN yarn build
+FROM base AS runner
 WORKDIR /app
-
 ENV NODE_ENV production
-
-# Uncomment the following line if you want to disable telemetry during the build process
-# ENV NEXT_TELEMETRY_DISABLED 1
-
-COPY --from=builder /app/next.config.js ./
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-
-# Automatically leverage output traces to reduce image size 
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+USER nextjs
 EXPOSE 3000
-
-# Command to run the application
+ENV PORT 3000
+# Start the application using the standalone server.js file
 CMD ["node", ".next/standalone/server.js"]
