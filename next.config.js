@@ -12,6 +12,7 @@ const nextConfig = {
     domains: [
       process.env.NEXT_PUBLIC_WORDPRESS_API_URL.match(/(http(?:s)?:\/\/)(.*)/)[2], // Valid WP Image domain.
       'api.ams.com.kh',
+      'radio.amskh.co',
       'asset.ams.com.kh',
       'secure.gravatar.com',
     ],
