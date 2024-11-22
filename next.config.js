@@ -15,6 +15,7 @@ const nextConfig = {
       'radio.amskh.co',
       'asset.ams.com.kh',
       'secure.gravatar.com',
+      'fm97.amskh.co',
     ],
   },
 };
