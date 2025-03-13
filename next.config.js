@@ -7,6 +7,7 @@ if (!process.env.NEXT_PUBLIC_WORDPRESS_API_URL) {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   images: {
     domains: [
       process.env.NEXT_PUBLIC_WORDPRESS_API_URL.match(/(http(?:s)?:\/\/)(.*)/)[2], // Valid WP Image domain.
