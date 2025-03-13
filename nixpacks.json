@@ -1,8 +1,0 @@
-{
-  "build": {
-    "cmd": "yarn install && yarn build"
-  },
-  "start": {
-    "cmd": "node .next/standalone/server.js"
-  }
-}
