@@ -1,29 +1,42 @@
-# Use the official Node.js 20 image as the base
-FROM node:20-alpine AS base
+# 1️⃣ Base stage for installing dependencies
+FROM node:20-alpine AS deps
 
-# Set the working directory
 WORKDIR /app
 
-# Install necessary packages
+# Install libc6-compat for compatibility
 RUN apk add --no-cache libc6-compat
 
-# Copy package.json and package-lock.json
+# Copy package.json and lockfile separately to optimize caching
 COPY package.json package-lock.json ./
 
-# Install dependencies
-RUN npm ci
+# Install only dependencies (without running scripts)
+RUN npm ci --only=production
 
-# Copy the rest of the application code
+# 2️⃣ Build stage for compiling Next.js
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy the installed dependencies from the previous stage
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build the Next.js application
 RUN npm run build
 
-# Install 'serve' to serve the application
-RUN npm install -g serve
+# 3️⃣ Final stage for running the application
+FROM node:20-alpine AS runner
 
-# Expose the port the app runs on
+WORKDIR /app
+
+# Copy necessary files from the builder stage
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/public ./public
+
+# Expose the port Next.js runs on
 EXPOSE 3000
 
-# Command to run the application
-CMD ["serve", "-s", "build", "-l", "3000"]
+# Run the Next.js server instead of 'serve'
+CMD ["npm", "start"]
