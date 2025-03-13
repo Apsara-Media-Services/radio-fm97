@@ -16,6 +16,7 @@ const nextConfig = {
       'asset.ams.com.kh',
       'secure.gravatar.com',
       'fm97.amskh.co',
+      'fm97.ams.com.kh',
     ],
   },
 };
