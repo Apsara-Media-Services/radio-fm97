@@ -1,14 +1,9 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
 import { isEmpty, isNil } from 'lodash';
-import { Card, CardHeader, Image } from "@heroui/react";
-import app from '@/configs/app';
 import { SectionHeader } from '@/components/common';
 import { timestampTo12Hour } from '@/utils/date';
+import PodcastCard from '@/components/podcast/PodcastCard';
 
 const RadioSchedule = (props: any) => {
-  const router = useRouter();
   const { className, title, programs } = props;
 
   if (isNil(programs) || isEmpty(programs)) return <></>;
@@ -25,33 +20,14 @@ const RadioSchedule = (props: any) => {
         <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {programs.map((item: any, key: any) => {
             return (
-              <Card
+              <PodcastCard
                 key={key}
-                isPressable
-                onPress={() => router.push(`audio/${item?.categories[0]}`)}
+                title={item?.title || ''}
+                tag={`${timestampTo12Hour(item?.startTimestamp)} ~ ${timestampTo12Hour(item?.endTimestamp)}`}
+                imageUrl={item?.cover[0].sizes?.medium?.url}
+                to={`audio/${item?.categories[0]}`}
                 className="h-[300px]"
-              >
-                <Image
-                  isZoomed
-                  removeWrapper
-                  className="z-0 w-full h-full object-cover opacity-100"
-                  src={(item?.cover[0].sizes?.medium?.url || app.appLogo) as string}
-                  fallbackSrc={app.appLogo}
-                  width={400}
-                  alt={item?.title as string}
-                />
-                <CardHeader className="absolute z-auto top-1 flex-col !items-start">
-                  <p className="text-tiny text-white/60 uppercase font-bold">
-                    <time className="text-sm md:text-base block">
-                      {timestampTo12Hour(item?.startTimestamp)} ~{' '}
-                      {timestampTo12Hour(item?.endTimestamp)}
-                    </time>
-                  </p>
-                  <h4 className="text-white font-medium text-large bg-ams-red/90 px-2">
-                    {item?.title}
-                  </h4>
-                </CardHeader>
-              </Card>
+              />
             );
           })}
         </div>

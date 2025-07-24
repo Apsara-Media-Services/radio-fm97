@@ -30,7 +30,7 @@ export class Caster {
     };
   }
 
-  static podcast(podcast = {} as Category) {
+  static podcast(podcast = {} as Podcast) {
     const posts: Post[] = map(podcast?.posts?.edges, ({ node }) => {
       const url = split(node.enclosure, '\n', 1);
       return { ...node, url: url[0] };

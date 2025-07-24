@@ -5,7 +5,7 @@ import { PodcastService } from '@/services';
 
 const Podcast = async () => {
   const podcastService = new PodcastService();
-  const podcasts = await podcastService.getPodcasts({
+  const podcasts = await podcastService.all({
     variables: { first: 100 },
   });
 

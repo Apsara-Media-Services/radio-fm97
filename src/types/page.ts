@@ -5,8 +5,8 @@ export interface IRadioPageProps extends IComponentProps {
 }
 
 export interface IDynamicPage {
-  params: {
+  params: Promise<{
     slug?: string | string[];
     [key: string]: any;
-  };
+  }>;
 }

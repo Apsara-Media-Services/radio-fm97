@@ -1,15 +1,11 @@
-'use client';
-
 import { SectionHeader } from '@/components/common';
+import PodcastCard from '@/components/podcast/PodcastCard';
 import app from '@/configs/app';
 import { IPodcastComponentProps } from '@/types/component';
-import { Card, CardHeader, Image } from "@heroui/react";
 import classNames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
-import { useRouter } from 'next/navigation';
 
 const Terms = (props: IPodcastComponentProps) => {
-  const router = useRouter();
   const { className, terms, title } = props;
   if (isNil(terms) || isEmpty(terms)) return <></>;
 
@@ -23,32 +19,17 @@ const Terms = (props: IPodcastComponentProps) => {
         />
       </div>
       <div className="mb-3 xl:mb-5">
-        <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-2">
+      <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {terms.map((term, key) => {
             return (
-              <Card
+              <PodcastCard
                 key={key}
-                isPressable
-                onPress={() => router.push(`audio/${term?.slug}`)}
+                title={term.name || ''}
+                tag={app.appTag}
+                imageUrl={term.coverImage}
+                to={`audio/${term?.slug}`}
                 className="h-[300px]"
-              >
-                <Image
-                  isZoomed
-                  removeWrapper
-                  className="z-0 w-full h-full object-cover opacity-100"
-                  src={term?.coverImage as string}
-                  width={400}
-                  alt={term?.name as string}
-                />
-                <CardHeader className="absolute z-auto top-1 flex-col !items-start">
-                  <p className="text-tiny text-white/60 uppercase font-bold">
-                    { app.appTag }
-                  </p>
-                  <h4 className="text-white font-medium text-large bg-ams-red/90 px-2">
-                    {term?.name}
-                  </h4>
-                </CardHeader>
-              </Card>
+              />
             );
           })}
         </div>
