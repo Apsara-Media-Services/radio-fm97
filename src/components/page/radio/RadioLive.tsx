@@ -1,14 +1,11 @@
 'use client';
 
+import ReactPlayer from 'react-player';
+import { isEmpty } from 'lodash';
 import { Container } from '@/components/common';
 import {
-  AccessTimeRounded,
   PauseCircleFilledRounded,
   PlayCircleFilledRounded,
-  VolumeDownRounded,
-  VolumeMuteRounded,
-  VolumeOffRounded,
-  VolumeUpRounded,
 } from '@mui/icons-material';
 import {
   Button,
@@ -17,36 +14,27 @@ import {
   PopoverContent,
   PopoverTrigger,
   Progress,
-} from '@nextui-org/react';
-import { isEmpty } from 'lodash';
-import moment from 'moment-timezone';
-import Link from 'next/link';
-import { useState } from 'react';
-import ReactPlayer from 'react-player';
-
-// import { ReactPlayerProps } from 'react-player/types/lib';
-// import _ReactPlayer, { ReactPlayerProps } from 'react-player';
-// const ReactPlayer = _ReactPlayer as unknown as React.FC<ReactPlayerProps>;
+} from "@heroui/react";
+import app from '@/configs/app';
+import { timestampTo12Hour } from '@/utils/date';
+import { useSharedPlayer } from '@/components/PlayerContext';
 
 const RadioLive = (props: any) => {
   const { className, program, nextProgram, radioLiveUrl } = props;
 
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [muted, setMuted] = useState(false);
-  const [volume, setVolume] = useState(0.5);
-  const [popOverVolume, setPopOverVolume] = useState(false);
+  const { 
+    playing,
+    muted,
+    volume,
+    VolumeIcon,
+    volumePopup,
+    setVolumePopup,
+    handlePlaying,
+    handleMute,
+    handleVolume,
+  } = useSharedPlayer();
 
   if (isEmpty(program) && isEmpty(nextProgram)) return <></>;
-
-  const timestampTo12Hour = (timestamp: number | string) => {
-    return moment(timestamp).format('hh:mm A');
-  };
-
-  let vol = <></>;
-  if (volume <= 0 || muted) vol = <VolumeOffRounded />;
-  else if (volume < 0.1) vol = <VolumeMuteRounded />;
-  else if (volume < 0.5) vol = <VolumeDownRounded />;
-  else if (volume <= 1) vol = <VolumeUpRounded />;
 
   return (
     <div className={className}>
@@ -55,40 +43,36 @@ const RadioLive = (props: any) => {
 
         <Image
           removeWrapper
-          alt="Card background"
+          alt={program?.title}
           className="z-0 w-full h-full object-cover opacity-100 absolute inset-0"
-          src={program?.cover[0].sizes?.medium?.url}
+          src={(program?.cover[0].sizes?.medium?.url || app.appLogo) as string}
+          fallbackSrc={app.appLogo}
         />
 
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-20 z-20 items-center">
-            <div className="relative rounded-full aspect-square shadow-lg h-60 mr-auto lg:mr-0 ml-auto">
-              {/* <FallbackImage
-                fill
-                src={program?.cover[0].sizes.large.url}
-                className="object-cover rounded-full overflow-hidden"
-                alt={program?.title}
-              /> */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-5 md:gap-10 lg:gap-20 max-w-4xl mx-auto">
+            <div className="relative rounded-full aspect-square shadow-lg h-60">
               <Image
                 removeWrapper
-                alt="Card background"
+                alt={program?.title}
                 className="w-full h-full object-cover opacity-100 rounded-full"
-                src={program?.cover[0].sizes?.medium?.url}
+                src={(program?.cover[0].sizes?.medium?.url || app.appLogo) as string}
+                fallbackSrc={app.appLogo}
               />
             </div>
-            <div className="text-white">
+            <div className="text-white w-full md:w-auto">
               {!isEmpty(program) && (
                 <>
-                  <div className="air-now space-y-4 text-xl md:text-2xl font-semibold">
+                  <div className="air-now text-xl md:text-2xl font-semibold">
                     <span
                       className={
                         'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-red relative'
                       }
                     >
-                      {'FM97'}
+                      { app.appTag }
                     </span>
-                    <h5>{program?.title}</h5>
-                    <div className="flex gap-1 items-center my-1">
+                    <h5 className="my-5">{program?.title}</h5>
+                    <div className="flex gap-1 items-center">
                       <time>
                         {timestampTo12Hour(program?.startTimestamp)} ~{' '}
                         {timestampTo12Hour(program?.endTimestamp)}
@@ -115,25 +99,25 @@ const RadioLive = (props: any) => {
 
             <div className="flex items-center justify-end gap-3 text-gray-100">
               <div className="flex items-center gap-0">
-                <button
-                  onMouseLeave={() => setPopOverVolume(false)}
-                  onMouseOver={() => setPopOverVolume(true)}
+                <div
+                  onMouseLeave={() => setVolumePopup(false)}
+                  onMouseOver={() => setVolumePopup(true)}
                 >
                   <Popover
+                    isOpen={volumePopup}
                     placement="left"
-                    isOpen={popOverVolume}
                     offset={1}
                     showArrow
                   >
                     <PopoverTrigger>
                       <Button
-                        onClick={() => setMuted((pre) => !pre)}
+                        onClick={handleMute}
                         isIconOnly
                         className="data-[hover]:bg-gray-100/10 p-1"
                         radius="full"
                         variant="light"
                       >
-                        {vol}
+                        <VolumeIcon />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="bg-gray-100/10 p-2 hidden md:block rounded-full">
@@ -158,20 +142,12 @@ const RadioLive = (props: any) => {
                           max={1}
                           step={0.001}
                           value={volume}
-                          onChange={(e) => {
-                            const vol = Number(e.target.value);
-                            setVolume(vol);
-                            if (vol == 0) {
-                              setMuted(true);
-                            } else {
-                              setMuted(false);
-                            }
-                          }}
+                          onChange={(e) => handleVolume(e.target.value)}
                         />
                       </div>
                     </PopoverContent>
                   </Popover>
-                </button>
+                </div>
               </div>
               <div className="flex gap-1">
                 <div className="border-2 h-5 w-5 rounded-full grid items-center justify-center border-ams-red animate-pulse">
@@ -184,93 +160,67 @@ const RadioLive = (props: any) => {
             <div className="flex w-full items-center justify-between gap-2 text-gray-100">
               <div />
               <Button
-                onClick={() => setIsPlaying((pre) => !pre)}
+                onPress={() => handlePlaying()}
                 isIconOnly
                 className="w-auto h-auto data-[hover]:bg-gray-100/10 p-1 outline-none"
                 radius="full"
                 variant="light"
               >
-                {isPlaying ? (
-                  <PauseCircleFilledRounded style={{ fontSize: 70 }} />
+                {playing ? (
+                  <PauseCircleFilledRounded sx={{ fontSize: 70 }} />
                 ) : (
-                  <PlayCircleFilledRounded style={{ fontSize: 70 }} />
+                  <PlayCircleFilledRounded sx={{ fontSize: 70 }} />
                 )}
               </Button>
               <div />
             </div>
-            {ReactPlayer.canPlay(radioLiveUrl) && (
+            {ReactPlayer.canPlay && ReactPlayer.canPlay(radioLiveUrl) && (
               <ReactPlayer
-                className=""
-                url={radioLiveUrl}
-                playing={isPlaying}
+                src={radioLiveUrl}
+                playing={playing}
                 controls={false}
                 height={0}
                 width={0}
                 muted={muted}
                 volume={volume}
-                config={{ file: { forceAudio: true } }}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
+                config={{hls: {}}}
               />
             )}
           </div>
         </Container>
       </div>
-
-      <div className="program-options my-8">
-        <div className="max-w-xl md:max-w-5xl xl:max-w-7xl container mx-auto px-3 sm:px-5 z-10">
-          <div className="grid md:grid-cols-3 gap-y-4 text-base md:text-lg lg:text-xl font-semibold dark:text-white">
-            <div className="current-program">
-              {!isEmpty(program) && (
-                <>
-                  <div className="air-now">
-                    <div className="flex flex-col lg:flex-row gap-1 lg:items-center">
-                      <div>
-                        <span className="text-ams-red font-semibold">
-                          {'កំពុងផ្សាយ'}
-                        </span>{' '}
-                        :
-                      </div>
-                      <time className="font-normal">
-                        {timestampTo12Hour(program?.startTimestamp)} ~{' '}
-                        {timestampTo12Hour(program?.endTimestamp)}
-                      </time>
-                    </div>
-                    <h5>{program?.title}</h5>
-                  </div>
-                </>
-              )}
-            </div>
-            <div className="up-next border-t-2 pt-4 md:border-t-0 md:pt-0 md:border-l-2 md:pl-4 dark:border-white">
-              {!isEmpty(nextProgram) && (
-                <div>
-                  <div className="flex flex-col lg:flex-row gap-1 lg:items-center">
-                    <div>
-                      <span className="text-ams-red">{' កម្មវិធីបន្ទាប់'}</span>{' '}
-                      :
-                    </div>{' '}
-                    <time className="font-normal">
-                      {timestampTo12Hour(nextProgram?.startTimestamp)} ~{' '}
-                      {timestampTo12Hour(nextProgram?.endTimestamp)}
-                    </time>
-                  </div>
-                  <h5>{nextProgram?.title}</h5>
+      
+      <Container className='my-8'>
+        <div className="flex flex-col md:flex-row justify-between gap-y-4 text-base md:text-lg lg:text-xl font-semibold dark:text-white">
+          <div className="current-program">
+            {!isEmpty(program) && (
+              <div className="air-now">
+                <div className="text-ams-red font-semibold">
+                  {'កំពុងផ្សាយ'}
                 </div>
-              )}
-            </div>
-            <div className="hidden md:block">
-              <div className="list-programs border-t-2 pt-4 md:border-t-0 md:pt-0 md:border-l-2 md:pl-4 dark:border-white flex gap-x-2 items-center hover:text-ams-red">
-                <AccessTimeRounded style={{ fontSize: 30 }} />
-                <Link href="#">
-                  <h3 className="text-2xl md:text-lg lg:text-xl">
-                    {' កម្មវិធីផ្សាយប្រចាំថ្ងៃ (ម៉ោងកម្ពុជា)'}
-                  </h3>
-                </Link>
+                <time className="font-normal">
+                  {timestampTo12Hour(program?.startTimestamp)} ~{' '}
+                  {timestampTo12Hour(program?.endTimestamp)}
+                </time>
+                <h5>{program?.title}</h5>
               </div>
-            </div>
+            )}
+          </div>
+          <div className='border-t-2 md:border-r-2 border-gray-200' />
+          <div className="up-next dark:border-white md:text-right">
+            {!isEmpty(nextProgram) && (
+              <div>
+                <h5 className="text-ams-red">{'កម្មវិធីបន្ទាប់'}</h5>
+                <time className="font-normal">
+                  {timestampTo12Hour(nextProgram?.startTimestamp)} ~{' '}
+                  {timestampTo12Hour(nextProgram?.endTimestamp)}
+                </time>
+                <h5>{nextProgram?.title}</h5>
+              </div>
+            )}
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 };
