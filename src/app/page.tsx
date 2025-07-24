@@ -2,26 +2,22 @@ import { Container } from '@/components/common';
 import FallbackImage from '@/components/common/FallbackImage';
 import MainLayout from '@/components/layout/MainLayout';
 import { RadioLive, RadioSchedule } from '@/components/page/radio';
-import { APP_NAME_ALT } from '@/constants/app';
-import { LOGO } from '@/constants/app';
+import app from '@/configs/app';
 import ScheduleService from '@/services/ScheduleService';
-import { format } from 'date-fns';
+import dayjs from '@/libs/dayjs';
 import { find, isEmpty, lowerCase, map } from 'lodash';
-import moment from 'moment-timezone';
 
-
-moment.tz.setDefault('Asia/Phnom_Penh');
 const scheduleService = new ScheduleService();
 
 async function getSchedules() {
   const response = await scheduleService.all();
   const schedules = JSON.parse(response);
-  const today = lowerCase(format(new Date(), 'EEEE'));
+  const today = lowerCase(dayjs().format('dddd'));
 
   const programs = map(schedules[today], (program) => {
-    const currentDate = moment().format('YYYY-MM-DD');
-    const startDateTime = moment(`${currentDate} ${program?.time_range[0]}`);
-    const endDateTime = moment(`${currentDate} ${program?.time_range[1]}`);
+    const currentDate = dayjs().format('YYYY-MM-DD');
+    const startDateTime = dayjs(`${currentDate} ${program?.time_range[0]}`);
+    const endDateTime = dayjs(`${currentDate} ${program?.time_range[1]}`);
 
     return {
       ...program,
@@ -32,7 +28,7 @@ async function getSchedules() {
 
   const program =
     find(programs, (program) => {
-      const timestamp = moment().valueOf();
+      const timestamp = dayjs().valueOf();
       return (
         timestamp >= program.startTimestamp && timestamp < program.endTimestamp
       );
@@ -40,13 +36,9 @@ async function getSchedules() {
 
   const nextProgram =
     find(programs, (_program) => {
-      const timestamp = program?.endTimestamp || moment().valueOf();
+      const timestamp = program?.endTimestamp || dayjs().valueOf();
       return _program.startTimestamp >= timestamp;
     }) || {};
-
-  // console.warn(moment().valueOf(), moment().format('YYYY-MM-DD hh:mm A'));
-  // console.warn('Program: ', program);
-  // console.warn('Next Program: ', nextProgram);
 
   return {
     radioApiBaseUrl: process.env.RADIO_API_BASE_URL,
@@ -90,8 +82,8 @@ const Live = async () => {
           <div className="relative w-72 aspect-square mx-auto">
             <FallbackImage
               fill
-              src={LOGO as string}
-              alt={APP_NAME_ALT}
+              src={app.appLogo}
+              alt={app.appName}
               className="rounded-lg"
             />
           </div>

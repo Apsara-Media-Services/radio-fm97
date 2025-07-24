@@ -1,4 +1,5 @@
 import { SectionHeader } from '@/components/common';
+import app from '@/configs/app';
 import { amsGroupSites, footerMenus } from '@/data/menu';
 import { IComponentProps } from '@/types/component';
 import Link from 'next/link';
@@ -9,7 +10,7 @@ const HeaderMenuContent = ({ className }: IComponentProps) => {
       <div className="">
         <SectionHeader
           type="secondary"
-          title="វិទ្យុសំឡេងយុវជន ៩៧"
+          title={app.appName}
           lineColor="bg-zinc-300 dark:bg-zinc-50"
           className="text-lg lg:text-xl font-semibold mb-5"
         />

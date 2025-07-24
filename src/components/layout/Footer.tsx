@@ -1,4 +1,6 @@
 import { Container, SectionHeader } from '@/components/common';
+import app from '@/configs/app';
+import { AMS_LOGO } from '@/constants/app';
 import { amsGroupSites, footerLearnMoreMenus, footerMenus } from '@/data/menu';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,20 +14,19 @@ const Footer = () => {
             <div className="relative w-40 h-20">
               <Image
                 fill
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 alt="AMS"
-                src="/images/logo.png"
+                src={AMS_LOGO}
                 className="object-contain"
               />
             </div>
           </Link>
         </section>
-        {/* <LineSeparator className="my-5" /> */}
         <section className="grid md:grid-cols-7 xl:grid-cols-3 gap-5 md:gap-3 lg:gap-5">
           <div className="md:col-span-2 xl:col-auto">
             <SectionHeader
               type="secondary"
-              title="វិទ្យុសំឡេងយុវជន ៩៧"
+              title={app.appName}
               lineColor="bg-zinc-50"
               className="text-lg lg:text-xl font-semibold mb-5"
             />
@@ -89,11 +90,6 @@ const Footer = () => {
             ឆ្នាំ{new Date().getFullYear()} © រក្សាសិទ្ធគ្រប់យ៉ាងដោយ
             អប្សរាមេឌាសឺវីស / Apsara Media Services (AMS)
           </div>
-          {/* <div className="md:text-right py-1">
-            <Link href="#">
-              គោលការណ៍ភាពឯងជន លក្ខ័ណក្នុងការប្រើប្រាស់ COOKIE (ខូខី)
-            </Link>
-          </div> */}
         </section>
       </Container>
     </section>

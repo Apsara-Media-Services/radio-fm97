@@ -1,13 +1,12 @@
-import './globals.css';
 import { AppProvider } from '@/components/AppContext';
-import NextNProgress from '@/components/libs/NextProgressbar';
-import { ThemeProvider } from '@/components/libs/NextTheme';
-import { ToastContainer } from '@/components/libs/ReactToastify';
-import { METADATA } from '@/constants/app';
 import { Metadata } from 'next';
 import { Kantumruy_Pro } from 'next/font/google';
 import Script from 'next/script';
+import classNames from 'classnames';
+
+import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
+import app from '@/configs/app';
 
 const kantumruy_pro = Kantumruy_Pro({
   subsets: ['latin'],
@@ -15,8 +14,8 @@ const kantumruy_pro = Kantumruy_Pro({
 });
 
 export const metadata: Metadata = {
-  title: METADATA.title,
-  description: METADATA.description,
+  title: app.appName,
+  description: app.appDescription,
 };
 
 export default function RootLayout({
@@ -25,13 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={kantumruy_pro.className}>
+    <html lang="en" className={classNames(kantumruy_pro.className)} suppressHydrationWarning>
       <body className="bg-ams-light dark:bg-zinc-700">
-        <AppProvider>
-          <ThemeProvider attribute="class">{children}</ThemeProvider>
-          <ToastContainer />
-          <NextNProgress color="#cf0a10" options={{ showSpinner: false }} />
-        </AppProvider>
+        <AppProvider>{children}</AppProvider>
         <Script
           strategy="afterInteractive"
           src="https://analytic.cloud.sovichetra.com/script.js"

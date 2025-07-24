@@ -1,4 +1,5 @@
-import { APP_NAME, APP_NAME_ALT } from '@/constants/app';
+import app from '@/configs/app';
+import { AMS_SECONDARY_LOGO } from '@/constants/app';
 import { IComponentProps } from '@/types/component';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -14,13 +15,13 @@ const HeaderLogo = ({ className }: IComponentProps) => {
     >
       <Link href="/">
         <div className="flex items-center relative">
-          <span className="sr-only">{APP_NAME_ALT}</span>
+          <span className="sr-only">{app.appName}</span>
           <div className="h-10 w-20 relative">
             <Image
               fill
-              sizes="100vw"
-              alt={APP_NAME_ALT}
-              src="/images/secondary-logo.png"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              alt={app.appName}
+              src={AMS_SECONDARY_LOGO}
               className="object-contain"
             />
           </div>
@@ -28,19 +29,15 @@ const HeaderLogo = ({ className }: IComponentProps) => {
           <div className="h-10 w-10 relative mr-1">
             <Image
               fill
-              sizes="100vw"
-              alt={APP_NAME_ALT}
-              src="/images/logo​97.jpg"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              alt={app.appName}
+              src={ app.appLogo }
               className="rounded-lg"
             />
           </div>
           <div className="text-xl/10 md:text-2xl/10 font-semibold bg-gradient-to-r from-ams-red via-ams-purple to-ams-blue text-transparent bg-clip-text px-1 hidden lg:block relative">
-            {/* <span className="hidden dark:inline absolute left-0 bg-white -z-10 blur-3xl">
-              {APP_NAME}
-            </span> */}
-            {APP_NAME}
+            {app.appName}
           </div>
-          {/* <div className='hidden dark:inline absolute w-full h-full bg-white -z-10 blur-[100px]' /> */}
         </div>
       </Link>
     </div>

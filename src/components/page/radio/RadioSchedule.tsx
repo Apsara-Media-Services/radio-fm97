@@ -1,20 +1,17 @@
 'use client';
 
-import { SectionHeader } from '@/components/common';
-import { Card, CardHeader, Image } from '@nextui-org/react';
-import { isEmpty, isNil } from 'lodash';
-import moment from 'moment-timezone';
 import { useRouter } from 'next/navigation';
+import { isEmpty, isNil } from 'lodash';
+import { Card, CardHeader, Image } from "@heroui/react";
+import app from '@/configs/app';
+import { SectionHeader } from '@/components/common';
+import { timestampTo12Hour } from '@/utils/date';
 
 const RadioSchedule = (props: any) => {
   const router = useRouter();
   const { className, title, programs } = props;
 
   if (isNil(programs) || isEmpty(programs)) return <></>;
-
-  const timestampTo12Hour = (timestamp: number | string) => {
-    return moment(timestamp).format('hh:mm A');
-  };
 
   return (
     <div className={className}>
@@ -25,26 +22,27 @@ const RadioSchedule = (props: any) => {
         lineColor="bg-zinc-300 dark:bg-zinc-50"
       />
       <div className="mb-3 xl:mb-5">
-        <div className="gap-2 grid grid-cols-12 grid-rows-2">
+        <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {programs.map((item: any, key: any) => {
             return (
               <Card
                 key={key}
                 isPressable
                 onPress={() => router.push(`audio/${item?.categories[0]}`)}
-                className="col-span-12 sm:col-span-4 h-[300px]"
+                className="h-[300px]"
               >
                 <Image
                   isZoomed
                   removeWrapper
                   className="z-0 w-full h-full object-cover opacity-100"
-                  src={item?.cover[0].sizes?.medium?.url as string}
+                  src={(item?.cover[0].sizes?.medium?.url || app.appLogo) as string}
+                  fallbackSrc={app.appLogo}
                   width={400}
                   alt={item?.title as string}
                 />
                 <CardHeader className="absolute z-auto top-1 flex-col !items-start">
                   <p className="text-tiny text-white/60 uppercase font-bold">
-                    <time className="text-sm md:text-base block pt-3">
+                    <time className="text-sm md:text-base block">
                       {timestampTo12Hour(item?.startTimestamp)} ~{' '}
                       {timestampTo12Hour(item?.endTimestamp)}
                     </time>

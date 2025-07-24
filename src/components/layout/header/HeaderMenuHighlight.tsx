@@ -8,14 +8,10 @@ import { usePathname } from 'next/navigation';
 
 const HeaderMenuHighlight = ({ className }: IComponentProps) => {
   const pathname = usePathname();
-  const audio =
-    pathname.startsWith('/audio') && !pathname.startsWith('/audio/daily')
-      ? true
-      : false;
   const active = {
     home: pathname === '/',
     live: pathname.startsWith('/live'),
-    audio: audio,
+    audio: pathname.startsWith('/audio') && !pathname.startsWith('/audio/daily'),
     daily: pathname.startsWith('/audio/daily'),
   };
 

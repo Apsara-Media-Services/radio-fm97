@@ -1,8 +1,9 @@
 'use client';
 
 import { SectionHeader } from '@/components/common';
+import app from '@/configs/app';
 import { IPodcastComponentProps } from '@/types/component';
-import { Card, CardHeader, Image } from '@nextui-org/react';
+import { Card, CardHeader, Image } from "@heroui/react";
 import classNames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
 import { useRouter } from 'next/navigation';
@@ -22,14 +23,14 @@ const Terms = (props: IPodcastComponentProps) => {
         />
       </div>
       <div className="mb-3 xl:mb-5">
-        <div className="gap-2 grid grid-cols-12 grid-rows-2">
+        <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-2">
           {terms.map((term, key) => {
             return (
               <Card
                 key={key}
                 isPressable
                 onPress={() => router.push(`audio/${term?.slug}`)}
-                className="col-span-12 sm:col-span-4 h-[300px]"
+                className="h-[300px]"
               >
                 <Image
                   isZoomed
@@ -41,7 +42,7 @@ const Terms = (props: IPodcastComponentProps) => {
                 />
                 <CardHeader className="absolute z-auto top-1 flex-col !items-start">
                   <p className="text-tiny text-white/60 uppercase font-bold">
-                    AMS FM97 podcast
+                    { app.appTag }
                   </p>
                   <h4 className="text-white font-medium text-large bg-ams-red/90 px-2">
                     {term?.name}

@@ -1,13 +1,22 @@
 'use client';
 
 import { IComponentProps } from '@/types/component';
-import { Menu } from '@headlessui/react';
+import { Menu, MenuButton } from '@headlessui/react';
 import { LightModeRounded, NightsStayRounded } from '@mui/icons-material';
 import classNames from 'classnames';
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 const HeaderMenuThemeSwitcher = ({ className }: IComponentProps) => {
   const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
 
   const handleThemeChange = () => {
     const t = resolvedTheme == 'light' ? 'dark' : 'light';
@@ -15,8 +24,8 @@ const HeaderMenuThemeSwitcher = ({ className }: IComponentProps) => {
   };
 
   return (
-    <Menu as="div" className={classNames('relative inline-block', className)}>
-      <Menu.Button className="flex" onClick={handleThemeChange}>
+    <Menu as="div" className={classNames('relative inline-block', className as string)}>
+      <MenuButton className="flex" onClick={handleThemeChange}>
         <span className="text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white">
           {resolvedTheme === 'light' ? (
             <NightsStayRounded />
@@ -24,7 +33,7 @@ const HeaderMenuThemeSwitcher = ({ className }: IComponentProps) => {
             <LightModeRounded />
           )}
         </span>
-      </Menu.Button>
+      </MenuButton>
     </Menu>
   );
 };
