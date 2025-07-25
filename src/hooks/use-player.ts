@@ -1,70 +1,213 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { VolumeDownRounded, VolumeMuteRounded, VolumeOffRounded, VolumeUpRounded } from '@mui/icons-material';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { PauseCircleFilledRounded, PlayCircleFilledRounded, VolumeDownRounded, VolumeMuteRounded, VolumeOffRounded, VolumeUpRounded } from '@mui/icons-material';
+import { Podcast, Post } from '@/gql/graphql';
+import { findIndex, nth } from 'lodash';
+
+const initialState = {
+  src: undefined,
+  pip: false,
+  playing: false,
+  controls: false,
+  light: false,
+  volume: 1,
+  volumePrevious: 1,
+  volumePopup: false,
+  muted: false,
+  played: 0,
+  loaded: 0,
+  duration: 0,
+  playbackRate: 1.0,
+  loop: false,
+  seeking: false,
+  loadedSeconds: 0,
+  playedSeconds: 0,
+}
+
+type PlayerState = Omit<typeof initialState, 'src'> & {
+  src?: string;
+};
 
 const usePlayer = () => {
-  const [playing, setPlaying] = useState(false);
-  const [muted, setMuted] = useState(false);
-  const [volume, setVolume] = useState(1);
-  const [volumePrevious, setVolumePrevious] = useState(volume);
+  const [state, setState] = useState<PlayerState>(initialState);
+  const playerRef = useRef<HTMLVideoElement | null>(null);
+
+  const [PlayingIcon, setPlayingIcon] = useState(() => PlayCircleFilledRounded);
   const [VolumeIcon, setVolumeIcon] = useState(() => VolumeUpRounded);
-  const [volumePopup, setVolumePopup] = useState(false);
 
-  function handlePlaying(_value?: boolean) {
-    const value = _value ?? !playing
-    setPlaying(value);
-  }
-
-  function handleMute() {
-    const _muted = !muted;
-    if (_muted) {
-      setVolume(0);
-    } else {
-      if (volumePrevious === 0) {
-        setVolume(1);
-      } else {
-        setVolume(volumePrevious);
-      }
-    }
-    setMuted(_muted)
-  }
-
-  function handleVolume(vol: number | string) {
-    vol = Number(vol);
-    setVolume(vol);
-    setVolumePrevious(vol);
-    setMuted(vol == 0);
-  }
+  const [podcast, setPodcast] = useState({} as Podcast);
+  const [activePodcastPost, setActivePodcastPost] = useState({} as Post);
+  const [podcastPosts, setPodcastPosts] = useState([] as Post[]);
 
   useEffect(() => {
-    if (volume <= 0 || muted) {
+    if (state.volume <= 0 || state.muted) {
       setVolumeIcon(() => VolumeOffRounded);
-    } else if (volume < 0.1) {
+    } else if (state.volume < 0.1) {
       setVolumeIcon(() => VolumeMuteRounded);
-    } else if (volume < 0.5) {
+    } else if (state.volume < 0.5) {
       setVolumeIcon(() => VolumeDownRounded);
-    } else if (volume <= 1) {
+    } else if (state.volume <= 1) {
       setVolumeIcon(() => VolumeUpRounded);
     }
-  }, [volume, muted]);
+  }, [state.volume, state.muted]);
+
+  useEffect(() => {
+    if (state.playing) {
+      setPlayingIcon(() => PauseCircleFilledRounded);
+    } else {
+      setPlayingIcon(() => PlayCircleFilledRounded);
+    }
+  }, [state.playing]);
+
+  const load = (src?: string) => {
+    setState(prevState => ({
+      ...prevState,
+      src,
+      playing: false,
+      played: 0,
+      loaded: 0,
+      pip: false,
+    }));
+  };
+
+  const setPlayerRef = useCallback((player: HTMLVideoElement) => {
+    if (!player) return;
+    playerRef.current = player;
+  }, []);
+
+  const handlePlayPause = (_value?: boolean) => {
+    setState(prevState => ({ ...prevState, playing: _value ?? !prevState.playing }));
+  }
+
+  const handleMuteToggle = () => {
+    const muted = !state.muted;
+    const volume = muted ? 0 : (state.volumePrevious === 0 ? 1 : state.volumePrevious);
+    setState(prevState => ({ 
+      ...prevState, 
+      muted,
+      volume
+    }));
+  }
+
+  const handleVolumeChange = (volume: number | string) => {
+    volume = Number(volume);
+    setState(prevState => ({ 
+      ...prevState, 
+      volume, 
+      volumePrevious: volume,
+      muted: volume === 0
+    }));
+  }
+
+  const handleVolumePopupChange = (value: boolean) => {
+    setState(prevState => ({ ...prevState, volumePopup: value ?? !prevState.playing }));
+  };
+
+  function handleSkipChange(i: number) {
+    const currentIdx = findIndex(podcastPosts, { id: activePodcastPost.id });
+    const nextIdx = currentIdx + i;
+    const next = nth(podcastPosts, nextIdx) ?? podcastPosts[0];
+
+    setActivePodcastPost(next);
+  };
+
+  const handleLoopToggle = () => {
+    setState(prevState => ({ ...prevState, loop: !prevState.loop }));
+  }
+
+  const handleSeekInSeconds = (seconds: number) => {
+    const player = playerRef.current;
+    if (!player || !player.duration) return;
+
+    const newTime = Math.min(Math.max(player.currentTime + seconds, 0), player.duration);
+    player.currentTime = newTime;
+
+    setState(prevState => ({
+      ...prevState,
+      played: newTime / player.duration,
+      playedSeconds: newTime,
+    }));
+  };
+
+  const handleSeekChange = (seek: number) => {
+    setState(prevState => ({ ...prevState, seeking: true }));
+    setState(prevState => ({ 
+      ...prevState, 
+      played: seek,
+    }));
+  }
+
+  const handleSeekChangeEnd = (seek: number) => {
+    setState(prevState => ({ ...prevState, seeking: false }));
+    if (playerRef.current) {
+      playerRef.current.currentTime = seek * playerRef.current.duration;
+    }
+  }
+
+  const handleProgress = () => {
+    const player = playerRef.current;
+    // We only want to update time slider if we are not currently seeking
+    if (!player || state.seeking || !player.buffered?.length) return;
+
+    setState(prevState => ({
+      ...prevState,
+      loadedSeconds: player.buffered?.end(player.buffered?.length - 1),
+      loaded: player.buffered?.end(player.buffered?.length - 1) / player.duration,
+    }));
+  };
+
+  const handleTimeUpdate = () => {
+    const player = playerRef.current;
+    // We only want to update time slider if we are not currently seeking
+    if (!player || state.seeking) return;
+
+    if (!player.duration) return;
+
+    setState(prevState => ({
+      ...prevState,
+      playedSeconds: player.currentTime,
+      played: player.currentTime / player.duration,
+    }));
+  };
+
+  const handleDurationChange = () => {
+    const player = playerRef.current;
+    if (!player) return;
+
+    setState(prevState => ({ ...prevState, duration: player.duration }));
+  };
+
+  const handleEnded = () => {
+    setState(prevState => ({ ...prevState, playing: prevState.loop }));
+  };
 
   return { 
-    playing, 
-    setPlaying, 
-    muted, 
-    setMuted, 
-    volume, 
-    setVolume, 
-    volumePrevious, 
-    setVolumePrevious, 
+    podcast,
+    setPodcast,
+    activePodcastPost,
+    setActivePodcastPost,
+    podcastPosts,
+    setPodcastPosts,
+    state,
+    PlayingIcon,
     VolumeIcon, 
-    setVolumeIcon, 
-    volumePopup, 
-    setVolumePopup,
-    handlePlaying,
-    handleMute, 
-    handleVolume,
+    playerRef,
+    load,
+    setPlayerRef,
+    handlePlayPause,
+    handleMuteToggle, 
+    handleVolumeChange,
+    handleLoopToggle,
+    handleVolumePopupChange,
+    handleSkipChange, 
+    handleSeekInSeconds,
+    handleSeekChange,
+    handleSeekChangeEnd,
+    handleProgress,
+    handleTimeUpdate,
+    handleDurationChange,
+    handleEnded,
    };
 };
 

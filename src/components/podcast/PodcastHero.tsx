@@ -1,49 +1,18 @@
-'use client';
-
 import { Container } from '../common';
 import Player from '@components/player/Player';
-import { Image } from '@nextui-org/react';
-import { isEmpty } from 'lodash';
-import { format } from 'date-fns';
+import { Image } from "@heroui/react";
+import { get, isEmpty } from 'lodash';
+import { IComponentProps } from '@/types/component';
+import dayjs from '@/libs/dayjs';
+import app from '@/configs/app';
+import { useSharedPlayer } from '@/components/PlayerContext';
 
-const Hero = (props: any) => {
-  const {
-    className,
-    coverImage,
-    name,
-    activeListItem,
-    handleSkip,
-    playing,
-    setPlaying,
-  } = props;
+interface IProps extends IComponentProps {
+}
 
-  // const classes = {
-  //   title: {
-  //     wrapper: '',
-  //     title: 'text-xl xl:leading-relaxed font-medium',
-  //   },
-  //   excerpt: {
-  //     wrapper: 'mt-3',
-  //     excerpt: 'text-base text-gray-500 dark:text-zinc-400',
-  //   },
-  //   meta: {
-  //     wrapper: 'flex items-center text-sm mt-3',
-  //     author: {
-  //       wrapper: 'flex items-center',
-  //       avatar: 'w-12 h-12 relative mr-4',
-  //       name: 'font-medium text-black dark:text-zinc-200',
-  //     },
-  //     date: {
-  //       wrapper: '',
-  //       date: 'text-gray-500 dark:text-zinc-300',
-  //     },
-  //     category: {
-  //       wrapper: 'mr-3 mb-3',
-  //       name: 'text-sm text-white bg-ams-red',
-  //     },
-  //   },
-  //   lineSeparator: 'border-none pb-4',
-  // };
+const PodcastHero = ({className}: IProps) => {
+
+  const { podcast, activePodcastPost: post } = useSharedPlayer();
 
   return (
     <div className={className}>
@@ -54,50 +23,45 @@ const Hero = (props: any) => {
           removeWrapper
           alt="Card background"
           className="z-0 w-full h-full object-cover opacity-100 absolute inset-0"
-          src={coverImage}
+          src={podcast?.coverImage || app.appLogo}
+          fallbackSrc={app.appLogo}
         />
 
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-20 z-20 items-center">
-            <div className="relative rounded-full aspect-square shadow-lg h-60 mr-auto lg:mr-0 ml-auto">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-20 max-w-4xl mx-auto">
+            <div className="relative rounded-full aspect-square shadow-lg h-60">
               <Image
                 removeWrapper
                 alt="Card background"
                 className="w-full h-full object-cover opacity-100 rounded-full"
-                src={activeListItem?.featuredImage?.node?.sourceUrl}
+                src={post?.featuredImage?.node?.sourceUrl || app.appLogo}
+                fallbackSrc={app.appLogo}
               />
             </div>
-            <div className="text-white">
-              {!isEmpty(activeListItem) && (
+            <div className="text-white w-full md:w-auto">
+              {!isEmpty(post) && (
                 <>
-                  <div className="air-now space-y-4 text-xl md:text-2xl font-semibold">
+                  <div className="air-now text-xl md:text-2xl font-semibold">
                     <span
                       className={
                         'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-red relative'
                       }
                     >
-                      {name}
+                      {podcast?.name}
                     </span>
-                    <h5>{activeListItem?.title}</h5>
-                    <div className="flex gap-1 items-center my-1">
-                      {format(new Date(activeListItem?.date), 'dd/MMMM/yyyy')}
+                    <h5 className="my-5 line-clamp-3">{post?.title}</h5>
+                    <div className="flex gap-1 items-center">
+                      { dayjs(post.date).format('DD/MMMM/YYYY') }
                     </div>
                   </div>
                 </>
               )}
             </div>
           </div>
-
-          <div className="mt-8">
-            {activeListItem?.url && (
-              <Player
-                activeListItem={activeListItem}
-                playing={playing}
-                setPlaying={setPlaying}
-                handleSkip={handleSkip}
-              />
-            )}
-          </div>
+          <Player
+            url={get(post, 'url', '')}
+            className='mt-8'
+          />
         </Container>
       </div>
       {/* To be develop next version for the feature play via podcast app and sharing. */}
@@ -144,4 +108,4 @@ const Hero = (props: any) => {
   );
 };
 
-export default Hero;
+export default PodcastHero;

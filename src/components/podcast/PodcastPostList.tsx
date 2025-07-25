@@ -1,7 +1,7 @@
 'use client';
 
 import { SectionHeader } from '@/components/common';
-import { Podcast, Post } from '@/gql/graphql';
+import { Post } from '@/gql/graphql';
 import { PodcastService } from '@/services';
 import { IComponentProps } from '@/types/component';
 import { PauseRounded, PlayArrowRounded } from '@mui/icons-material';
@@ -10,28 +10,27 @@ import { find } from 'lodash';
 import { useState } from 'react';
 import app from '@/configs/app';
 import dayjs from '@/libs/dayjs';
+import { useSharedPlayer } from '@/components/PlayerContext';
+import { Caster } from '@/gql/caster';
 
 interface IProps extends IComponentProps {
-  podcast: Podcast;
-  posts: Post[];
-  activePost?: Post;
-  isPlaying?: boolean;
-  onLoadMore?: (podcast: Podcast) => void;
-  onClickPlay?: (post: Post) => void;
 }
 
 const podcastService = new PodcastService();
 
 const PodcastPostList = (props: IProps) => {
-  const { 
-    podcast, 
-    posts, 
-    activePost, 
-    playing = false, 
-    onLoadMore = (podcast: Podcast) => {}, 
-    onClickPlay = (post: Post) => {}
-  } = props;
   const [loading, setLoading] = useState<boolean>(false);
+
+  const { 
+    state,
+    podcast,
+    setPodcast,
+    podcastPosts: posts,
+    setPodcastPosts,
+    activePodcastPost,
+    setActivePodcastPost,
+    handlePlayPause,
+  } = useSharedPlayer();
 
   const loadMore = async () => {
     setLoading(true);
@@ -40,8 +39,23 @@ const PodcastPostList = (props: IProps) => {
         after: podcast.posts?.pageInfo.endCursor as string,
       },
     });
-    onLoadMore(_podcast)
+    setPodcast(_podcast);
+    setPodcastPosts((pre: Post[]) => [...pre, ...Caster.podcast(_podcast).posts]);
     setLoading(false);
+  };
+
+  const onClickPlay = (post: Post) => {
+    const _playing = activePodcastPost?.id === post.id ? !state.playing : true;
+
+    setActivePodcastPost(post);
+    handlePlayPause(_playing);
+
+    if (window) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
   };
 
   const getSourceUrl = (post: Post) => {
@@ -57,7 +71,7 @@ const PodcastPostList = (props: IProps) => {
   };
 
   const isActivePost = (post: Post) => {
-    return activePost?.id === post?.id;
+    return activePodcastPost?.id === post?.id;
   }
 
   return (
@@ -91,7 +105,7 @@ const PodcastPostList = (props: IProps) => {
                 {isActivePost(item) && (
                   <>
                     <div className="bg-img bg-black/50 absolute inset-0 z-10" />
-                    {playing ? (
+                    {state.playing ? (
                       <PauseRounded
                         style={{ fontSize: 40 }}
                         className="absolute z-10 text-gray-100"

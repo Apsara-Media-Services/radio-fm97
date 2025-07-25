@@ -1,38 +1,30 @@
 'use client';
 
 import ReactPlayer from 'react-player';
-import { isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { Container } from '@/components/common';
 import {
-  PauseCircleFilledRounded,
-  PlayCircleFilledRounded,
-} from '@mui/icons-material';
-import {
-  Button,
   Image,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Progress,
 } from "@heroui/react";
 import app from '@/configs/app';
 import { timestampTo12Hour } from '@/utils/date';
 import { useSharedPlayer } from '@/components/PlayerContext';
+import { useEffect } from 'react';
+import PlayerVolume from '@/components/player/PlayerVolume';
+import PlayerPlayPause from '@/components/player/PlayerPlayPause';
+import PlayerProgress from '@/components/player/PlayerProgress';
 
 const RadioLive = (props: any) => {
   const { className, program, nextProgram, radioLiveUrl } = props;
 
   const { 
-    playing,
-    muted,
-    volume,
-    VolumeIcon,
-    volumePopup,
-    setVolumePopup,
-    handlePlaying,
-    handleMute,
-    handleVolume,
+    state,
+    load,
   } = useSharedPlayer();
+
+  useEffect(() => {
+    load(radioLiveUrl);
+  }, []);
 
   if (isEmpty(program) && isEmpty(nextProgram)) return <></>;
 
@@ -45,7 +37,7 @@ const RadioLive = (props: any) => {
           removeWrapper
           alt={program?.title}
           className="z-0 w-full h-full object-cover opacity-100 absolute inset-0"
-          src={(program?.cover[0].sizes?.medium?.url || app.appLogo) as string}
+          src={get(program, 'cover.0.sizes.medium.url', app.appLogo) as string}
           fallbackSrc={app.appLogo}
         />
 
@@ -56,7 +48,7 @@ const RadioLive = (props: any) => {
                 removeWrapper
                 alt={program?.title}
                 className="w-full h-full object-cover opacity-100 rounded-full"
-                src={(program?.cover[0].sizes?.medium?.url || app.appLogo) as string}
+                src={get(program, 'cover.0.sizes.medium.url', app.appLogo) as string}
                 fallbackSrc={app.appLogo}
               />
             </div>
@@ -84,71 +76,10 @@ const RadioLive = (props: any) => {
             </div>
           </div>
           <div className="mt-8">
-            <Progress
-              minValue={0}
-              maxValue={1}
-              value={1}
-              aria-label="Music progress"
-              classNames={{
-                indicator: 'bg-ams-red',
-                track: 'bg-default-500/30',
-              }}
-              color="default"
-              size="sm"
-            />
+            <PlayerProgress isLive={true} />
 
             <div className="flex items-center justify-end gap-3 text-gray-100">
-              <div className="flex items-center gap-0">
-                <div
-                  onMouseLeave={() => setVolumePopup(false)}
-                  onMouseOver={() => setVolumePopup(true)}
-                >
-                  <Popover
-                    isOpen={volumePopup}
-                    placement="left"
-                    offset={1}
-                    showArrow
-                  >
-                    <PopoverTrigger>
-                      <Button
-                        onClick={handleMute}
-                        isIconOnly
-                        className="data-[hover]:bg-gray-100/10 p-1"
-                        radius="full"
-                        variant="light"
-                      >
-                        <VolumeIcon />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="bg-gray-100/10 p-2 hidden md:block rounded-full">
-                      <div className="relative w-20">
-                        <Progress
-                          minValue={0}
-                          maxValue={1}
-                          value={volume}
-                          aria-label="Music progress"
-                          classNames={{
-                            indicator: 'bg-ams-red',
-                            track: 'bg-default-500/30',
-                          }}
-                          color="default"
-                          size="sm"
-                        />
-
-                        <input
-                          className="w-full absolute top-[-6px] opacity-0"
-                          type="range"
-                          min={0}
-                          max={1}
-                          step={0.001}
-                          value={volume}
-                          onChange={(e) => handleVolume(e.target.value)}
-                        />
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </div>
+              <PlayerVolume />
               <div className="flex gap-1">
                 <div className="border-2 h-5 w-5 rounded-full grid items-center justify-center border-ams-red animate-pulse">
                   <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
@@ -156,34 +87,16 @@ const RadioLive = (props: any) => {
                 <p className="text-small">Live</p>
               </div>
             </div>
-
-            <div className="flex w-full items-center justify-between gap-2 text-gray-100">
-              <div />
-              <Button
-                onPress={() => handlePlaying()}
-                isIconOnly
-                className="w-auto h-auto data-[hover]:bg-gray-100/10 p-1 outline-none"
-                radius="full"
-                variant="light"
-              >
-                {playing ? (
-                  <PauseCircleFilledRounded sx={{ fontSize: 70 }} />
-                ) : (
-                  <PlayCircleFilledRounded sx={{ fontSize: 70 }} />
-                )}
-              </Button>
-              <div />
-            </div>
-            {ReactPlayer.canPlay && ReactPlayer.canPlay(radioLiveUrl) && (
+            <PlayerPlayPause className="flex w-full justify-center items-center gap-2 text-gray-100" />
+            {ReactPlayer.canPlay && ReactPlayer.canPlay(state.src || '') && (
               <ReactPlayer
-                src={radioLiveUrl}
-                playing={playing}
-                controls={false}
+                src={state.src}
+                playing={state.playing}
+                controls={state.controls}
                 height={0}
                 width={0}
-                muted={muted}
-                volume={volume}
-                config={{hls: {}}}
+                muted={state.muted}
+                volume={state.volume}
               />
             )}
           </div>

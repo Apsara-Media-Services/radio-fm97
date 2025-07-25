@@ -61,14 +61,22 @@ const Live = async () => {
     <MainLayout>
       {programs.length > 0 && (
         <>
+          {isEmpty(program) && (
+            <RadioLive
+              program={program}
+              nextProgram={nextProgram}
+              radioApiBaseUrl={radioApiBaseUrl}
+              radioLiveUrl={radioLiveUrl}
+            />
+          )}
           <RadioLive
             program={program}
             nextProgram={nextProgram}
             radioApiBaseUrl={radioApiBaseUrl}
             radioLiveUrl={radioLiveUrl}
-            className="mb-12"
           />
-          <Container>
+          
+          <Container className='pt-10'>
             <RadioSchedule
               className=""
               title="កម្មវិធីផ្សាយប្រចាំថ្ងៃ (ម៉ោងកម្ពុជា)"

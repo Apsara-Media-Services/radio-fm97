@@ -1,12 +1,12 @@
 'use client';
 
 import usePlayer from '@/hooks/use-player';
-import { AppContextType } from '@/types/app';
 import { createContext, useContext } from 'react';
 
-const defaultValues: AppContextType = {};
-const PlayerContext = createContext<AppContextType>(defaultValues);
+export type PlayerContextType = ReturnType<typeof usePlayer>;
 
+const defaultValues: PlayerContextType = {} as PlayerContextType;
+const PlayerContext = createContext<PlayerContextType>(defaultValues);
 
 export default PlayerContext;
 
