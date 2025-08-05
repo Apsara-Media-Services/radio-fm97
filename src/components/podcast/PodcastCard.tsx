@@ -26,8 +26,8 @@ const PodcastCard = (props: IProps) => {
         isZoomed
         removeWrapper
         className="z-0 w-full h-full object-cover opacity-100"
-        src={imageUrl || app.appLogo}
-        fallbackSrc={app.appLogo}
+        src={imageUrl || app.logo}
+        fallbackSrc={app.logo}
         width={400}
         alt={title}
       />

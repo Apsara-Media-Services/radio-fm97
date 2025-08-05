@@ -15,12 +15,12 @@ const HeaderLogo = ({ className }: IComponentProps) => {
     >
       <Link href="/">
         <div className="flex items-center relative">
-          <span className="sr-only">{app.appName}</span>
+          <span className="sr-only">{app.name}</span>
           <div className="h-10 w-20 relative">
             <Image
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              alt={app.appName}
+              alt={app.name}
               src={AMS_SECONDARY_LOGO}
               className="object-contain"
             />
@@ -30,13 +30,13 @@ const HeaderLogo = ({ className }: IComponentProps) => {
             <Image
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              alt={app.appName}
-              src={ app.appLogo }
+              alt={app.name}
+              src={ app.logo }
               className="rounded-lg"
             />
           </div>
-          <div className="text-xl/10 md:text-2xl/10 font-semibold bg-gradient-to-r from-ams-primary via-ams-purple to-ams-secondary text-transparent bg-clip-text px-1 hidden lg:block relative">
-            {app.appName}
+          <div className="text-xl/10 md:text-2xl/10 font-semibold bg-gradient-title text-transparent bg-clip-text px-1 hidden lg:block relative">
+            {app.name}
           </div>
         </div>
       </Link>

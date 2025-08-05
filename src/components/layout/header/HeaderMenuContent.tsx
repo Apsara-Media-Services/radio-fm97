@@ -10,7 +10,7 @@ const HeaderMenuContent = ({ className }: IComponentProps) => {
       <div className="">
         <SectionHeader
           type="secondary"
-          title={app.appName}
+          title={app.name}
           lineColor="bg-zinc-300 dark:bg-zinc-50"
           className="text-lg lg:text-xl font-semibold mb-5"
         />

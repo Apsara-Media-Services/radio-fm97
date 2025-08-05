@@ -90,8 +90,8 @@ const Live = async () => {
           <div className="relative w-72 aspect-square mx-auto">
             <FallbackImage
               fill
-              src={app.appLogo}
-              alt={app.appName}
+              src={app.logo}
+              alt={app.name}
               className="rounded-lg"
             />
           </div>

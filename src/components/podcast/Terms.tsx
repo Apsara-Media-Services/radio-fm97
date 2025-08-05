@@ -25,7 +25,7 @@ const Terms = (props: IPodcastComponentProps) => {
               <PodcastCard
                 key={key}
                 title={term.name || ''}
-                tag={app.appTag}
+                tag={app.tag}
                 imageUrl={term.coverImage}
                 to={`audio/${term?.slug}`}
                 className="h-[300px]"

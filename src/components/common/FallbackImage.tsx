@@ -8,7 +8,7 @@ import app from '@/configs/app';
 const FallbackImage = (props: IFallbackImageComponentProps) => {
   const {
     src,
-    fallbackSrc = app.appLogo,
+    fallbackSrc = app.logo,
     className = 'object-cover',
     alt,
     ...attributes
@@ -22,7 +22,7 @@ const FallbackImage = (props: IFallbackImageComponentProps) => {
   return (
     <Image
       {...attributes}
-      alt={alt || app.appName}
+      alt={alt || app.name}
       src={imgSrc}
       className={imgClassName}
       onLoadingComplete={(result) => {

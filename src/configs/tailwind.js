@@ -9,4 +9,5 @@ const app = {
 
 export default {
   colors: app[process.env.NEXT_PUBLIC_APP_TAG ?? 'fm97'].theme.colors,
+  backgroundImage: app[process.env.NEXT_PUBLIC_APP_TAG ?? 'fm97'].theme.backgroundImage,
 }

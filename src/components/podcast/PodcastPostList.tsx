@@ -67,7 +67,7 @@ const PodcastPostList = (props: IProps) => {
         sourceUrl = imageSource.sourceUrl;
       }
     }
-    return sourceUrl || app.appLogo;
+    return sourceUrl || app.logo;
   };
 
   const isActivePost = (post: Post) => {
@@ -99,7 +99,7 @@ const PodcastPostList = (props: IProps) => {
                   removeWrapper   
                   className="object-cover rounded-full opacity-100 inset-0 w-full h-full"
                   src={getSourceUrl(item)}
-                  fallbackSrc={app.appLogo}
+                  fallbackSrc={app.logo}
                   alt={item.title as string}
                 />
                 {isActivePost(item) && (

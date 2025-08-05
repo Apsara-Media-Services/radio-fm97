@@ -37,8 +37,8 @@ const RadioLive = (props: any) => {
           removeWrapper
           alt={program?.title}
           className="z-0 w-full h-full object-cover opacity-100 absolute inset-0"
-          src={get(program, 'cover.0.sizes.medium.url', app.appLogo) as string}
-          fallbackSrc={app.appLogo}
+          src={get(program, 'cover.0.sizes.medium.url', app.logo) as string}
+          fallbackSrc={app.logo}
         />
 
         <Container>
@@ -48,8 +48,8 @@ const RadioLive = (props: any) => {
                 removeWrapper
                 alt={program?.title}
                 className="w-full h-full object-cover opacity-100 rounded-full"
-                src={get(program, 'cover.0.sizes.medium.url', app.appLogo) as string}
-                fallbackSrc={app.appLogo}
+                src={get(program, 'cover.0.sizes.medium.url', app.logo) as string}
+                fallbackSrc={app.logo}
               />
             </div>
             <div className="text-white w-full md:w-auto">
@@ -61,7 +61,7 @@ const RadioLive = (props: any) => {
                         'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-primary relative'
                       }
                     >
-                      { app.appTag }
+                      { app.tag }
                     </span>
                     <h5 className="my-5">{program?.title}</h5>
                     <div className="flex gap-1 items-center">

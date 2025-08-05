@@ -14,8 +14,13 @@ const kantumruy_pro = Kantumruy_Pro({
 });
 
 export const metadata: Metadata = {
-  title: app.appName,
-  description: app.appDescription,
+  title: `${app.name} | ${app.tag}`,
+  description: app.description,
+  icons: {
+    icon: app.icons.icon,
+    apple: app.icons.apple,
+    shortcut: app.icons.shortcut,
+  },
 };
 
 export default function RootLayout({

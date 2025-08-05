@@ -11,14 +11,6 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
-      colors: {
-        'ams-primary': tailwind.colors.primary ?? '#cf0a10',
-        'ams-secondary': tailwind.colors.secondary ?? '#362095',
-        'ams-red': '#cf0a10',
-        'ams-blue': '#362095',
-        'ams-purple': '#721550',
-        'ams-light': '#eeeff0',
-      },
       fontFamily: {
         sans: [
           'Roboto',
@@ -29,6 +21,17 @@ export default {
           'Noto Sans',
           'serif',
         ],
+      },
+      colors: {
+        'ams-primary': tailwind.colors.primary ?? '#cf0a10',
+        'ams-secondary': tailwind.colors.secondary ?? '#362095',
+        'ams-red': '#cf0a10',
+        'ams-blue': '#362095',
+        'ams-purple': '#721550',
+        'ams-light': '#eeeff0',
+      },
+      backgroundImage: {
+        ...tailwind.backgroundImage,
       },
     },
   },

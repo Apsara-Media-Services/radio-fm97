@@ -23,8 +23,8 @@ const PodcastHero = ({className}: IProps) => {
           removeWrapper
           alt="Card background"
           className="z-0 w-full h-full object-cover opacity-100 absolute inset-0"
-          src={podcast?.coverImage || app.appLogo}
-          fallbackSrc={app.appLogo}
+          src={podcast?.coverImage || app.logo}
+          fallbackSrc={app.logo}
         />
 
         <Container>
@@ -34,8 +34,8 @@ const PodcastHero = ({className}: IProps) => {
                 removeWrapper
                 alt="Card background"
                 className="w-full h-full object-cover opacity-100 rounded-full"
-                src={post?.featuredImage?.node?.sourceUrl || app.appLogo}
-                fallbackSrc={app.appLogo}
+                src={post?.featuredImage?.node?.sourceUrl || app.logo}
+                fallbackSrc={app.logo}
               />
             </div>
             <div className="text-white w-full md:w-auto">

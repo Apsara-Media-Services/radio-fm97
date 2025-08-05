@@ -26,7 +26,7 @@ const Footer = () => {
           <div className="md:col-span-2 xl:col-auto">
             <SectionHeader
               type="secondary"
-              title={app.appName}
+              title={app.name}
               lineColor="bg-zinc-50"
               className="text-lg lg:text-xl font-semibold mb-5"
             />
