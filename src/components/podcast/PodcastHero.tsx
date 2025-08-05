@@ -44,7 +44,7 @@ const PodcastHero = ({className}: IProps) => {
                   <div className="air-now text-xl md:text-2xl font-semibold">
                     <span
                       className={
-                        'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-red relative'
+                        'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-primary relative'
                       }
                     >
                       {podcast?.name}
@@ -72,7 +72,7 @@ const PodcastHero = ({className}: IProps) => {
               <div className="air-now">
                 <div className="flex flex-col lg:flex-row gap-1 lg:items-center">
                   <div>
-                    <span className="text-ams-red font-semibold">
+                    <span className="text-ams-primary font-semibold">
                       {'Google'}
                     </span>{' '}
                     :
@@ -87,7 +87,7 @@ const PodcastHero = ({className}: IProps) => {
               <div>
                 <div className="flex flex-col lg:flex-row gap-1 lg:items-center">
                   <div>
-                    <span className="text-ams-red">{'Apple'}</span> :
+                    <span className="text-ams-primary">{'Apple'}</span> :
                   </div>{' '}
                   <time className="font-normal">
                     ស្តាប់វិទ្យុនៅលើ Apple Podcast
@@ -97,7 +97,7 @@ const PodcastHero = ({className}: IProps) => {
             </div>
             <div className="list-programs border-t-2 pt-4 md:border-t-0 md:pt-0 md:border-l-2 md:pl-4 dark:border-white flex gap-x-2 items-center">
               <div className="flex flex-col lg:flex-row gap-1 lg:items-center">
-                <ShareRounded className="text-ams-red" />
+                <ShareRounded className="text-ams-primary" />
                 <h3 className="">{' ចែករំលែកទៅកាន់បណ្តាញសង្គម'}</h3>
               </div>
             </div>

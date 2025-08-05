@@ -1,4 +1,5 @@
 import { heroui } from "@heroui/react";
+import tailwind from './src/configs/tailwind.js';
 
 export default {
   content: [
@@ -11,6 +12,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        'ams-primary': tailwind.colors.primary ?? '#cf0a10',
+        'ams-secondary': tailwind.colors.secondary ?? '#362095',
         'ams-red': '#cf0a10',
         'ams-blue': '#362095',
         'ams-purple': '#721550',

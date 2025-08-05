@@ -58,7 +58,7 @@ const RadioLive = (props: any) => {
                   <div className="air-now text-xl md:text-2xl font-semibold">
                     <span
                       className={
-                        'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-red relative'
+                        'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-primary relative'
                       }
                     >
                       { app.appTag }
@@ -108,7 +108,7 @@ const RadioLive = (props: any) => {
           <div className="current-program">
             {!isEmpty(program) && (
               <div className="air-now">
-                <div className="text-ams-red font-semibold">
+                <div className="text-ams-primary font-semibold">
                   {'កំពុងផ្សាយ'}
                 </div>
                 <time className="font-normal">
@@ -123,7 +123,7 @@ const RadioLive = (props: any) => {
           <div className="up-next dark:border-white md:text-right">
             {!isEmpty(nextProgram) && (
               <div>
-                <h5 className="text-ams-red">{'កម្មវិធីបន្ទាប់'}</h5>
+                <h5 className="text-ams-primary">{'កម្មវិធីបន្ទាប់'}</h5>
                 <time className="font-normal">
                   {timestampTo12Hour(nextProgram?.startTimestamp)} ~{' '}
                   {timestampTo12Hour(nextProgram?.endTimestamp)}

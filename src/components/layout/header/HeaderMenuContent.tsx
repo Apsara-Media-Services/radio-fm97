@@ -19,7 +19,7 @@ const HeaderMenuContent = ({ className }: IComponentProps) => {
             <div key={`footer-ams-${index}`} className="md:text-lg">
               <Link
                 href={item.href}
-                className="hover:text-ams-red dark:text-zinc-300 dark:hover:text-white"
+                className="hover:text-ams-primary dark:text-zinc-300 dark:hover:text-white"
               >
                 {item.name}
               </Link>
@@ -39,7 +39,7 @@ const HeaderMenuContent = ({ className }: IComponentProps) => {
             <div key={`ams-group-${index}`} className="md:text-lg">
               <a
                 href={item.href}
-                className="hover:text-ams-red dark:text-zinc-300 dark:hover:text-white"
+                className="hover:text-ams-primary dark:text-zinc-300 dark:hover:text-white"
               >
                 {item.name}
               </a>

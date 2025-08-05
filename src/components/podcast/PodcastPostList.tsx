@@ -144,7 +144,7 @@ const PodcastPostList = (props: IProps) => {
         <div className="text-center mt-5">
         <Button 
           variant='bordered' 
-          className='text-ams-red border-ams-red font-semibold px-7'
+          className='text-ams-primary border-ams-primary font-semibold px-7'
           isLoading={loading}
           onPress={loadMore}
         >

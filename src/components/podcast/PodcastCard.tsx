@@ -37,7 +37,7 @@ const PodcastCard = (props: IProps) => {
             {tag}
           </p>
         )}
-        <h4 className="text-white font-medium text-large bg-ams-red/90 px-2">
+        <h4 className="text-white font-medium text-large bg-ams-primary/90 px-2">
           {title}
         </h4>
       </CardHeader>

@@ -26,7 +26,7 @@ const HeaderMenuThemeSwitcher = ({ className }: IComponentProps) => {
   return (
     <Menu as="div" className={classNames('relative inline-block', className as string)}>
       <MenuButton className="flex" onClick={handleThemeChange}>
-        <span className="text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white">
+        <span className="text-zinc-900 dark:text-zinc-400 hover:text-ams-primary dark:hover:text-white">
           {resolvedTheme === 'light' ? (
             <NightsStayRounded />
           ) : (

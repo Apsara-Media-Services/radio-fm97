@@ -35,7 +35,7 @@ const HeaderLogo = ({ className }: IComponentProps) => {
               className="rounded-lg"
             />
           </div>
-          <div className="text-xl/10 md:text-2xl/10 font-semibold bg-gradient-to-r from-ams-red via-ams-purple to-ams-blue text-transparent bg-clip-text px-1 hidden lg:block relative">
+          <div className="text-xl/10 md:text-2xl/10 font-semibold bg-gradient-to-r from-ams-primary via-ams-purple to-ams-secondary text-transparent bg-clip-text px-1 hidden lg:block relative">
             {app.appName}
           </div>
         </div>

@@ -35,7 +35,7 @@ const Footer = () => {
                 <div key={`footer-ams-${index}`}>
                   <Link
                     href={item.href}
-                    className="hover:text-ams-red dark:text-zinc-200 dark:hover:text-white"
+                    className="hover:text-ams-primary dark:text-zinc-200 dark:hover:text-white"
                   >
                     {item.name}
                   </Link>
@@ -55,7 +55,7 @@ const Footer = () => {
                 <div key={`ams-group-${index}`}>
                   <a
                     href={item.href}
-                    className="hover:text-ams-red dark:text-zinc-200 dark:hover:text-white"
+                    className="hover:text-ams-primary dark:text-zinc-200 dark:hover:text-white"
                   >
                     {item.name}
                   </a>
@@ -75,7 +75,7 @@ const Footer = () => {
                 <div key={`footer-${index}`}>
                   <Link
                     href={item.href}
-                    className="hover:text-ams-red dark:text-zinc-200 dark:hover:text-white"
+                    className="hover:text-ams-primary dark:text-zinc-200 dark:hover:text-white"
                   >
                     {item.name}
                   </Link>

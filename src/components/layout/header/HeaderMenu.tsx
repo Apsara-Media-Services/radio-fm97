@@ -21,7 +21,7 @@ const HeaderMenu = ({ className }: IComponentProps) => {
               ) : (
                 <MenuRounded
                   style={{ fontSize: 30 }}
-                  className="text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white"
+                  className="text-zinc-900 dark:text-zinc-400 hover:text-ams-primary dark:hover:text-white"
                 />
               )}
             </MenuButton>

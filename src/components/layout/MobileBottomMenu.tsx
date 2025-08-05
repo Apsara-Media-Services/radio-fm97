@@ -3,7 +3,7 @@
 import { useAppContext } from '@/components/AppContext';
 import HeaderMenuContent from '@/components/layout/header/HeaderMenuContent';
 import { IComponentProps } from '@/types/component';
-import { Menu, Transition } from '@headlessui/react';
+import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react';
 import {
   CloseRounded,
   HomeRounded,
@@ -34,14 +34,13 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
       <div className="flex justify-between items-center relative">
         <Link
           href={'/'}
-          className="text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white p-3 w-28 text-center"
+          className="text-zinc-900 dark:text-zinc-400 hover:text-ams-primary dark:hover:text-white p-3 w-28 text-center"
         >
           <div
             className={classNames(
-              active.home ? 'text-ams-red dark:text-white' : ''
+              active.home ? 'text-ams-primary dark:text-white' : ''
             )}
           >
-            {/* <HomeIcon className="h-7 w-7 mx-auto" /> */}
             <HomeRounded />
             <div className="text-sm">ទំព័រដើម</div>
           </div>
@@ -61,11 +60,6 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
             )}
           >
             <div className="relative">
-              {/* {player?.playing ? (
-                <PauseCircleIcon className="h-7 w-7 mx-auto" />
-              ) : (
-                <PlayCircleIcon className="h-7 w-7 mx-auto" />
-              )} */}
               <PodcastsRounded />
               <div
                 className={classNames(
@@ -89,19 +83,16 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
             return (
               <>
                 {open ? (
-                  <Menu.Button className="w-28 p-3 text-ams-red dark:text-white">
+                  <MenuButton className="w-28 p-3 text-ams-primary dark:text-white">
                     <CloseRounded />
-                    {/* <XMarkIcon className="h-7 w-7 mx-auto" aria-hidden="true" /> */}
                     <div className="text-sm">មីនុយ</div>
-                  </Menu.Button>
+                  </MenuButton>
                 ) : (
-                  <Menu.Button className="w-28 p-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white">
-                    {/* <Bars3Icon className="h-7 w-7 mx-auto" aria-hidden="true" /> */}
+                  <MenuButton className="w-28 p-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-primary dark:hover:text-white">
                     <MenuRounded />
                     <div className="text-sm">មីនុយ</div>
-                  </Menu.Button>
+                  </MenuButton>
                 )}
-
                 <Transition
                   as={Fragment}
                   enter="transition ease-out duration-100"
@@ -111,9 +102,9 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <Menu.Items className="absolute w-full h-[calc(100vh-136px)] left-0 bottom-[72px] z-10 origin-bottom-top min-w-max overflow-auto bg-white dark:bg-black ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <MenuItems className="absolute w-full h-[calc(100vh-136px)] left-0 bottom-[72px] z-10 origin-bottom-top min-w-max overflow-auto bg-white dark:bg-black ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <HeaderMenuContent className="p-5 grid gap-8" />
-                  </Menu.Items>
+                  </MenuItems>
                 </Transition>
               </>
             );
