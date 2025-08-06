@@ -36,5 +36,6 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-explicit-any': ['off'],
+    'import/no-anonymous-default-export': 'off',
   },
 };

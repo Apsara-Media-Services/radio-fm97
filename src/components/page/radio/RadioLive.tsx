@@ -19,7 +19,7 @@ const RadioLive = (props: any) => {
 
   useEffect(() => {
     load(radioLiveUrl);
-  }, [radioLiveUrl, load]);
+  }, []);
 
   if (isEmpty(program) && isEmpty(nextProgram)) return <></>;
 

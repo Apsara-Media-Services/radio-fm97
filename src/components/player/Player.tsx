@@ -39,7 +39,7 @@ const Player = (props: IProps) => {
 
   useEffect(() => {
     handlePlayPause(false);
-  }, [handlePlayPause]);
+  }, []);
 
   if (!url) return <></>;
 
