@@ -1,8 +1,8 @@
 'use client';
 
 import { INoSSRComponentProps } from '@/types/component';
-import { useEffect, useLayoutEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 const useEnhancedEffect =
   typeof window !== 'undefined' && process.env.NODE_ENV !== 'test'

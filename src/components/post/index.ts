@@ -3,8 +3,8 @@ import PostCategoryTag from './PostCategoryTag';
 import PostCoverImage from './PostCoverImage';
 import PostDate from './PostDate';
 import PostExcerpt from './PostExcerpt';
-import PostTitle from './PostTitle';
 import PostItemDetail from './PostItemDetail';
+import PostTitle from './PostTitle';
 
 export {
   PostAuthor,

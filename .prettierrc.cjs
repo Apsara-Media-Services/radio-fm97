@@ -8,7 +8,8 @@ module.exports = {
   arrowParens: 'always',
   trailingComma: 'es5',
   bracketSpacing: true,
-  importOrder: [],
+  importOrder: ['^@core/(.*)$', '^@server/(.*)$', '^@ui/(.*)$', '^[./]'],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
+  plugins: ['@trivago/prettier-plugin-sort-imports'],
 };

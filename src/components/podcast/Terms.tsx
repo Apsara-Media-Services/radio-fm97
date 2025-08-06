@@ -19,7 +19,7 @@ const Terms = (props: IPodcastComponentProps) => {
         />
       </div>
       <div className="mb-3 xl:mb-5">
-      <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {terms.map((term, key) => {
             return (
               <PodcastCard

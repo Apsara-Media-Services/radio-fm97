@@ -6,7 +6,7 @@ function timestampTo12Hour(timestamp?: number | string) {
 
 function secondToHHMMSS(seconds: number | string) {
   seconds = Number(seconds);
-  return dayjs.duration(seconds, 'seconds').format('HH:mm:ss')
-};
+  return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
+}
 
 export { timestampTo12Hour, secondToHHMMSS };

@@ -1,30 +1,25 @@
 'use client';
 
-import ReactPlayer from 'react-player';
-import { get, isEmpty } from 'lodash';
-import { Container } from '@/components/common';
-import {
-  Image,
-} from "@heroui/react";
-import app from '@/configs/app';
-import { timestampTo12Hour } from '@/utils/date';
 import { useSharedPlayer } from '@/components/PlayerContext';
-import { useEffect } from 'react';
-import PlayerVolume from '@/components/player/PlayerVolume';
+import { Container } from '@/components/common';
 import PlayerPlayPause from '@/components/player/PlayerPlayPause';
 import PlayerProgress from '@/components/player/PlayerProgress';
+import PlayerVolume from '@/components/player/PlayerVolume';
+import app from '@/configs/app';
+import { timestampTo12Hour } from '@/utils/date';
+import { Image } from '@heroui/react';
+import { get, isEmpty } from 'lodash';
+import { useEffect } from 'react';
+import ReactPlayer from 'react-player';
 
 const RadioLive = (props: any) => {
   const { className, program, nextProgram, radioLiveUrl } = props;
 
-  const { 
-    state,
-    load,
-  } = useSharedPlayer();
+  const { state, load } = useSharedPlayer();
 
   useEffect(() => {
     load(radioLiveUrl);
-  }, []);
+  }, [radioLiveUrl, load]);
 
   if (isEmpty(program) && isEmpty(nextProgram)) return <></>;
 
@@ -48,7 +43,9 @@ const RadioLive = (props: any) => {
                 removeWrapper
                 alt={program?.title}
                 className="w-full h-full object-cover opacity-100 rounded-full"
-                src={get(program, 'cover.0.sizes.medium.url', app.logo) as string}
+                src={
+                  get(program, 'cover.0.sizes.medium.url', app.logo) as string
+                }
                 fallbackSrc={app.logo}
               />
             </div>
@@ -61,7 +58,7 @@ const RadioLive = (props: any) => {
                         'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-primary relative'
                       }
                     >
-                      { app.tag }
+                      {app.tag}
                     </span>
                     <h5 className="my-5">{program?.title}</h5>
                     <div className="flex gap-1 items-center">
@@ -102,8 +99,8 @@ const RadioLive = (props: any) => {
           </div>
         </Container>
       </div>
-      
-      <Container className='my-8'>
+
+      <Container className="my-8">
         <div className="flex flex-col md:flex-row justify-between gap-y-4 text-base md:text-lg lg:text-xl font-semibold dark:text-white">
           <div className="current-program">
             {!isEmpty(program) && (
@@ -119,7 +116,7 @@ const RadioLive = (props: any) => {
               </div>
             )}
           </div>
-          <div className='border-t-2 md:border-r-2 border-gray-200' />
+          <div className="border-t-2 md:border-r-2 border-gray-200" />
           <div className="up-next dark:border-white md:text-right">
             {!isEmpty(nextProgram) && (
               <div>

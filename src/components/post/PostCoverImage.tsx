@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
 import Link from 'next/link';
 
+
 const PostCoverImage = (props: IPostComponentProps) => {
   const { className, classes: _classes, post, config = {} } = props;
 

@@ -32,10 +32,10 @@ const HomeEconomicNews = (props: IPostSectionComponentProps) => {
           $breakpoints.lgAndUp && index >= 3
             ? 'border-none'
             : $breakpoints.smAndUp && index >= 5
-            ? 'border-none'
-            : $breakpoints.xsOnly && index >= 6
-            ? 'border-none'
-            : ''
+              ? 'border-none'
+              : $breakpoints.xsOnly && index >= 6
+                ? 'border-none'
+                : ''
         ),
       },
     };

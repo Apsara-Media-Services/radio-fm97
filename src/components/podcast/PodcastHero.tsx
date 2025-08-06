@@ -1,17 +1,13 @@
 import { Container } from '../common';
-import Player from '@components/player/Player';
-import { Image } from "@heroui/react";
-import { get, isEmpty } from 'lodash';
-import { IComponentProps } from '@/types/component';
-import dayjs from '@/libs/dayjs';
-import app from '@/configs/app';
 import { useSharedPlayer } from '@/components/PlayerContext';
+import app from '@/configs/app';
+import dayjs from '@/libs/dayjs';
+import { IComponentProps } from '@/types/component';
+import Player from '@components/player/Player';
+import { Image } from '@heroui/react';
+import { get, isEmpty } from 'lodash';
 
-interface IProps extends IComponentProps {
-}
-
-const PodcastHero = ({className}: IProps) => {
-
+const PodcastHero = ({ className }: IComponentProps) => {
   const { podcast, activePodcastPost: post } = useSharedPlayer();
 
   return (
@@ -51,17 +47,14 @@ const PodcastHero = ({className}: IProps) => {
                     </span>
                     <h5 className="my-5 line-clamp-3">{post?.title}</h5>
                     <div className="flex gap-1 items-center">
-                      { dayjs(post.date).format('DD/MMMM/YYYY') }
+                      {dayjs(post.date).format('DD/MMMM/YYYY')}
                     </div>
                   </div>
                 </>
               )}
             </div>
           </div>
-          <Player
-            url={get(post, 'url', '')}
-            className='mt-8'
-          />
+          <Player url={get(post, 'url', '')} className="mt-8" />
         </Container>
       </div>
       {/* To be develop next version for the feature play via podcast app and sharing. */}

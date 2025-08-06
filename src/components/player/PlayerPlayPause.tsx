@@ -1,14 +1,9 @@
-import {
-  Button,
-} from "@heroui/react";
 import { useSharedPlayer } from '@/components/PlayerContext';
 import { IComponentProps } from '@/types/component';
+import { Button } from '@heroui/react';
 
 const PlayerPlayPause = (props: IComponentProps) => {
-  const { 
-    PlayingIcon,
-    handlePlayPause,
-  } = useSharedPlayer();
+  const { PlayingIcon, handlePlayPause } = useSharedPlayer();
 
   return (
     <div className={props.className}>

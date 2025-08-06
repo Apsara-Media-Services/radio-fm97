@@ -1,8 +1,8 @@
 export default {
-  name: "វិទ្យុសំឡេងយុវជន ៩៧",
+  name: 'វិទ្យុសំឡេងយុវជន ៩៧',
   tag: 'FM97',
-  logo: "/images/fm97.jpg",
-  description: 
+  logo: '/images/fm97.jpg',
+  description:
     'កម្មវិធីផ្សាយប្រចាំថ្ងៃរបស់វិទ្យុសំលេងយុវជន FM 97MHz | ព័ត៌មានពិត អប់រំ កម្សាន្ត និងចំណេះដឹង',
   icons: {
     icon: '/favicon/fm97/favicon.ico',
@@ -19,5 +19,5 @@ export default {
     backgroundImage: {
       'gradient-title': 'linear-gradient(to right, #cf0a10, #721550, #362095)',
     },
-  }
-}
+  },
+};

@@ -1,6 +1,6 @@
-import type { MetadataRoute } from 'next'
 import app from '@/configs/app';
- 
+import type { MetadataRoute } from 'next';
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: app.name,
@@ -27,5 +27,5 @@ export default function manifest(): MetadataRoute.Manifest {
         type: 'image/x-icon',
       },
     ],
-  }
+  };
 }

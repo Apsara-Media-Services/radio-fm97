@@ -11,7 +11,8 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
   const active = {
     home: pathname === '/',
     live: pathname.startsWith('/live'),
-    audio: pathname.startsWith('/audio') && !pathname.startsWith('/audio/daily'),
+    audio:
+      pathname.startsWith('/audio') && !pathname.startsWith('/audio/daily'),
     daily: pathname.startsWith('/audio/daily'),
   };
 

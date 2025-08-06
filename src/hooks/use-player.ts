@@ -1,9 +1,16 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { PauseCircleFilledRounded, PlayCircleFilledRounded, VolumeDownRounded, VolumeMuteRounded, VolumeOffRounded, VolumeUpRounded } from '@mui/icons-material';
 import { Podcast, Post } from '@/gql/graphql';
+import {
+  PauseCircleFilledRounded,
+  PlayCircleFilledRounded,
+  VolumeDownRounded,
+  VolumeMuteRounded,
+  VolumeOffRounded,
+  VolumeUpRounded,
+} from '@mui/icons-material';
 import { findIndex, nth } from 'lodash';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const initialState = {
   src: undefined,
@@ -23,7 +30,7 @@ const initialState = {
   seeking: false,
   loadedSeconds: 0,
   playedSeconds: 0,
-}
+};
 
 type PlayerState = Omit<typeof initialState, 'src'> & {
   src?: string;
@@ -61,7 +68,7 @@ const usePlayer = () => {
   }, [state.playing]);
 
   const load = (src?: string) => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       src,
       playing: false,
@@ -77,31 +84,41 @@ const usePlayer = () => {
   }, []);
 
   const handlePlayPause = (_value?: boolean) => {
-    setState(prevState => ({ ...prevState, playing: _value ?? !prevState.playing }));
-  }
+    setState((prevState) => ({
+      ...prevState,
+      playing: _value ?? !prevState.playing,
+    }));
+  };
 
   const handleMuteToggle = () => {
     const muted = !state.muted;
-    const volume = muted ? 0 : (state.volumePrevious === 0 ? 1 : state.volumePrevious);
-    setState(prevState => ({ 
-      ...prevState, 
+    const volume = muted
+      ? 0
+      : state.volumePrevious === 0
+        ? 1
+        : state.volumePrevious;
+    setState((prevState) => ({
+      ...prevState,
       muted,
-      volume
+      volume,
     }));
-  }
+  };
 
   const handleVolumeChange = (volume: number | string) => {
     volume = Number(volume);
-    setState(prevState => ({ 
-      ...prevState, 
-      volume, 
+    setState((prevState) => ({
+      ...prevState,
+      volume,
       volumePrevious: volume,
-      muted: volume === 0
+      muted: volume === 0,
     }));
-  }
+  };
 
   const handleVolumePopupChange = (value: boolean) => {
-    setState(prevState => ({ ...prevState, volumePopup: value ?? !prevState.playing }));
+    setState((prevState) => ({
+      ...prevState,
+      volumePopup: value ?? !prevState.playing,
+    }));
   };
 
   function handleSkipChange(i: number) {
@@ -110,20 +127,23 @@ const usePlayer = () => {
     const next = nth(podcastPosts, nextIdx) ?? podcastPosts[0];
 
     setActivePodcastPost(next);
-  };
+  }
 
   const handleLoopToggle = () => {
-    setState(prevState => ({ ...prevState, loop: !prevState.loop }));
-  }
+    setState((prevState) => ({ ...prevState, loop: !prevState.loop }));
+  };
 
   const handleSeekInSeconds = (seconds: number) => {
     const player = playerRef.current;
     if (!player || !player.duration) return;
 
-    const newTime = Math.min(Math.max(player.currentTime + seconds, 0), player.duration);
+    const newTime = Math.min(
+      Math.max(player.currentTime + seconds, 0),
+      player.duration
+    );
     player.currentTime = newTime;
 
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       played: newTime / player.duration,
       playedSeconds: newTime,
@@ -131,29 +151,30 @@ const usePlayer = () => {
   };
 
   const handleSeekChange = (seek: number) => {
-    setState(prevState => ({ ...prevState, seeking: true }));
-    setState(prevState => ({ 
-      ...prevState, 
+    setState((prevState) => ({ ...prevState, seeking: true }));
+    setState((prevState) => ({
+      ...prevState,
       played: seek,
     }));
-  }
+  };
 
   const handleSeekChangeEnd = (seek: number) => {
-    setState(prevState => ({ ...prevState, seeking: false }));
+    setState((prevState) => ({ ...prevState, seeking: false }));
     if (playerRef.current) {
       playerRef.current.currentTime = seek * playerRef.current.duration;
     }
-  }
+  };
 
   const handleProgress = () => {
     const player = playerRef.current;
     // We only want to update time slider if we are not currently seeking
     if (!player || state.seeking || !player.buffered?.length) return;
 
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       loadedSeconds: player.buffered?.end(player.buffered?.length - 1),
-      loaded: player.buffered?.end(player.buffered?.length - 1) / player.duration,
+      loaded:
+        player.buffered?.end(player.buffered?.length - 1) / player.duration,
     }));
   };
 
@@ -164,7 +185,7 @@ const usePlayer = () => {
 
     if (!player.duration) return;
 
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       playedSeconds: player.currentTime,
       played: player.currentTime / player.duration,
@@ -175,14 +196,14 @@ const usePlayer = () => {
     const player = playerRef.current;
     if (!player) return;
 
-    setState(prevState => ({ ...prevState, duration: player.duration }));
+    setState((prevState) => ({ ...prevState, duration: player.duration }));
   };
 
   const handleEnded = () => {
-    setState(prevState => ({ ...prevState, playing: prevState.loop }));
+    setState((prevState) => ({ ...prevState, playing: prevState.loop }));
   };
 
-  return { 
+  return {
     podcast,
     setPodcast,
     activePodcastPost,
@@ -191,16 +212,16 @@ const usePlayer = () => {
     setPodcastPosts,
     state,
     PlayingIcon,
-    VolumeIcon, 
+    VolumeIcon,
     playerRef,
     load,
     setPlayerRef,
     handlePlayPause,
-    handleMuteToggle, 
+    handleMuteToggle,
     handleVolumeChange,
     handleLoopToggle,
     handleVolumePopupChange,
-    handleSkipChange, 
+    handleSkipChange,
     handleSeekInSeconds,
     handleSeekChange,
     handleSeekChangeEnd,
@@ -208,7 +229,7 @@ const usePlayer = () => {
     handleTimeUpdate,
     handleDurationChange,
     handleEnded,
-   };
+  };
 };
 
 export default usePlayer;

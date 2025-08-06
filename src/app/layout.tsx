@@ -1,12 +1,12 @@
 import { AppProvider } from '@/components/AppContext';
+import app from '@/configs/app';
+import classNames from 'classnames';
 import { Metadata } from 'next';
 import { Kantumruy_Pro } from 'next/font/google';
 import Script from 'next/script';
-import classNames from 'classnames';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './globals.css';
-import 'react-toastify/dist/ReactToastify.css';
-import app from '@/configs/app';
 
 const kantumruy_pro = Kantumruy_Pro({
   subsets: ['latin'],
@@ -29,7 +29,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={classNames(kantumruy_pro.className)} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={classNames(kantumruy_pro.className)}
+      suppressHydrationWarning
+    >
       <body className="bg-ams-light dark:bg-zinc-700">
         <AppProvider>{children}</AppProvider>
         <Script

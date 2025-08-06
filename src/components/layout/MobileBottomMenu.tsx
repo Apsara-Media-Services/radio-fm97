@@ -1,6 +1,5 @@
 'use client';
 
-import { useAppContext } from '@/components/AppContext';
 import HeaderMenuContent from '@/components/layout/header/HeaderMenuContent';
 import { IComponentProps } from '@/types/component';
 import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react';
@@ -11,7 +10,6 @@ import {
   PodcastsRounded,
 } from '@mui/icons-material';
 import classNames from 'classnames';
-import { cloneDeep, isEmpty, isNil } from 'lodash';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Fragment } from 'react';
@@ -22,7 +20,6 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
     home: pathname === '/',
     live: pathname.startsWith('/live'),
   };
-  const { player, setPlayer } = useAppContext();
 
   return (
     <div
@@ -46,13 +43,8 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
           </div>
         </Link>
         <Link
-          href={'/'}
+          href={'/live'}
           className="group py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white p-3 w-28 text-center"
-          onClick={() => {
-            if (isNil(player) || isEmpty(player)) return;
-            if (active.live) player.playing ? player.pause() : player.play();
-            setPlayer(cloneDeep(player));
-          }}
         >
           <div
             className={classNames(

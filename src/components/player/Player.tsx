@@ -1,14 +1,12 @@
 'use client';
 
-import PlayerPlayPause from "@/components/player/PlayerPlayPause";
-import PlayerProgress from "@/components/player/PlayerProgress";
-import PlayerVolume from "@/components/player/PlayerVolume";
-import { useSharedPlayer } from "@/components/PlayerContext";
-import { IComponentProps } from "@/types/component";
-import { secondToHHMMSS } from "@/utils/date";
-import {
-  Button,
-} from "@heroui/react";
+import { useSharedPlayer } from '@/components/PlayerContext';
+import PlayerPlayPause from '@/components/player/PlayerPlayPause';
+import PlayerProgress from '@/components/player/PlayerProgress';
+import PlayerVolume from '@/components/player/PlayerVolume';
+import { IComponentProps } from '@/types/component';
+import { secondToHHMMSS } from '@/utils/date';
+import { Button } from '@heroui/react';
 import {
   Forward10Rounded,
   LoopRounded,
@@ -41,7 +39,7 @@ const Player = (props: IProps) => {
 
   useEffect(() => {
     handlePlayPause(false);
-  }, []);
+  }, [handlePlayPause]);
 
   if (!url) return <></>;
 
@@ -65,7 +63,9 @@ const Player = (props: IProps) => {
             onPress={() => handleLoopToggle()}
             isIconOnly
             className={
-              state.loop ? 'bg-gray-100/50 p-1' : 'data-[hover]:bg-gray-100/10 p-1'
+              state.loop
+                ? 'bg-gray-100/50 p-1'
+                : 'data-[hover]:bg-gray-100/10 p-1'
             }
             radius="full"
             variant="light"

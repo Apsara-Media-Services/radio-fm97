@@ -2,6 +2,7 @@ import { IObject } from './app';
 import { Podcast, Post, User } from '@/gql/graphql';
 import { ImageProps } from 'next/image';
 
+
 export interface IComponentProps {
   children?: React.ReactNode | undefined;
   classes?: IObject;

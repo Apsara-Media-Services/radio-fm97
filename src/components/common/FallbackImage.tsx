@@ -1,9 +1,9 @@
 'use client';
 
-import { IFallbackImageComponentProps } from '@/types/component';
-import { useState } from 'react';
-import Image from 'next/image';
 import app from '@/configs/app';
+import { IFallbackImageComponentProps } from '@/types/component';
+import Image from 'next/image';
+import { useState } from 'react';
 
 const FallbackImage = (props: IFallbackImageComponentProps) => {
   const {

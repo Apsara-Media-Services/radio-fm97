@@ -1,3 +1,3 @@
-import Live from "@/app/page";
+import Live from '@/app/page';
 
 export default Live;

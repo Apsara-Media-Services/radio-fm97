@@ -1,15 +1,14 @@
+import { useSharedPlayer } from '@/components/PlayerContext';
 import {
   Button,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Slider,
-} from "@heroui/react";
-import { useSharedPlayer } from '@/components/PlayerContext';
-import { IComponentProps } from '@/types/component';
+} from '@heroui/react';
 
-const PlayerVolume = (props: IComponentProps) => {
-  const { 
+const PlayerVolume = () => {
+  const {
     state,
     VolumeIcon,
     handleVolumePopupChange,
@@ -23,11 +22,7 @@ const PlayerVolume = (props: IComponentProps) => {
         onMouseLeave={() => handleVolumePopupChange(false)}
         onMouseOver={() => handleVolumePopupChange(true)}
       >
-        <Popover
-          isOpen={state.volumePopup}
-          placement="top"
-          offset={1}
-        >
+        <Popover isOpen={state.volumePopup} placement="top" offset={1}>
           <PopoverTrigger>
             <Button
               onClick={handleMuteToggle}
@@ -51,16 +46,16 @@ const PlayerVolume = (props: IComponentProps) => {
                 orientation="vertical"
                 aria-label="Volume"
                 classNames={{
-                  base: "max-w-md",
+                  base: 'max-w-md',
                   track: [
-                    "data-[fill-start=true]:border-b-ams-red",
-                    "border-y-8",
+                    'data-[fill-start=true]:border-b-ams-red',
+                    'border-y-8',
                   ],
-                  filler: "bg-ams-red",
+                  filler: 'bg-ams-red',
                   thumb: [
-                    "transition-size bg-ams-red",
-                    "data-[fill-start=true]:bg-ams-red",
-                    "h-4 w-4 after:h-2.5 after:w-2.5",
+                    'transition-size bg-ams-red',
+                    'data-[fill-start=true]:bg-ams-red',
+                    'h-4 w-4 after:h-2.5 after:w-2.5',
                   ],
                 }}
                 onChange={(value) => handleVolumeChange(value as number)}

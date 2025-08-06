@@ -8,15 +8,15 @@ const SectionHeader = ({
   title,
   link,
   lineColor = 'bg-gray-100',
-  lineHighlightColor = 'bg-red-900 dark:bg-zinc-400',
+  // lineHighlightColor = 'bg-red-900 dark:bg-zinc-400',
 }: ISectionHeaderComponentProps) => {
   if (!title) return <></>;
 
-  const primaryClass = classNames('h-1', 'flex-1', lineColor);
-  const secondaryClass = {
-    line: classNames('absolute h-0.5 w-full', lineColor),
-    highlight: classNames('absolute h-0.5 w-14', lineHighlightColor),
-  };
+  // const primaryClass = classNames('h-1', 'flex-1', lineColor);
+  // const secondaryClass = {
+  //   line: classNames('absolute h-0.5 w-full', lineColor),
+  //   highlight: classNames('absolute h-0.5 w-14', lineHighlightColor),
+  // };
   const tertiaryClass = classNames('w-1 h-auto', lineColor);
 
   if (type === 'primary') {
