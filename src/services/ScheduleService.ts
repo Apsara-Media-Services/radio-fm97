@@ -12,7 +12,7 @@ export default class ScheduleService {
         Accept: 'application/json',
       },
       body: JSON.stringify(body),
-      next: { revalidate: 100 },
+      next: { revalidate: 3600 },
     };
     return new Promise((resolve, reject) => {
       fetch(url, init)

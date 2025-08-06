@@ -47,12 +47,12 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
         </div>
       </Link>
       <Link
-        href={'/'}
+        href={'/live'}
         className="text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white"
       >
         <div
           className={classNames(
-            active.home ? 'text-ams-red dark:text-white' : ''
+            active.live || active.home ? 'text-ams-red dark:text-white' : ''
           )}
         >
           <div className="relative">

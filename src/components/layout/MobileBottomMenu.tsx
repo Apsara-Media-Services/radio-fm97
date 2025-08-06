@@ -74,21 +74,17 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
             <div className="text-sm">ផ្សាយផ្ទាល់</div>
           </div>
         </Link>
-        <Menu as="div" className="">
+        <Menu as="div">
           {({ open }) => {
-            if (typeof document !== 'undefined') {
-              document.body.classList.toggle('overflow-y-hidden', open);
-            }
-
             return (
               <>
                 {open ? (
-                  <MenuButton className="w-28 p-3 text-ams-primary dark:text-white">
+                  <MenuButton className="w-28 p-3 text-ams-primary dark:text-white focus:outline-none">
                     <CloseRounded />
                     <div className="text-sm">មីនុយ</div>
                   </MenuButton>
                 ) : (
-                  <MenuButton className="w-28 p-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-primary dark:hover:text-white">
+                  <MenuButton className="w-28 p-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-primary dark:hover:text-white focus:outline-none">
                     <MenuRounded />
                     <div className="text-sm">មីនុយ</div>
                   </MenuButton>
@@ -102,7 +98,7 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <MenuItems className="absolute w-full h-[calc(100vh-136px)] left-0 bottom-[72px] z-10 origin-bottom-top min-w-max overflow-auto bg-white dark:bg-black ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <MenuItems className="absolute left-0 bottom-[69px] h-[calc(100vh-133px)] origin-bottom-center z-10 w-full overflow-auto bg-white dark:bg-black shadow-lg dark:shadow-sm dark:shadow-zinc-400/70 focus:outline-none">
                     <HeaderMenuContent className="p-5 grid gap-8" />
                   </MenuItems>
                 </Transition>

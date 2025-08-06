@@ -15,7 +15,7 @@ const HeaderMenu = ({ className }: IComponentProps) => {
       <Menu as="div" className="relative hidden md:inline-block">
         {({ open }) => (
           <>
-            <MenuButton className="flex">
+            <MenuButton className="flex focus:outline-none">
               {open ? (
                 <CloseRounded style={{ fontSize: 30 }} />
               ) : (
@@ -35,7 +35,7 @@ const HeaderMenu = ({ className }: IComponentProps) => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <MenuItems className="absolute right-0 top-[48px] origin-top-right z-10 min-w-max overflow-auto bg-white dark:bg-black shadow-lg dark:shadow-sm dark:shadow-zinc-400/70 ">
+              <MenuItems className="absolute right-0 top-[47px] origin-top-right z-10 min-w-max overflow-auto bg-white dark:bg-black shadow-lg dark:shadow-sm dark:shadow-zinc-400/70 focus:outline-none">
                 <HeaderMenuContent className="p-5 grid gap-8" />
               </MenuItems>
             </Transition>
