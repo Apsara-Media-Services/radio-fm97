@@ -20,11 +20,11 @@ export function getDailyPrograms(programs: Program[], dayOfWeek: string) {
     .filter((program) => !isEmpty(program.radio?.schedules))
     .flatMap((program) => {
       return map(program.radio?.schedules, (schedule) => {
-        const startAt = dayjs(
-          `${dayjs().format('YYYY-MM-DD')} ${schedule?.startTime}`
+        const startAt = dayjs.tz(
+          `${dayjs.tz().format('YYYY-MM-DD')} ${schedule?.startTime}`
         );
-        const endAt = dayjs(
-          `${dayjs().format('YYYY-MM-DD')} ${schedule?.endTime}`
+        const endAt = dayjs.tz(
+          `${dayjs.tz().format('YYYY-MM-DD')} ${schedule?.endTime}`
         );
         return {
           ...program,
@@ -32,9 +32,9 @@ export function getDailyPrograms(programs: Program[], dayOfWeek: string) {
           dayOfWeek: first(schedule?.day) || '',
           startAt: startAt.format('YYYY-MM-DD HH:mm::ss'),
           endAt: endAt.format('YYYY-MM-DD HH:mm:ss'),
-          isLive: dayjs().isAfter(startAt) && dayjs().isBefore(endAt),
+          isLive: dayjs.tz().isAfter(startAt) && dayjs.tz().isBefore(endAt),
           isNext: false,
-          isPlayed: dayjs().isAfter(endAt),
+          isPlayed: dayjs.tz().isAfter(endAt),
         };
       });
     })

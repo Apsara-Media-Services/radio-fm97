@@ -53,7 +53,7 @@ const PodcastHero = ({ className }: IComponentProps) => {
                     </span>
                     <h5 className="my-5 line-clamp-3">{post?.title}</h5>
                     <div className="flex gap-1 items-center">
-                      {dayjs(post.date).format('DD/MMMM/YYYY')}
+                      {dayjs.tz(post.date).format('DD/MMMM/YYYY')}
                     </div>
                   </div>
                 </>

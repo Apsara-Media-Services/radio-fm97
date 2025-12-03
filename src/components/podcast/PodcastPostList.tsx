@@ -127,7 +127,7 @@ const PodcastPostList = () => {
                   </div>
                 </h5>
                 <p className="text-sm dark:text-slate-300 text-slate-500 truncate">
-                  {dayjs(item.date).format('DD/MMMM/YYYY')}
+                  {dayjs.tz(item.date).format('DD/MMMM/YYYY')}
                 </p>
               </div>
             </li>

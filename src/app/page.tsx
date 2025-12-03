@@ -11,8 +11,8 @@ const programService = new ProgramService();
 
 async function loadPrograms() {
   const programs = await programService.all();
-  const today = dayjs().format('dddd');
-  const tomorrow = dayjs().add(1, 'day').format('dddd');
+  const today = dayjs.tz().format('dddd');
+  const tomorrow = dayjs.tz().add(1, 'day').format('dddd');
 
   const {
     programs: todayPrograms,
