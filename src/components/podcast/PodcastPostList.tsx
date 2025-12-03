@@ -6,50 +6,50 @@ import app from '@/configs/app';
 import { Caster } from '@/gql/caster';
 import { Post } from '@/gql/graphql';
 import dayjs from '@/libs/dayjs';
-import { PodcastService } from '@/services';
+import { ProgramService } from '@/services';
+import { getMediaUrl } from '@/utils/wp';
 import { Button, Image } from '@heroui/react';
 import { PauseRounded, PlayArrowRounded } from '@mui/icons-material';
-import { find } from 'lodash';
 import { useState } from 'react';
 
-const podcastService = new PodcastService();
+const programService = new ProgramService();
 
 const PodcastPostList = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const {
     state,
-    podcast,
-    setPodcast,
-    podcastPosts: posts,
-    setPodcastPosts,
-    activePodcastPost,
-    setActivePodcastPost,
+    program,
+    setProgram,
+    programPosts: posts,
+    setProgramPosts,
+    activeProgramPost,
+    setActiveProgramPost,
     handlePlayPause,
   } = useSharedPlayer();
 
   const loadMore = async () => {
     setLoading(true);
-    const _podcast = await podcastService.findWithPosts(
-      podcast.slug as string,
+    const _program = await programService.findBySlugWithPosts(
+      program.slug as string,
       {
         variables: {
-          after: podcast.posts?.pageInfo.endCursor as string,
+          after: program.posts?.pageInfo.endCursor as string,
         },
       }
     );
-    setPodcast(_podcast);
-    setPodcastPosts((pre: Post[]) => [
+    setProgram(_program);
+    setProgramPosts((pre: Post[]) => [
       ...pre,
-      ...Caster.podcast(_podcast).posts,
+      ...Caster.program(_program).posts,
     ]);
     setLoading(false);
   };
 
   const onClickPlay = (post: Post) => {
-    const _playing = activePodcastPost?.id === post.id ? !state.playing : true;
+    const _playing = activeProgramPost?.id === post.id ? !state.playing : true;
 
-    setActivePodcastPost(post);
+    setActiveProgramPost(post);
     handlePlayPause(_playing);
 
     if (window) {
@@ -60,28 +60,16 @@ const PodcastPostList = () => {
     }
   };
 
-  const getSourceUrl = (post: Post) => {
-    const image = post.featuredImage?.node;
-    let sourceUrl = image?.sourceUrl;
-    if (image?.mediaDetails) {
-      const imageSource = find(image.mediaDetails.sizes, ['name', 'thumbnail']);
-      if (imageSource && imageSource.sourceUrl) {
-        sourceUrl = imageSource.sourceUrl;
-      }
-    }
-    return sourceUrl || app.logo;
-  };
-
   const isActivePost = (post: Post) => {
-    return activePodcastPost?.id === post?.id;
+    return activeProgramPost?.id === post?.id;
   };
 
   return (
     <>
-      <div className="my-2 sm:my-6">
+      <div className="my-5">
         <SectionHeader
           type="primary"
-          title={podcast?.name as string}
+          title={program?.name as string}
           className="text-3xl font-semibold"
         />
       </div>
@@ -100,7 +88,11 @@ const PodcastPostList = () => {
                 <Image
                   removeWrapper
                   className="object-cover rounded-full opacity-100 inset-0 w-full h-full"
-                  src={getSourceUrl(item)}
+                  src={getMediaUrl(
+                    item.featuredImage?.node,
+                    'thumbnail',
+                    getMediaUrl(program.radio?.thumbnail?.node)
+                  )}
                   fallbackSrc={app.logo}
                   alt={item.title as string}
                 />
@@ -142,7 +134,7 @@ const PodcastPostList = () => {
           ))}
         </ul>
       </section>
-      {podcast?.posts?.pageInfo.hasNextPage && (
+      {program?.posts?.pageInfo.hasNextPage && (
         <div className="text-center mt-5">
           <Button
             variant="bordered"

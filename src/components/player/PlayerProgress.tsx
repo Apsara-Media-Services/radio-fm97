@@ -35,7 +35,7 @@ const PlayerProgress = (props: IProps) => {
         thumb: [
           'transition-size bg-ams-red',
           'data-[fill-start=true]:bg-ams-red',
-          'h-4 w-4 after:h-2.5 after:w-2.5',
+          'h-4 w-4 after:h-2.5 after:w-2.5 overflow-clip',
         ],
       }}
       onChange={(value) => onChange(value as number)}

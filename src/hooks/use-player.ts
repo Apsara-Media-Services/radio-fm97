@@ -1,6 +1,6 @@
 'use client';
 
-import { Podcast, Post } from '@/gql/graphql';
+import { Post, Program } from '@/gql/graphql';
 import {
   PauseCircleFilledRounded,
   PlayCircleFilledRounded,
@@ -43,9 +43,9 @@ const usePlayer = () => {
   const [PlayingIcon, setPlayingIcon] = useState(() => PlayCircleFilledRounded);
   const [VolumeIcon, setVolumeIcon] = useState(() => VolumeUpRounded);
 
-  const [podcast, setPodcast] = useState({} as Podcast);
-  const [activePodcastPost, setActivePodcastPost] = useState({} as Post);
-  const [podcastPosts, setPodcastPosts] = useState([] as Post[]);
+  const [program, setProgram] = useState({} as Program);
+  const [activeProgramPost, setActiveProgramPost] = useState({} as Post);
+  const [programPosts, setProgramPosts] = useState([] as Post[]);
 
   useEffect(() => {
     if (state.volume <= 0 || state.muted) {
@@ -122,11 +122,11 @@ const usePlayer = () => {
   };
 
   function handleSkipChange(i: number) {
-    const currentIdx = findIndex(podcastPosts, { id: activePodcastPost.id });
+    const currentIdx = findIndex(programPosts, { id: activeProgramPost.id });
     const nextIdx = currentIdx + i;
-    const next = nth(podcastPosts, nextIdx) ?? podcastPosts[0];
+    const next = nth(programPosts, nextIdx) ?? programPosts[0];
 
-    setActivePodcastPost(next);
+    setActiveProgramPost(next);
   }
 
   const handleLoopToggle = () => {
@@ -204,12 +204,12 @@ const usePlayer = () => {
   };
 
   return {
-    podcast,
-    setPodcast,
-    activePodcastPost,
-    setActivePodcastPost,
-    podcastPosts,
-    setPodcastPosts,
+    program,
+    setProgram,
+    activeProgramPost,
+    setActiveProgramPost,
+    programPosts,
+    setProgramPosts,
     state,
     PlayingIcon,
     VolumeIcon,

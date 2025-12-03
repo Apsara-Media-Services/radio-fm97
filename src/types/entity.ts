@@ -1,3 +1,5 @@
+import { MediaItem, Program, Radio, RadioSchedules } from '@/gql/graphql';
+
 export interface IProgramThumbnail {
   id?: string | number;
   name?: string;
@@ -16,4 +18,14 @@ export interface ISchedule {
   startTime?: string;
   endTime?: string;
   program?: IProgram;
+}
+
+export interface IScheduleProgram extends Program {
+  thumbnail?: MediaItem;
+  dayOfWeek: string;
+  startAt: Date | string;
+  endAt: Date | string;
+  isLive: boolean;
+  isNext: boolean;
+  isPlayed: boolean;
 }

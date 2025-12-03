@@ -1,24 +1,22 @@
 import MainLayout from '@/components/layout/MainLayout';
-import PodcastPage from '@/components/podcast/Podcast';
-import { PodcastService } from '@/services';
+import PodcastProgramDetail from '@/components/podcast/PodcastProgramDetail';
+import ProgramService from '@/services/ProgramService';
 import { IDynamicPage } from '@/types/page';
 import { last } from 'lodash';
 
-const podcastService = new PodcastService();
+const programService = new ProgramService();
 
-const Podcast = async ({ params }: IDynamicPage) => {
+const ProgramDetailPage = async ({ params }: IDynamicPage) => {
   const { slug } = await params;
-  const podcast = await podcastService.findWithPosts(last(slug) as string);
-
-  if (!podcast) {
-    return <></>;
-  }
+  const program = await programService.findBySlugWithPosts(
+    last(slug) as string
+  );
 
   return (
     <MainLayout>
-      <PodcastPage podcast={podcast} />
+      <PodcastProgramDetail program={program} />
     </MainLayout>
   );
 };
 
-export default Podcast;
+export default ProgramDetailPage;

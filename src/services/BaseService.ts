@@ -9,7 +9,7 @@ export default class BaseService {
     this.key = key;
   }
 
-  submit<T = any>(body: IObject): Promise<T> {
+  async submit<T = any>(body: IObject): Promise<T> {
     const url = `${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/graphql`;
     const init: RequestInit = {
       method: 'POST',
@@ -18,27 +18,28 @@ export default class BaseService {
         Accept: 'application/json',
       },
       body: JSON.stringify(body),
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
     };
-    return new Promise((resolve, reject) => {
-      fetch(url, init)
-        .then((res) => res.json())
-        .then(({ data, errors }: any) => {
-          if (errors) {
-            return reject(get(head(errors), 'message'));
-          }
+    try {
+      const res = await fetch(url, init);
+      const { data, errors } = await res.json();
 
-          if (has(data, pluralize(this.key))) {
-            return resolve(
-              map(
-                get(data, `${pluralize(this.key)}.edges`),
-                ({ node }) => node
-              ) as T
-            );
-          }
-          return resolve(get(data, `${this.key}`));
-        })
-        .catch((err) => reject(err));
-    });
+      if (errors?.length) {
+        throw new Error(
+          get(head(errors), 'message') || 'Unknown GraphQL error'
+        );
+      }
+
+      if (has(data, pluralize(this.key))) {
+        return map(
+          get(data, `${pluralize(this.key)}.edges`),
+          ({ node }) => node
+        ) as T;
+      }
+
+      return get(data, this.key) as T;
+    } catch (err) {
+      throw err;
+    }
   }
 }

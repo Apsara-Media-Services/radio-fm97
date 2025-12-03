@@ -4,6 +4,14 @@ export default {
   logo: '/images/fm99.jpeg',
   description:
     'កម្មវិធីផ្សាយប្រចាំថ្ងៃរបស់វិទ្យុសំលេងយុវជន FM 99MHz | ព័ត៌មានពិត អប់រំ កម្សាន្ត និងចំណេះដឹង',
+  // program: {
+  //   slug: 'fm99',
+  //   databaseId: 125,
+  // },
+  program: {
+    slug: 'fm97',
+    databaseId: 104,
+  },
   icons: {
     icon: '/favicon/fm99/favicon.ico',
     apple: '/favicon/fm99/apple-touch-icon.png',
@@ -20,4 +28,16 @@ export default {
       'gradient-title': 'linear-gradient(to right, #362095, #362095)',
     },
   },
+  followUs: [
+    {
+      name: 'Facebook',
+      key: 'facebook',
+      href: 'https://www.facebook.com/amsradio99',
+    },
+    {
+      name: 'YouTube',
+      key: 'youtube',
+      href: 'https://www.youtube.com/@apsarafm99',
+    },
+  ],
 };

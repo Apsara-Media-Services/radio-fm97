@@ -2,7 +2,7 @@
 
 import PostCategoryTag from '@/components/post/PostCategoryTag';
 import PostDate from '@/components/post/PostDate';
-import { PodcastService } from '@/services';
+import { ProgramService } from '@/services';
 import { IPostComponentProps } from '@/types/components/post';
 import { useAppContext } from '@components/AppContext';
 import { Headset, PlaylistAddRounded } from '@mui/icons-material';
@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import sanitizeHtml from 'sanitize-html';
 
-const podcastService = new PodcastService();
+const programService = new ProgramService();
 
 const PostItemDetail = ({ post, className }: IPostComponentProps) => {
   const { setControl } = useAppContext();
@@ -37,12 +37,12 @@ const PostItemDetail = ({ post, className }: IPostComponentProps) => {
     };
 
     const fetchData = async () => {
-      let podcast_slug = null as any;
+      let program_slug = null as any;
       post?.podcasts?.edges.map(({ node: { slug } }: any) => {
-        if (!podcast_slug) podcast_slug = slug;
+        if (!program_slug) program_slug = slug;
       });
-      if (!podcast_slug) return;
-      return await podcastService.getPodcastPosts(podcast_slug as any, {
+      if (!program_slug) return;
+      return await programService.getPodcastPosts(program_slug as any, {
         variables: { first: 10 },
       });
     };

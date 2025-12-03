@@ -1,13 +1,15 @@
-import { IObject } from './app';
-import { Podcast, Post, User } from '@/gql/graphql';
+import { Post, Program, User } from '@/gql/graphql';
+import { IScheduleProgram } from '@/types/entity';
 import { ImageProps } from 'next/image';
 
+import { IObject } from './app';
 
 export interface IComponentProps {
   children?: React.ReactNode | undefined;
   classes?: IObject;
   className?: string;
   config?: IObject;
+  title?: string;
   [key: string]: any;
 }
 
@@ -41,13 +43,6 @@ export interface IPostSectionComponentProps extends IComponentProps {
   posts?: Post[];
 }
 
-export interface IPodcastComponentProps extends IComponentProps {
-  title?: string;
-  link?: string;
-  term?: any;
-  terms?: Podcast[];
-}
-
 export interface ILineSeparatorComponentProps extends IComponentProps {
   weight?: string;
   color?: string;
@@ -55,4 +50,22 @@ export interface ILineSeparatorComponentProps extends IComponentProps {
 
 export interface IAuthorCardComponentProps extends IComponentProps {
   user: User;
+}
+
+export interface IRadioLiveComponentProps extends IComponentProps {
+  activeProgram?: IScheduleProgram;
+  nextProgram?: IScheduleProgram;
+  nextTomorrowProgram?: IScheduleProgram;
+}
+
+export interface IRadioProgramComponentProps extends IComponentProps {
+  programs?: IScheduleProgram[];
+}
+
+export interface IPodcastProgramListComponentProps extends IComponentProps {
+  programs: Program[];
+}
+
+export interface IPodcastProgramDetailComponentProps extends IComponentProps {
+  program: Program;
 }

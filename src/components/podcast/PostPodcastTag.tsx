@@ -1,5 +1,5 @@
 import { Caster } from '@/gql/caster';
-import { Podcast } from '@/gql/graphql';
+import { Program } from '@/gql/graphql';
 import { IPostComponentProps } from '@/types/components/post';
 import classNames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
@@ -7,9 +7,9 @@ import Link from 'next/link';
 
 const PostPodcastTag = (props: IPostComponentProps) => {
   const { className, classes: _classes = {}, config, post } = props;
-  const { podcasts } = Caster.post(post);
+  const { programs } = Caster.post(post);
 
-  if (isNil(post?.podcasts) || isEmpty(post?.podcasts)) return <></>;
+  if (isNil(post?.programs) || isEmpty(post?.programs)) return <></>;
 
   const classes = {
     wrapper: '',
@@ -21,21 +21,21 @@ const PostPodcastTag = (props: IPostComponentProps) => {
   return (
     <div className={classNames(className, classes.wrapper)}>
       <div className={classes.innerWrapper}>
-        {config?.showCategoryTagMultiple && podcasts.length ? (
-          podcasts.map((podcast: Podcast) => (
-            <div className={classes.name} key={podcast?.databaseId}>
+        {config?.showCategoryTagMultiple && programs.length ? (
+          programs.map((program: Program) => (
+            <div className={classes.name} key={program?.databaseId}>
               <Link
-                href={podcast.uri?.replace('/podcasts', '/audio') as string}
+                href={program.uri?.replace('/podcasts', '/audio') as string}
               >
-                {podcast.name}
+                {program.name}
               </Link>
             </div>
           ))
         ) : (
           <Link
-            href={podcasts[0].uri?.replace('/podcasts', '/audio') as string}
+            href={programs[0].uri?.replace('/podcasts', '/audio') as string}
           >
-            <div className={classes.name}>{podcasts[0].name}</div>
+            <div className={classes.name}>{programs[0].name}</div>
           </Link>
         )}
       </div>

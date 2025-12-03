@@ -1,18 +1,11 @@
 export const footerMenus = [
-  { name: 'កម្មវិធីផ្សាយ', href: 'audio' },
-  { name: 'កម្មវិធីផ្សាយប្រចាំថ្ងៃ', href: 'audio/daily' },
-];
-
-export const footerLearnMoreMenus = [
-  { name: 'ទំនាក់ទំនង', href: '#' },
-  { name: 'សំនួរនិងចម្លើយដែលពេញនិយម', href: '#' },
-  { name: 'ផ្សព្វផ្សាយពាណិជ្ជកម្ម', href: '#' },
-  { name: 'ជ្រើសរើសបុគ្គលិក', href: '#' },
+  { name: 'ផ្សាយផ្ទាល់', key: 'live', href: 'live' },
+  { name: 'កម្មវិធីផ្សាយ', key: 'audio', href: 'audio' },
 ];
 
 export const amsGroupSites = [
   { name: 'AMS Education', href: 'https://education.ams.com.kh/' },
-  { name: 'AMS Central', href: 'https://ams.com.kh/central/' },
+  { name: 'AMS Central', href: 'https://central.ams.com.kh/' },
   { name: 'AMS Economy', href: 'https://economy.ams.com.kh/' },
   {
     name: 'AMS Khmer Civilization',

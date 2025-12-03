@@ -1,9 +1,13 @@
 import { Container, SectionHeader } from '@/components/common';
+import { FacebookIcon, YoutubeIcon } from '@/components/icons';
 import app from '@/configs/app';
 import { AMS_LOGO } from '@/constants/app';
-import { amsGroupSites, footerLearnMoreMenus, footerMenus } from '@/data/menu';
+import { amsGroupSites, footerMenus } from '@/data/menu';
+import { Facebook, YouTube } from '@mui/icons-material';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import ReactIcon from '../my-icon/react.svg';
 
 const Footer = () => {
   return (
@@ -55,6 +59,8 @@ const Footer = () => {
                 <div key={`ams-group-${index}`}>
                   <a
                     href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-ams-primary dark:text-zinc-200 dark:hover:text-white"
                   >
                     {item.name}
@@ -66,18 +72,28 @@ const Footer = () => {
           <div className="md:col-span-2 xl:col-auto lg:pl-4 ">
             <SectionHeader
               type="secondary"
-              title="ស្វែងយល់បន្ថែម"
+              title="តាមដានយើងតាមរយៈ"
               lineColor="bg-zinc-50"
               className="text-lg lg:text-xl font-semibold mb-5"
             />
-            <div className="grid grid-cols-2 md:grid-cols-none gap-3">
-              {footerLearnMoreMenus.map((item, index) => (
+            <div className="flex gap-3">
+              {/* <ReactIcon className="css-class" /> */}
+              {app.followUs.map((item, index) => (
                 <div key={`footer-${index}`}>
                   <Link
                     href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-ams-primary dark:text-zinc-200 dark:hover:text-white"
                   >
-                    {item.name}
+                    {item.key === 'facebook' && (
+                      // <FacebookIcon className="w-8 h-8 text-blue-600" />
+                      <Facebook className="text-blue-600" fontSize="large" />
+                    )}
+                    {item.key === 'youtube' && (
+                      // <YoutubeIcon className="text-red-600" />
+                      <YouTube className="text-red-600" fontSize="large" />
+                    )}
                   </Link>
                 </div>
               ))}

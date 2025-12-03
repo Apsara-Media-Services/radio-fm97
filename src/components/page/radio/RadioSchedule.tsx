@@ -1,9 +1,11 @@
 import { SectionHeader } from '@/components/common';
 import PodcastCard from '@/components/podcast/PodcastCard';
-import { timestampTo12Hour } from '@/utils/date';
+import { IRadioProgramComponentProps } from '@/types/component';
+import { dateTo12Hour } from '@/utils/date';
+import { getMediaUrl } from '@/utils/wp';
 import { isEmpty, isNil } from 'lodash';
 
-const RadioSchedule = (props: any) => {
+const RadioSchedule = (props: IRadioProgramComponentProps) => {
   const { className, title, programs } = props;
 
   if (isNil(programs) || isEmpty(programs)) return <></>;
@@ -18,14 +20,17 @@ const RadioSchedule = (props: any) => {
       />
       <div className="mb-3 xl:mb-5">
         <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {programs.map((item: any, key: any) => {
+          {programs.map((item, idx) => {
             return (
               <PodcastCard
-                key={key}
-                title={item?.title || ''}
-                tag={`${timestampTo12Hour(item?.startTimestamp)} ~ ${timestampTo12Hour(item?.endTimestamp)}`}
-                imageUrl={item?.cover[0].sizes?.medium?.url}
-                to={`audio/${item?.categories[0]}`}
+                key={idx}
+                title={item.name as string}
+                tag={`${dateTo12Hour(item.startAt)} ~ ${dateTo12Hour(item.endAt)}`}
+                imageUrl={getMediaUrl(item.thumbnail)}
+                to={`audio/${item.slug}`}
+                isLive={item.isLive}
+                isPlayed={item.isPlayed}
+                isNext={item.isNext}
                 className="h-[300px]"
               />
             );

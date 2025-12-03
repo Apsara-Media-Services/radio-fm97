@@ -9,4 +9,8 @@ function secondToHHMMSS(seconds: number | string) {
   return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
 }
 
-export { timestampTo12Hour, secondToHHMMSS };
+function dateTo12Hour(date?: Date | string) {
+  return dayjs(date).format('hh:mm A');
+}
+
+export { timestampTo12Hour, secondToHHMMSS, dateTo12Hour };

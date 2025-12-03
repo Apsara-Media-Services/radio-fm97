@@ -4,6 +4,10 @@ export default {
   logo: '/images/fm97.jpg',
   description:
     'កម្មវិធីផ្សាយប្រចាំថ្ងៃរបស់វិទ្យុសំលេងយុវជន FM 97MHz | ព័ត៌មានពិត អប់រំ កម្សាន្ត និងចំណេះដឹង',
+  program: {
+    slug: 'fm97',
+    databaseId: 104,
+  },
   icons: {
     icon: '/favicon/fm97/favicon.ico',
     apple: '/favicon/fm97/apple-touch-icon.png',
@@ -20,4 +24,16 @@ export default {
       'gradient-title': 'linear-gradient(to right, #cf0a10, #721550, #362095)',
     },
   },
+  followUs: [
+    {
+      name: 'Facebook',
+      key: 'facebook',
+      href: 'https://www.facebook.com/amsradio99',
+    },
+    {
+      name: 'YouTube',
+      key: 'youtube',
+      href: 'https://www.youtube.com/@apsarafm99',
+    },
+  ],
 };

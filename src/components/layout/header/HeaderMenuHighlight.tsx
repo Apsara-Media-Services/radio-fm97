@@ -36,18 +36,6 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
         </div>
       </Link>
       <Link
-        href={'/audio/daily'}
-        className="py-2 text-zinc-900 dark:text-zinc-400 hover:text-ams-primary dark:hover:text-white"
-      >
-        <div
-          className={classNames(
-            active.daily ? 'text-ams-primary dark:text-white' : ''
-          )}
-        >
-          <div className="text-lg">កម្មវិធីផ្សាយប្រចាំថ្ងៃ</div>
-        </div>
-      </Link>
-      <Link
         href={'/live'}
         className="text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white"
       >

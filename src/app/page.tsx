@@ -1,102 +1,63 @@
 import { Container } from '@/components/common';
-import FallbackImage from '@/components/common/FallbackImage';
 import MainLayout from '@/components/layout/MainLayout';
 import { RadioLive, RadioSchedule } from '@/components/page/radio';
-import app from '@/configs/app';
+import { getDailyPrograms } from '@/helpers/program';
 import dayjs from '@/libs/dayjs';
-import ScheduleService from '@/services/ScheduleService';
-import { find, isEmpty, lowerCase, map } from 'lodash';
+import ProgramService from '@/services/ProgramService';
+import { IScheduleProgram } from '@/types/entity';
+import _, { find, findIndex, first, isEmpty, map } from 'lodash';
 
-const scheduleService = new ScheduleService();
+const programService = new ProgramService();
 
-async function getSchedules() {
-  const response = await scheduleService.all();
-  const schedules = JSON.parse(response);
-  const today = lowerCase(dayjs().format('dddd'));
+async function loadPrograms() {
+  const programs = await programService.all();
+  const today = dayjs().format('dddd');
+  const tomorrow = dayjs().add(1, 'day').format('dddd');
 
-  const programs = map(schedules[today], (program) => {
-    const currentDate = dayjs().format('YYYY-MM-DD');
-    const startDateTime = dayjs(`${currentDate} ${program?.time_range[0]}`);
-    const endDateTime = dayjs(`${currentDate} ${program?.time_range[1]}`);
+  const {
+    programs: todayPrograms,
+    activeProgram,
+    nextProgram,
+  } = getDailyPrograms(programs, today);
 
-    return {
-      ...program,
-      startTimestamp: startDateTime.valueOf(),
-      endTimestamp: endDateTime.valueOf(),
-    };
-  });
+  const { programs: tomorrowPrograms, firstProgram: nextTomorrowProgram } =
+    getDailyPrograms(programs, tomorrow);
 
-  const program =
-    find(programs, (program) => {
-      const timestamp = dayjs().valueOf();
-      return (
-        timestamp >= program.startTimestamp && timestamp < program.endTimestamp
-      );
-    }) || {};
-
-  const nextProgram =
-    find(programs, (_program) => {
-      const timestamp = program?.endTimestamp || dayjs().valueOf();
-      return _program.startTimestamp >= timestamp;
-    }) || {};
+  const isLive = !!activeProgram || !!nextProgram;
 
   return {
-    radioApiBaseUrl: process.env.RADIO_API_BASE_URL,
-    radioLiveUrl: process.env.RADIO_LIVE_URL,
-    programs,
-    program: isEmpty(program) ? { ...nextProgram, isNext: true } : program,
-    nextProgram: isEmpty(program) ? {} : nextProgram,
+    programs: isLive ? todayPrograms : tomorrowPrograms,
+    activeProgram,
+    nextProgram,
+    nextTomorrowProgram,
+    isLive,
   };
 }
 
 const Live = async () => {
-  const {
-    programs = [],
-    program,
-    nextProgram,
-    radioApiBaseUrl,
-    radioLiveUrl,
-  }: any = await getSchedules();
+  const { programs, activeProgram, nextProgram, nextTomorrowProgram, isLive } =
+    await loadPrograms();
+
   return (
     <MainLayout>
-      {programs.length > 0 && (
-        <>
-          {isEmpty(program) && (
-            <RadioLive
-              program={program}
-              nextProgram={nextProgram}
-              radioApiBaseUrl={radioApiBaseUrl}
-              radioLiveUrl={radioLiveUrl}
-            />
-          )}
-          <RadioLive
-            program={program}
-            nextProgram={nextProgram}
-            radioApiBaseUrl={radioApiBaseUrl}
-            radioLiveUrl={radioLiveUrl}
+      <RadioLive
+        className="pb-10"
+        activeProgram={activeProgram}
+        nextProgram={nextProgram}
+        nextTomorrowProgram={nextTomorrowProgram}
+      />
+      {!isEmpty(programs) && (
+        <Container className="pb-10">
+          <RadioSchedule
+            title={
+              isLive
+                ? 'កម្មវិធីផ្សាយប្រចាំថ្ងៃ (ម៉ោងកម្ពុជា)'
+                : 'កម្មវិធីសម្រាប់ថ្ងៃស្អែក (ម៉ោងកម្ពុជា)'
+            }
+            programs={programs}
           />
-
-          <Container className="pt-10">
-            <RadioSchedule
-              className=""
-              title="កម្មវិធីផ្សាយប្រចាំថ្ងៃ (ម៉ោងកម្ពុជា)"
-              programs={programs}
-            />
-          </Container>
-        </>
+        </Container>
       )}
-      <Container className="py-3 sm:py-5 body">
-        {!programs.length && (
-          <div className="relative w-72 aspect-square mx-auto">
-            <FallbackImage
-              fill
-              src={app.logo}
-              alt={app.name}
-              className="rounded-lg"
-            />
-          </div>
-        )}
-      </Container>
     </MainLayout>
   );
 };

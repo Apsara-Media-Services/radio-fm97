@@ -5,7 +5,7 @@ const app = {
   fm97: fm97,
   fm99: fm99,
 };
-
 export default {
   ...app[(process.env.NEXT_PUBLIC_APP_TAG as keyof typeof app) ?? 'fm97'],
+  liveUrl: process.env.NEXT_PUBLIC_APP_LIVE_URL || '',
 };

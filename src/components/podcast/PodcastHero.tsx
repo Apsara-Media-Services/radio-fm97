@@ -1,36 +1,42 @@
-import { Container } from '../common';
 import { useSharedPlayer } from '@/components/PlayerContext';
 import app from '@/configs/app';
 import dayjs from '@/libs/dayjs';
 import { IComponentProps } from '@/types/component';
+import { getMediaUrl } from '@/utils/wp';
 import Player from '@components/player/Player';
 import { Image } from '@heroui/react';
 import { get, isEmpty } from 'lodash';
 
+import { Container } from '../common';
+
 const PodcastHero = ({ className }: IComponentProps) => {
-  const { podcast, activePodcastPost: post } = useSharedPlayer();
+  const { program, activeProgramPost: post } = useSharedPlayer();
 
   return (
     <div className={className}>
-      <div className="aspect-video lg:aspect-[16/4] flex items-center relative py-8">
+      <div className="aspect-video lg:aspect-16/4 flex items-center relative py-8">
         <div className="bg-img bg-black/80 absolute inset-0 z-10" />
 
         <Image
           removeWrapper
           alt="Card background"
           className="z-0 w-full h-full object-cover opacity-100 absolute inset-0"
-          src={podcast?.coverImage || app.logo}
+          src={getMediaUrl(program?.radio?.thumbnail?.node)}
           fallbackSrc={app.logo}
         />
 
         <Container>
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-20 max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-10 lg:gap-20 max-w-4xl mx-auto">
             <div className="relative rounded-full aspect-square shadow-lg h-60">
               <Image
                 removeWrapper
                 alt="Card background"
                 className="w-full h-full object-cover opacity-100 rounded-full"
-                src={post?.featuredImage?.node?.sourceUrl || app.logo}
+                src={getMediaUrl(
+                  post?.featuredImage?.node,
+                  'medium',
+                  getMediaUrl(program?.radio?.thumbnail?.node)
+                )}
                 fallbackSrc={app.logo}
               />
             </div>
@@ -43,7 +49,7 @@ const PodcastHero = ({ className }: IComponentProps) => {
                         'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-primary relative'
                       }
                     >
-                      {podcast?.name}
+                      {program.name}
                     </span>
                     <h5 className="my-5 line-clamp-3">{post?.title}</h5>
                     <div className="flex gap-1 items-center">
@@ -54,7 +60,7 @@ const PodcastHero = ({ className }: IComponentProps) => {
               )}
             </div>
           </div>
-          <Player url={get(post, 'url', '')} className="mt-8" />
+          <Player url={get(post, 'audioUrl', '')} className="mt-8" />
         </Container>
       </div>
       {/* To be develop next version for the feature play via podcast app and sharing. */}

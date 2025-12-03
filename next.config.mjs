@@ -1,23 +1,37 @@
-if (!process.env.NEXT_PUBLIC_WORDPRESS_API_URL) {
-  throw new Error(`
-    Please provide a valid WordPress instance URL.
-    Add to your environment variables WORDPRESS_API_URL.
-  `);
-}
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
+  output: 'standalone',
   images: {
-    domains: [
-      process.env.NEXT_PUBLIC_WORDPRESS_API_URL.match(/(http(?:s)?:\/\/)(.*)/)[2], // Valid WP Image domain.
-      'api.ams.com.kh',
-      'radio.amskh.co',
-      'asset.ams.com.kh',
-      'secure.gravatar.com',
-      'fm97.amskh.co',
-      'fm97.ams.com.kh',
-    ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: process.env.NEXT_PUBLIC_WORDPRESS_API_URL,
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.ams.com.kh',
+      },
+      {
+        protocol: 'https',
+        hostname: 'radio.amskh.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'asset.ams.com.kh',
+      },
+      {
+        protocol: 'https',
+        hostname: 'secure.gravatar.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'fm97.amskh.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'fm97.ams.com.kh',
+      },
+    ].filter(Boolean),
   },
 };
 

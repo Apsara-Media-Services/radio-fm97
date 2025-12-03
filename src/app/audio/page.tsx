@@ -1,23 +1,22 @@
 import { Container } from '@/components/common';
 import MainLayout from '@/components/layout/MainLayout';
-import Terms from '@/components/podcast/Terms';
-import { PodcastService } from '@/services';
+import PodcastProgramList from '@/components/podcast/PodcastProgramList';
+import ProgramService from '@/services/ProgramService';
 
-const Podcast = async () => {
-  const podcastService = new PodcastService();
-  const podcasts = await podcastService.all({
-    variables: { first: 100 },
-  });
+const programService = new ProgramService();
+
+const ProgramListPage = async () => {
+  const programs = await programService.all();
 
   return (
     <>
       <MainLayout>
         <Container className="py-3 sm:py-5 body">
-          <Terms title="កម្មវិធីផ្សាយ" terms={podcasts} />
+          <PodcastProgramList title="កម្មវិធីផ្សាយ" programs={programs} />
         </Container>
       </MainLayout>
     </>
   );
 };
 
-export default Podcast;
+export default ProgramListPage;
