@@ -59,9 +59,6 @@ export function getDailyPrograms(programs: Program[], dayOfWeek: string) {
   const firstProgram = first(schedulingPrograms);
   const activeProgram = find(schedulingPrograms, (program) => program.isLive);
   const nextProgram = find(schedulingPrograms, (program) => program.isNext);
-  console.warn('schedulingPrograms', schedulingPrograms);
-  console.warn('activeProgram', activeProgram);
-  console.warn('nextProgram', nextProgram);
 
   return {
     programs: schedulingPrograms,
