@@ -1,6 +1,6 @@
 import { Program } from '@/gql/graphql';
+import dayjs from '@/libs/dayjs';
 import { IScheduleProgram } from '@/types/entity';
-import dayjs from 'dayjs';
 import _, { find, findIndex, first, isEmpty, map } from 'lodash';
 
 export function getDailyPrograms(programs: Program[], dayOfWeek: string) {
