@@ -4,8 +4,7 @@ import { RadioLive, RadioSchedule } from '@/components/page/radio';
 import { getDailyPrograms } from '@/helpers/program';
 import dayjs from '@/libs/dayjs';
 import ProgramService from '@/services/ProgramService';
-import { IScheduleProgram } from '@/types/entity';
-import _, { find, findIndex, first, isEmpty, map } from 'lodash';
+import _, { isEmpty } from 'lodash';
 
 const programService = new ProgramService();
 
