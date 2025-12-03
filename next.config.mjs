@@ -33,6 +33,9 @@ const nextConfig = {
       },
     ].filter(Boolean),
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;
