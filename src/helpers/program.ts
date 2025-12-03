@@ -4,7 +4,6 @@ import { IScheduleProgram } from '@/types/entity';
 import _, { find, findIndex, first, isEmpty, map } from 'lodash';
 
 export function getDailyPrograms(programs: Program[], dayOfWeek: string) {
-  console.warn('Timezone in use:', dayjs.tz().format('Z'));
   const schedulingPrograms = _.chain(programs)
     .map((program) => {
       return {
@@ -57,7 +56,7 @@ export function getDailyPrograms(programs: Program[], dayOfWeek: string) {
       });
     })
     .value() as IScheduleProgram[];
-
+  console.warn('schedulingPrograms', schedulingPrograms);
   const firstProgram = first(schedulingPrograms);
   const activeProgram = find(schedulingPrograms, (program) => program.isLive);
   const nextProgram = find(schedulingPrograms, (program) => program.isNext);
