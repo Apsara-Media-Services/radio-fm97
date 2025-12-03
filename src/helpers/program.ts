@@ -30,7 +30,7 @@ export function getDailyPrograms(programs: Program[], dayOfWeek: string) {
           ...program,
           thumbnail: program.radio?.thumbnail?.node,
           dayOfWeek: first(schedule?.day) || '',
-          startAt: startAt.format('YYYY-MM-DD HH:mm::ss'),
+          startAt: startAt.format('YYYY-MM-DD HH:mm:ss'),
           endAt: endAt.format('YYYY-MM-DD HH:mm:ss'),
           isLive: dayjs.tz().isAfter(startAt) && dayjs.tz().isBefore(endAt),
           isNext: false,
@@ -56,10 +56,12 @@ export function getDailyPrograms(programs: Program[], dayOfWeek: string) {
       });
     })
     .value() as IScheduleProgram[];
-  console.warn('schedulingPrograms', schedulingPrograms);
   const firstProgram = first(schedulingPrograms);
   const activeProgram = find(schedulingPrograms, (program) => program.isLive);
   const nextProgram = find(schedulingPrograms, (program) => program.isNext);
+  console.warn('schedulingPrograms', schedulingPrograms);
+  console.warn('activeProgram', activeProgram);
+  console.warn('nextProgram', nextProgram);
 
   return {
     programs: schedulingPrograms,
