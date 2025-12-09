@@ -106,13 +106,13 @@ const PlayerVolume = (props: IProps) => {
                   base: 'max-w-md',
                   track: [
                     'data-[fill-start=true]:border-b-ams-red',
-                    'border-y-8',
+                    'border-y-4',
                   ],
                   filler: 'bg-ams-red',
                   thumb: [
                     'transition-size bg-ams-red',
                     'data-[fill-start=true]:bg-ams-red',
-                    'h-4 w-4 after:h-2.5 after:w-2.5',
+                    'h-2.5 w-2.5 after:h-2.5 after:w-2.5 before:w-2.5 before:h-2.5 after:bg-ams-red',
                   ],
                 }}
                 onChange={(value) => handleVolumeChange(value as number)}

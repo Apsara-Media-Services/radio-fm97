@@ -40,7 +40,7 @@ const PlayerProgress = (props: IProps) => {
             thumb: [
               'transition-size bg-ams-red',
               'data-[fill-start=true]:bg-ams-red',
-              'h-3 w-3 after:h-3 after:w-3 before:w-3 before:h-3 after:bg-ams-primary overflow-clip',
+              'h-3 w-3 after:h-3 after:w-3 before:w-3 before:h-3 after:bg-ams-red overflow-clip',
             ],
           }}
           onChange={(value) => handleSeekChange(value as number)}
@@ -83,7 +83,7 @@ const PlayerProgress = (props: IProps) => {
           thumb: [
             'transition-size bg-ams-red',
             'data-[fill-start=true]:bg-ams-red',
-            'h-4 w-4 after:h-2.5 after:w-2.5 after:bg-ams-primary overflow-clip',
+            'h-4 w-4 after:h-2.5 after:w-2.5 after:bg-ams-red overflow-clip',
           ],
         }}
         onChange={(value) => handleSeekChange(value as number)}
