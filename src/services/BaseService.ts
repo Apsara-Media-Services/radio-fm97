@@ -2,6 +2,8 @@ import { IObject } from '@/types/app';
 import { get, has, head, map } from 'lodash';
 import pluralize from 'pluralize';
 
+const revalidate = process.env.NEXT_PUBLIC_APP_REVALIDATE || 60;
+
 export default class BaseService {
   key: string;
 
@@ -18,7 +20,7 @@ export default class BaseService {
         Accept: 'application/json',
       },
       body: JSON.stringify(body),
-      next: { revalidate: 0 },
+      next: { revalidate: Number(revalidate) },
     };
     try {
       const res = await fetch(url, init);
