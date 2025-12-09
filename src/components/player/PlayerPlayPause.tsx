@@ -2,21 +2,29 @@ import { useSharedPlayer } from '@/components/PlayerContext';
 import { IComponentProps } from '@/types/component';
 import { Button } from '@heroui/react';
 
-const PlayerPlayPause = (props: IComponentProps) => {
-  const { PlayingIcon, handlePlayPause } = useSharedPlayer();
+interface IProps extends IComponentProps {
+  isDisabled?: boolean;
+}
+
+const PlayerPlayPause = (props: IProps) => {
+  const { isDisabled, className } = props;
+  const { state, PlayingIcon, handlePlayPause } = useSharedPlayer();
 
   return (
-    <div className={props.className}>
-      <Button
-        onPress={() => handlePlayPause()}
-        isIconOnly
-        className="w-auto h-auto data-[hover]:bg-gray-100/10 p-1 outline-none"
-        radius="full"
-        variant="light"
-      >
-        <PlayingIcon style={{ fontSize: 70 }} />
-      </Button>
-    </div>
+    <Button
+      onPress={() => handlePlayPause()}
+      isIconOnly
+      className="w-auto h-auto data-hover:bg-gray-100/10 outline-none text-gray-100"
+      radius="full"
+      variant="light"
+      isDisabled={isDisabled}
+    >
+      {state.loading && (
+        <div className="absolute inset-0 rounded-full border-3 border-ams-primary border-t-transparent animate-spin"></div>
+      )}
+
+      <PlayingIcon style={{ fontSize: 70 }} />
+    </Button>
   );
 };
 

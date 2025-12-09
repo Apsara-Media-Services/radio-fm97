@@ -5,123 +5,145 @@ import PlayerPlayPause from '@/components/player/PlayerPlayPause';
 import PlayerProgress from '@/components/player/PlayerProgress';
 import PlayerVolume from '@/components/player/PlayerVolume';
 import { IComponentProps } from '@/types/component';
-import { secondToHHMMSS } from '@/utils/date';
 import { Button } from '@heroui/react';
 import {
   Forward10Rounded,
   LoopRounded,
+  Pause,
+  PlayArrow,
   Replay10Rounded,
-  SkipNextRounded,
-  SkipPreviousRounded,
 } from '@mui/icons-material';
-import { useEffect } from 'react';
+import classNames from 'classnames';
 import ReactPlayer from 'react-player';
 
 interface IProps extends IComponentProps {
-  url: string;
+  isLive?: boolean;
+  isInline?: boolean;
+  isDisabled?: boolean;
 }
 
 const Player = (props: IProps) => {
-  const { url } = props;
+  const { isLive, isInline, isDisabled } = props;
 
   const {
     state,
     setPlayerRef,
     handlePlayPause,
-    handleSkipChange,
     handleLoopToggle,
-    handleProgress,
     handleTimeUpdate,
     handleDurationChange,
     handleSeekInSeconds,
     handleEnded,
+    handleProgress,
+    handleReady,
+    handleWaiting,
+    handlePlaying,
   } = useSharedPlayer();
 
-  useEffect(() => {
-    handlePlayPause(false);
-  }, []);
-
-  if (!url) return <></>;
-
-  return (
+  let player = (
     <>
-      <div className={props.className}>
-        <div className="mt-3">
-          <PlayerProgress />
-          <div className="flex justify-between">
-            <p className="text-small text-gray-100">
-              {secondToHHMMSS(state.duration * state.played)}
-            </p>
-            <p className="text-small text-gray-100/50">
-              {secondToHHMMSS(state.duration)}
-            </p>
-          </div>
-        </div>
+      <PlayerProgress isLive={isLive} isDisabled={isDisabled} />
 
-        <div className="flex items-center justify-center gap-2 text-gray-100">
-          <Button
-            onPress={() => handleLoopToggle()}
-            isIconOnly
-            className={
-              state.loop
-                ? 'bg-gray-100/50 p-1'
-                : 'data-[hover]:bg-gray-100/10 p-1'
-            }
-            radius="full"
-            variant="light"
-          >
-            <LoopRounded />
-          </Button>
+      <div className="flex items-center justify-center gap-x-2 md:gap-x-4 text-gray-100">
+        <Button
+          onPress={() => handleLoopToggle()}
+          isIconOnly
+          className={classNames(
+            state.loop
+              ? 'bg-gray-100/50'
+              : 'data-hover:bg-gray-100/10 text-gray-100'
+          )}
+          radius="full"
+          variant="light"
+          isDisabled={isDisabled || isLive}
+        >
+          <LoopRounded />
+        </Button>
 
-          <Button
-            onPress={() => handleSkipChange(-1)}
-            isIconOnly
-            className="data-[hover]:bg-gray-100/10 p-1"
-            radius="full"
-            variant="light"
-          >
-            <SkipPreviousRounded />
-          </Button>
+        <Button
+          onPress={() => handleSeekInSeconds(-10)}
+          isIconOnly
+          className="data-hover:bg-gray-100/10 outline-none text-gray-100"
+          radius="full"
+          variant="light"
+          isDisabled={isDisabled || isLive}
+        >
+          <Replay10Rounded />
+        </Button>
 
+        <PlayerPlayPause isDisabled={isDisabled} />
+
+        <Button
+          onPress={() => handleSeekInSeconds(10)}
+          isIconOnly
+          className="data-hover:bg-gray-100/10 outline-none text-gray-100"
+          radius="full"
+          variant="light"
+          isDisabled={isDisabled || isLive}
+        >
+          <Forward10Rounded />
+        </Button>
+
+        <PlayerVolume isDisabled={isDisabled} />
+      </div>
+    </>
+  );
+
+  if (isInline) {
+    player = (
+      <>
+        <div className="flex items-center gap-2">
           <Button
             onPress={() => handleSeekInSeconds(-10)}
             isIconOnly
-            className="data-[hover]:bg-gray-100/10 p-1 outline-none"
+            className={classNames(
+              'w-fit min-w-fit h-fit text-gray-100',
+              isLive ? 'hidden' : 'hidden md:block'
+            )}
             radius="full"
             variant="light"
+            isDisabled={isDisabled || isLive}
           >
-            <Replay10Rounded />
+            <Replay10Rounded style={{ fontSize: 20 }} />
           </Button>
-
-          <PlayerPlayPause />
-
+          <Button
+            onPress={() => handlePlayPause()}
+            isIconOnly
+            className={classNames('w-fit min-w-fit h-fit text-gray-100')}
+            radius="full"
+            variant="light"
+            isDisabled={isDisabled}
+          >
+            {state.playing && <Pause />}
+            {!state.playing && <PlayArrow />}
+          </Button>
           <Button
             onPress={() => handleSeekInSeconds(10)}
             isIconOnly
-            className="data-[hover]:bg-gray-100/10 p-1 outline-none"
+            className={classNames(
+              'w-fit min-w-fit h-fit text-gray-100',
+              isLive ? 'hidden' : 'hidden md:block'
+            )}
             radius="full"
             variant="light"
+            isDisabled={isDisabled || isLive}
           >
-            <Forward10Rounded />
+            <Forward10Rounded style={{ fontSize: 20 }} />
           </Button>
-
-          <Button
-            onPress={() => handleSkipChange(1)}
-            isIconOnly
-            className="data-[hover]:bg-gray-100/10 p-1"
-            radius="full"
-            variant="light"
-          >
-            <SkipNextRounded />
-          </Button>
-
-          <PlayerVolume />
+          <PlayerProgress isInline isLive={isLive} isDisabled={isDisabled} />
+          <PlayerVolume isInline isDisabled={isDisabled} />
         </div>
-      </div>
-      {ReactPlayer.canPlay && ReactPlayer.canPlay(url) && (
+      </>
+    );
+  }
+
+  return (
+    <>
+      <div className={props.className}>{player}</div>
+      {state.canPlay && (
         <ReactPlayer
           ref={setPlayerRef}
-          src={url}
+          src={state.src}
           playing={state.playing}
           volume={state.volume}
           muted={state.muted}
@@ -135,96 +157,11 @@ const Player = (props: IProps) => {
           onTimeUpdate={handleTimeUpdate}
           onDurationChange={handleDurationChange}
           onEnded={handleEnded}
+          onReady={handleReady}
+          onWaiting={handleWaiting}
+          onPlaying={handlePlaying}
         />
       )}
-      {/* {ready && (
-        //  bg-gradient-to-r from-ams-red via-ams-purple to-ams-blue bg-clip-text
-        <div className="hidden w-full text-ams-red dark:text-gray-200">
-          <div>
-            <div className="flex items-center justify-center leading-4 gap-x-2">
-              <button onClick={() => handleSkip(-1)} title="Skip Previous">
-                <SkipPreviousRounded style={{ fontSize: 30 }} />
-              </button>
-              <button onClick={() => handleSeek(-0.15)} title="Replay 10sec">
-                <Replay10Rounded style={{ fontSize: 30 }} />
-              </button>
-
-              <button className="" onClick={handlePlayPausePause}>
-                {playing ? (
-                  <PauseCircleFilled style={{ fontSize: 60 }} />
-                ) : (
-                  <PlayCircleFilled style={{ fontSize: 60 }} />
-                )}
-              </button>
-              <button onClick={() => handleSeek(0.15)} title="Forward 10sec">
-                <Forward10Rounded style={{ fontSize: 30 }} />
-              </button>
-              <button onClick={() => handleSkip(1)} title="Skip Next">
-                <SkipNextRounded style={{ fontSize: 30 }} />
-              </button>
-            </div>
-            <div className="flex justify-between items-center leading-4 gap-x-2 mb-3">
-              <div className="text-sm">
-                {containerRef?.current &&
-                  `${toHHMMSS(
-                    containerRef?.current?.getCurrentTime()
-                  )} - ${toHHMMSS(containerRef?.current?.getSecondsLoaded())}`}
-              </div>
-              <div className="flex items-center leading-4 gap-x-2">
-                <button
-                  onClick={() => setLoop((pre) => !pre)}
-                  className={
-                    loop
-                      ? 'bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300'
-                      : ''
-                  }
-                >
-                  <LoopRounded />
-                </button>
-                <button className="" onClick={handleSpeed}>
-                  {playbackRate}X
-                </button>
-                <div className="flex items-center">
-                  <button onClick={handleVolumeDown}>
-                    <RemoveRounded />
-                  </button>
-                  <button onClick={handleMute}>{vol}</button>
-                  <button onClick={handleVolumeUp}>
-                    <AddRounded />
-                  </button>
-                </div>
-              </div>
-            </div>
-            <input
-              className="w-full"
-              type="range"
-              min={0}
-              max={0.9999}
-              step={0.001}
-              value={played}
-              onMouseDown={handleSeekMouseDown}
-              onChange={handleSeekChange}
-              onMouseUp={handleSeekMouseUp}
-            />
-          </div>
-          <div className="flex justify-between">
-            <div className="flex gap-4 items-center">
-              <div>
-                <span>ស្តាប់លើ Apple</span>
-              </div>
-              <div>
-                <span>ស្តាប់លើ Google</span>
-              </div>
-            </div>
-            <div className="text-center">
-              <ShareRounded />
-              <div>
-                <span className="text-xs">ចែករំលែក</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
     </>
   );
 };

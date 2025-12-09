@@ -1,6 +1,7 @@
 'use client';
 
 import { Post, Program } from '@/gql/graphql';
+import { isUrlAccessible } from '@/utils/common';
 import {
   PauseCircleFilledRounded,
   PlayCircleFilledRounded,
@@ -9,8 +10,8 @@ import {
   VolumeOffRounded,
   VolumeUpRounded,
 } from '@mui/icons-material';
-import { findIndex, nth } from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ReactPlayer from 'react-player';
 
 const initialState = {
   src: undefined,
@@ -30,6 +31,10 @@ const initialState = {
   seeking: false,
   loadedSeconds: 0,
   playedSeconds: 0,
+  canPlay: false,
+  live: false,
+  loading: false,
+  ready: false,
 };
 
 type PlayerState = Omit<typeof initialState, 'src'> & {
@@ -40,12 +45,14 @@ const usePlayer = () => {
   const [state, setState] = useState<PlayerState>(initialState);
   const playerRef = useRef<HTMLVideoElement | null>(null);
 
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isMinimal, setIsMinimal] = useState<boolean>(false);
+
   const [PlayingIcon, setPlayingIcon] = useState(() => PlayCircleFilledRounded);
   const [VolumeIcon, setVolumeIcon] = useState(() => VolumeUpRounded);
 
   const [program, setProgram] = useState({} as Program);
-  const [activeProgramPost, setActiveProgramPost] = useState({} as Post);
-  const [programPosts, setProgramPosts] = useState([] as Post[]);
+  const [post, setPost] = useState({} as Post);
 
   useEffect(() => {
     if (state.volume <= 0 || state.muted) {
@@ -67,7 +74,28 @@ const usePlayer = () => {
     }
   }, [state.playing]);
 
-  const load = (src?: string) => {
+  useEffect(() => {
+    const checkCanPlay = async () => {
+      if (
+        !state.src ||
+        !ReactPlayer.canPlay ||
+        !ReactPlayer.canPlay(state.src as string)
+      ) {
+        setState((prevState) => ({ ...prevState, canPlay: false }));
+        return;
+      }
+      const accessible = await isUrlAccessible(state.src as string);
+      setState((prevState) => ({ ...prevState, canPlay: accessible }));
+    };
+    checkCanPlay();
+  }, [state.src]);
+
+  useEffect(() => {
+    if (!state.playing) return;
+    setIsVisible(true);
+  }, [state.playing]);
+
+  const load = (src?: string, state?: Partial<PlayerState>) => {
     setState((prevState) => ({
       ...prevState,
       src,
@@ -75,7 +103,16 @@ const usePlayer = () => {
       played: 0,
       loaded: 0,
       pip: false,
+      ...state,
     }));
+  };
+
+  const reset = () => {
+    setState(initialState);
+    setProgram({} as Program);
+    setPost({} as Post);
+    setIsVisible(false);
+    setIsMinimal(false);
   };
 
   const setPlayerRef = useCallback((player: HTMLVideoElement) => {
@@ -121,13 +158,13 @@ const usePlayer = () => {
     }));
   };
 
-  function handleSkipChange(i: number) {
-    const currentIdx = findIndex(programPosts, { id: activeProgramPost.id });
-    const nextIdx = currentIdx + i;
-    const next = nth(programPosts, nextIdx) ?? programPosts[0];
+  // function handleSkipChange(i: number) {
+  //   const currentIdx = findIndex(programPosts, { id: activeProgramPost.id });
+  //   const nextIdx = currentIdx + i;
+  //   const next = nth(programPosts, nextIdx) ?? programPosts[0];
 
-    setActiveProgramPost(next);
-  }
+  //   setActiveProgramPost(next);
+  // }
 
   const handleLoopToggle = () => {
     setState((prevState) => ({ ...prevState, loop: !prevState.loop }));
@@ -151,6 +188,7 @@ const usePlayer = () => {
   };
 
   const handleSeekChange = (seek: number) => {
+    if (state.live) return;
     setState((prevState) => ({ ...prevState, seeking: true }));
     setState((prevState) => ({
       ...prevState,
@@ -159,6 +197,7 @@ const usePlayer = () => {
   };
 
   const handleSeekChangeEnd = (seek: number) => {
+    if (state.live) return;
     setState((prevState) => ({ ...prevState, seeking: false }));
     if (playerRef.current) {
       playerRef.current.currentTime = seek * playerRef.current.duration;
@@ -203,25 +242,42 @@ const usePlayer = () => {
     setState((prevState) => ({ ...prevState, playing: prevState.loop }));
   };
 
+  const handleReady = () => {
+    setState((prevState) => ({ ...prevState, ready: true }));
+  };
+
+  const handleWaiting = () => {
+    setState((prevState) => ({ ...prevState, loading: true }));
+  };
+
+  const handlePlaying = () => {
+    setState((prevState) => ({ ...prevState, loading: false }));
+  };
+
   return {
     program,
     setProgram,
-    activeProgramPost,
-    setActiveProgramPost,
-    programPosts,
-    setProgramPosts,
+    post,
+    setPost,
     state,
     PlayingIcon,
     VolumeIcon,
     playerRef,
+    isVisible,
+    isMinimal,
     load,
+    reset,
+    setIsVisible,
+    setIsMinimal,
     setPlayerRef,
+    handleReady,
+    handleWaiting,
+    handlePlaying,
     handlePlayPause,
     handleMuteToggle,
     handleVolumeChange,
     handleLoopToggle,
     handleVolumePopupChange,
-    handleSkipChange,
     handleSeekInSeconds,
     handleSeekChange,
     handleSeekChangeEnd,

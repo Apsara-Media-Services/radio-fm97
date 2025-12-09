@@ -3,7 +3,8 @@ import dayjs from '@/libs/dayjs';
 import { IScheduleProgram } from '@/types/entity';
 import _, { find, findIndex, first, isEmpty, map } from 'lodash';
 
-export function getDailyPrograms(programs: Program[], dayOfWeek: string) {
+export function getDailyPrograms(programs: Program[], date: dayjs.Dayjs) {
+  const dayOfWeek = date.format('dddd');
   const schedulingPrograms = _.chain(programs)
     .map((program) => {
       return {
@@ -21,10 +22,10 @@ export function getDailyPrograms(programs: Program[], dayOfWeek: string) {
     .flatMap((program) => {
       return map(program.radio?.schedules, (schedule) => {
         const startAt = dayjs(
-          `${dayjs().format('YYYY-MM-DD')} ${schedule?.startTime}`
+          `${date.format('YYYY-MM-DD')} ${schedule?.startTime}`
         );
         const endAt = dayjs(
-          `${dayjs().format('YYYY-MM-DD')} ${schedule?.endTime}`
+          `${date.format('YYYY-MM-DD')} ${schedule?.endTime}`
         );
         return {
           ...program,
@@ -47,8 +48,9 @@ export function getDailyPrograms(programs: Program[], dayOfWeek: string) {
         }
 
         const isNext =
-          (activeProgramIdx === -1 && idx === 0) ||
-          idx === activeProgramIdx + 1;
+          activeProgramIdx === -1
+            ? idx === 0 && dayjs().isBefore(program.startAt)
+            : idx === activeProgramIdx + 1;
         return {
           ...program,
           isNext,

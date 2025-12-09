@@ -1,20 +1,19 @@
-import { useSharedPlayer } from '@/components/PlayerContext';
 import app from '@/configs/app';
-import dayjs from '@/libs/dayjs';
+import { Program } from '@/gql/graphql';
 import { IComponentProps } from '@/types/component';
 import { getMediaUrl } from '@/utils/wp';
-import Player from '@components/player/Player';
 import { Image } from '@heroui/react';
-import { get, isEmpty } from 'lodash';
 
 import { Container } from '../common';
 
-const PodcastHero = ({ className }: IComponentProps) => {
-  const { program, activeProgramPost: post } = useSharedPlayer();
+interface IProps extends IComponentProps {
+  program: Program;
+}
 
+const PodcastHero = ({ className, program }: IProps) => {
   return (
     <div className={className}>
-      <div className="aspect-video lg:aspect-16/4 flex items-center relative py-8">
+      <div className="min-h-96 flex items-center relative py-8">
         <div className="bg-img bg-black/80 absolute inset-0 z-10" />
 
         <Image
@@ -27,82 +26,32 @@ const PodcastHero = ({ className }: IComponentProps) => {
 
         <Container>
           <div className="flex flex-col md:flex-row items-center justify-center gap-10 lg:gap-20 max-w-4xl mx-auto">
-            <div className="relative rounded-full aspect-square shadow-lg h-60">
+            <div className="relative rounded-full aspect-square shadow-lg h-48 md:h-60">
               <Image
                 removeWrapper
                 alt="Card background"
                 className="w-full h-full object-cover opacity-100 rounded-full"
-                src={getMediaUrl(
-                  post?.featuredImage?.node,
-                  'medium',
-                  getMediaUrl(program?.radio?.thumbnail?.node)
-                )}
+                src={getMediaUrl(program?.radio?.thumbnail?.node)}
                 fallbackSrc={app.logo}
               />
             </div>
             <div className="text-white w-full md:w-auto">
-              {!isEmpty(post) && (
-                <>
-                  <div className="air-now text-xl md:text-2xl font-semibold">
-                    <span
-                      className={
-                        'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-primary relative'
-                      }
-                    >
-                      {program.name}
-                    </span>
-                    <h5 className="my-5 line-clamp-3">{post?.title}</h5>
-                    <div className="flex gap-1 items-center">
-                      {dayjs(post.date).format('DD/MMMM/YYYY')}
-                    </div>
-                  </div>
-                </>
-              )}
+              <div className="text-2xl md:text-3xl font-semibold">
+                <span
+                  className={
+                    'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-primary relative'
+                  }
+                >
+                  {program.name}
+                </span>
+              </div>
+              <h5 className="my-5 line-clamp-5 text-lg text-slate-200">
+                {program.description}
+              </h5>
             </div>
           </div>
-          <Player url={get(post, 'audioUrl', '')} className="mt-8" />
         </Container>
       </div>
-      {/* To be develop next version for the feature play via podcast app and sharing. */}
-      {/* <div className="program-options my-8">
-        <div className="max-w-xl md:max-w-5xl xl:max-w-7xl container mx-auto px-3 sm:px-5 z-10">
-          <div className="grid md:grid-cols-3 gap-y-4 text-base md:text-lg lg:text-xl font-semibold dark:text-white">
-            <div className="current-program">
-              <div className="air-now">
-                <div className="flex flex-col lg:flex-row gap-1 lg:items-center">
-                  <div>
-                    <span className="text-ams-primary font-semibold">
-                      {'Google'}
-                    </span>{' '}
-                    :
-                  </div>
-                  <time className="font-normal">
-                    ស្តាប់វិទ្យុនៅលើ Google Podcast
-                  </time>
-                </div>
-              </div>
-            </div>
-            <div className="up-next border-t-2 pt-4 md:border-t-0 md:pt-0 md:border-l-2 md:pl-4 dark:border-white">
-              <div>
-                <div className="flex flex-col lg:flex-row gap-1 lg:items-center">
-                  <div>
-                    <span className="text-ams-primary">{'Apple'}</span> :
-                  </div>{' '}
-                  <time className="font-normal">
-                    ស្តាប់វិទ្យុនៅលើ Apple Podcast
-                  </time>
-                </div>
-              </div>
-            </div>
-            <div className="list-programs border-t-2 pt-4 md:border-t-0 md:pt-0 md:border-l-2 md:pl-4 dark:border-white flex gap-x-2 items-center">
-              <div className="flex flex-col lg:flex-row gap-1 lg:items-center">
-                <ShareRounded className="text-ams-primary" />
-                <h3 className="">{' ចែករំលែកទៅកាន់បណ្តាញសង្គម'}</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };

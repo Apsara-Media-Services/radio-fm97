@@ -1,15 +1,15 @@
-'use client';
-
+import { useAppContext } from '@/components/AppContext';
 import { useSharedPlayer } from '@/components/PlayerContext';
 import { SectionHeader } from '@/components/common';
-import app from '@/configs/app';
+import LineClamp from '@/components/common/LineClamp';
 import { Caster } from '@/gql/caster';
 import { Post } from '@/gql/graphql';
 import dayjs from '@/libs/dayjs';
 import { ProgramService } from '@/services';
 import { getMediaUrl } from '@/utils/wp';
-import { Button, Image } from '@heroui/react';
+import { Avatar, Button } from '@heroui/react';
 import { PauseRounded, PlayArrowRounded } from '@mui/icons-material';
+import { get } from 'lodash';
 import { useState } from 'react';
 
 const programService = new ProgramService();
@@ -17,14 +17,13 @@ const programService = new ProgramService();
 const PodcastPostList = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
+  const { program, posts, setPosts, setProgram } = useAppContext();
   const {
+    load,
     state,
-    program,
-    setProgram,
-    programPosts: posts,
-    setProgramPosts,
-    activeProgramPost,
-    setActiveProgramPost,
+    post: playerPost,
+    setProgram: setPlayerProgram,
+    setPost: setPlayerPost,
     handlePlayPause,
   } = useSharedPlayer();
 
@@ -39,38 +38,34 @@ const PodcastPostList = () => {
       }
     );
     setProgram(_program);
-    setProgramPosts((pre: Post[]) => [
-      ...pre,
-      ...Caster.program(_program).posts,
-    ]);
+    setPosts((pre: Post[]) => [...pre, ...Caster.program(_program).posts]);
     setLoading(false);
   };
 
   const onClickPlay = (post: Post) => {
-    const _playing = activeProgramPost?.id === post.id ? !state.playing : true;
+    setPlayerProgram(program);
+    setPlayerPost(post);
 
-    setActiveProgramPost(post);
-    handlePlayPause(_playing);
-
-    if (window) {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
+    if (isActivePost(post)) {
+      const _playing = playerPost?.id === post.id ? !state.playing : true;
+      handlePlayPause(_playing);
+      return;
     }
+
+    load(get(post, 'audioUrl', ''), { live: false, playing: true });
   };
 
   const isActivePost = (post: Post) => {
-    return activeProgramPost?.id === post?.id;
+    return playerPost?.id === post?.id;
   };
 
   return (
     <>
-      <div className="my-5">
+      <div className="mt-5 mb-10">
         <SectionHeader
           type="primary"
-          title={program?.name as string}
-          className="text-3xl font-semibold"
+          title="កម្មវិធីផ្សាយគ្រប់វគ្គ"
+          className="text-xl md:text-3xl font-semibold"
         />
       </div>
       <section>
@@ -79,27 +74,31 @@ const PodcastPostList = () => {
           className="p-0 divide-y dark:divide-slate-500 divide-slate-200"
         >
           {posts.map((item, key: number) => (
-            <li key={key} className="flex first:pt-0 last:pb-0 py-4">
-              <Button
-                className="relative flex items-center justify-center inset-0 min-h-unit-20 min-w-unit-20 w-20 h-20 outline-none px-0"
-                radius="full"
-                onPress={() => onClickPlay(item)}
-              >
-                <Image
-                  removeWrapper
-                  className="object-cover rounded-full opacity-100 inset-0 w-full h-full"
-                  src={getMediaUrl(
-                    item.featuredImage?.node,
-                    'thumbnail',
-                    getMediaUrl(program.radio?.thumbnail?.node)
+            <li
+              key={key}
+              className="flex items-center first:pt-0 last:pb-0 py-3"
+            >
+              <div>
+                <Button
+                  className="relative flex items-center justify-center inset-0 min-h-unit-20 min-w-unit-20 w-20 h-20 outline-none px-0"
+                  radius="full"
+                  onPress={() => onClickPlay(item)}
+                >
+                  <Avatar
+                    isBordered
+                    src={getMediaUrl(
+                      item.featuredImage?.node,
+                      'thumbnail',
+                      getMediaUrl(program.radio?.thumbnail?.node)
+                    )}
+                    className="w-18 h-18"
+                  />
+                  <div className="bg-img bg-black/30 absolute inset-0 z-10" />
+                  {state.loading && isActivePost(item) && (
+                    <div className="absolute inset-0 rounded-full border-3 border-ams-primary border-t-transparent animate-spin z-20"></div>
                   )}
-                  fallbackSrc={app.logo}
-                  alt={item.title as string}
-                />
-                {isActivePost(item) && (
                   <>
-                    <div className="bg-img bg-black/50 absolute inset-0 z-10" />
-                    {state.playing ? (
+                    {state.playing && isActivePost(item) ? (
                       <PauseRounded
                         style={{ fontSize: 40 }}
                         className="absolute z-10 text-gray-100"
@@ -111,9 +110,12 @@ const PodcastPostList = () => {
                       />
                     )}
                   </>
-                )}
-              </Button>
+                </Button>
+              </div>
               <div className="ml-3 overflow-hidden">
+                <p className="text-sm dark:text-slate-400 text-slate-400 truncate">
+                  {dayjs(item.date).format('DD/MMMM/YYYY')}
+                </p>
                 <h5 className="text-md font-medium dark:text-slate-200 text-slate-600 text-left cursor-pointer">
                   <div
                     onClick={() => (onClickPlay ? onClickPlay(item) : {})}
@@ -123,11 +125,11 @@ const PodcastPostList = () => {
                         : ''
                     }
                   >
-                    {item.title}
+                    <LineClamp content={item.title as string} line={1} />
                   </div>
                 </h5>
-                <p className="text-sm dark:text-slate-300 text-slate-500 truncate">
-                  {dayjs(item.date).format('DD/MMMM/YYYY')}
+                <p className="dark:text-slate-200 text-slate-600">
+                  <LineClamp content={item.excerpt as string} line={3} />
                 </p>
               </div>
             </li>
@@ -142,7 +144,7 @@ const PodcastPostList = () => {
             isLoading={loading}
             onPress={loadMore}
           >
-            មើលបន្ថែម
+            មើលវគ្គផ្សេងទៀត
           </Button>
         </div>
       )}

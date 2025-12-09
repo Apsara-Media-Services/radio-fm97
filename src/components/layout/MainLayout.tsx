@@ -9,7 +9,7 @@ const MainLayout = ({ children }: IComponentProps) => {
       <Header />
       <main className="bg-white dark:bg-black">{children}</main>
       <Footer />
-      <div className="sticky bottom-0 z-10 max-w-4xl mx-auto">
+      <div className="sticky bottom-0 z-20 max-w-4xl mx-auto">
         <MobileBottomMenu />
       </div>
     </>

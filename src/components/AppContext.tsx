@@ -1,15 +1,16 @@
 'use client';
 
 import { PlayerProvider } from '@/components/PlayerContext';
-import { AppContextType } from '@/types/app';
+import useProgram from '@/hooks/use-program';
 import { IComponentProps } from '@/types/component';
 import { HeroUIProvider } from '@heroui/react';
 import { ThemeProvider } from 'next-themes';
-import NextNProgress from 'nextjs-progressbar';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-const defaultValues: AppContextType = {};
+export type AppContextType = ReturnType<typeof useProgram>;
+
+const defaultValues: AppContextType = {} as AppContextType;
 const AppContext = createContext<AppContextType>(defaultValues);
 
 export default AppContext;
@@ -19,15 +20,14 @@ export function useAppContext() {
 }
 
 export function AppProvider({ children }: IComponentProps) {
-  const [Player, setPlayer] = useState({});
+  const useProgramHook = useProgram();
   return (
     <>
-      <AppContext.Provider value={{ Player, setPlayer }}>
+      <AppContext.Provider value={{ ...useProgramHook }}>
         <PlayerProvider>
           <HeroUIProvider>
             <ThemeProvider attribute="class">{children}</ThemeProvider>
             <ToastContainer aria-label={''} />
-            <NextNProgress color="#cf0a10" options={{ showSpinner: false }} />
           </HeroUIProvider>
         </PlayerProvider>
       </AppContext.Provider>

@@ -1,9 +1,11 @@
 import { AppProvider } from '@/components/AppContext';
+import FloatingPlayer from '@/components/player/FloatingPlayer';
 import app from '@/configs/app';
 import classNames from 'classnames';
 import { Metadata } from 'next';
 import { Kantumruy_Pro } from 'next/font/google';
 import Script from 'next/script';
+import NextTopLoader from 'nextjs-toploader';
 import 'react-toastify/dist/ReactToastify.css';
 
 import './globals.css';
@@ -35,7 +37,15 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-ams-light dark:bg-zinc-700">
-        <AppProvider>{children}</AppProvider>
+        <NextTopLoader color={app.theme.colors.primary} />
+        <AppProvider>
+          {children}
+          <div className="fixed bottom-16 sm:bottom-0 z-10 w-full">
+            <div className="max-w-xl md:max-w-2xl container mx-auto sm:px-5">
+              <FloatingPlayer />
+            </div>
+          </div>
+        </AppProvider>
         <Script
           strategy="afterInteractive"
           src="https://analytic.cloud.sovichetra.com/script.js"

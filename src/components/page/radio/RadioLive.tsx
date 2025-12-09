@@ -2,22 +2,26 @@
 
 import { useSharedPlayer } from '@/components/PlayerContext';
 import { Container } from '@/components/common';
-import PlayerPlayPause from '@/components/player/PlayerPlayPause';
 import PlayerProgress from '@/components/player/PlayerProgress';
-import PlayerVolume from '@/components/player/PlayerVolume';
 import app from '@/configs/app';
+import { Post, Program } from '@/gql/graphql';
 import { IRadioLiveComponentProps } from '@/types/component';
 import { dateTo12Hour } from '@/utils/date';
 import { getMediaUrl } from '@/utils/wp';
-import { Image } from '@heroui/react';
+import { Button, Image } from '@heroui/react';
+import {
+  PauseCircleFilledRounded,
+  PlayCircleFilledRounded,
+} from '@mui/icons-material';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import ReactPlayer from 'react-player';
 
 const RadioLive = (props: IRadioLiveComponentProps) => {
   const { className, activeProgram, nextProgram, nextTomorrowProgram } = props;
 
-  const { state, load, handlePlayPause } = useSharedPlayer();
+  const { state, load, setProgram, setPost, handlePlayPause } =
+    useSharedPlayer();
+
   const pathname = usePathname();
 
   const isLive = !!activeProgram || !!nextProgram;
@@ -25,10 +29,25 @@ const RadioLive = (props: IRadioLiveComponentProps) => {
   const hasNextProgram = !!nextProgram;
   const program = activeProgram ?? nextProgram ?? nextTomorrowProgram;
 
+  function onPlayPause() {
+    setProgram(program as Program);
+    setPost({} as Post);
+    if (state.live) {
+      handlePlayPause();
+      return;
+    }
+    load(app.liveUrl, { live: true, playing: true });
+  }
+
   useEffect(() => {
-    load(app.liveUrl);
-    handlePlayPause(pathname.startsWith('/live'));
-  }, []);
+    if (pathname.startsWith('/live')) {
+      setProgram(program as Program);
+      setPost({} as Post);
+      if (!state.live || !state.playing) {
+        load(app.liveUrl, { live: true, playing: true });
+      }
+    }
+  }, [pathname]);
 
   return (
     <div className={className}>
@@ -61,7 +80,7 @@ const RadioLive = (props: IRadioLiveComponentProps) => {
                     >
                       {app.tag}
                     </span>
-                    <h5 className="my-5">{program.name}</h5>
+                    <h5 className="mt-5 mb-3">{program.name}</h5>
                     <div className="flex gap-1 items-center">
                       <time>
                         {dateTo12Hour(program.startAt)} ~{' '}
@@ -77,27 +96,26 @@ const RadioLive = (props: IRadioLiveComponentProps) => {
             <div className="mt-8">
               <PlayerProgress isLive={true} />
 
-              <div className="flex items-center justify-end gap-3 text-gray-100">
-                <PlayerVolume />
-                <div className="flex gap-1">
-                  <div className="border-2 h-5 w-5 rounded-full grid items-center justify-center border-ams-red animate-pulse">
-                    <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                  </div>
-                  <p className="text-small">Live</p>
-                </div>
+              <div className="text-center mt-3 md:mt-6">
+                <Button
+                  onPress={onPlayPause}
+                  isIconOnly
+                  className="w-auto h-auto data-hover:bg-gray-100/10 outline-none text-gray-100"
+                  radius="full"
+                  variant="light"
+                  isDisabled={state.loading}
+                >
+                  {state.loading && (
+                    <div className="absolute inset-0 rounded-full border-3 border-ams-primary border-t-transparent animate-spin"></div>
+                  )}
+                  {state.live && state.playing && (
+                    <PauseCircleFilledRounded style={{ fontSize: 70 }} />
+                  )}
+                  {(!state.live || !state.playing) && (
+                    <PlayCircleFilledRounded style={{ fontSize: 70 }} />
+                  )}
+                </Button>
               </div>
-              <PlayerPlayPause className="flex w-full justify-center items-center gap-2 text-gray-100" />
-              {ReactPlayer.canPlay && ReactPlayer.canPlay(state.src || '') && (
-                <ReactPlayer
-                  src={state.src}
-                  playing={state.playing}
-                  controls={state.controls}
-                  height={0}
-                  width={0}
-                  muted={state.muted}
-                  volume={state.volume}
-                />
-              )}
             </div>
           )}
         </Container>

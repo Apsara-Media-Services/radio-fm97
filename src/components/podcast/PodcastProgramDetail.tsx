@@ -1,12 +1,10 @@
 'use client';
 
-import { useSharedPlayer } from '@/components/PlayerContext';
+import { useAppContext } from '@/components/AppContext';
 import PodcastHero from '@/components/podcast/PodcastHero';
 import PodcastPostList from '@/components/podcast/PodcastPostList';
 import { Caster } from '@/gql/caster';
-import { Post } from '@/gql/graphql';
 import { IPodcastProgramDetailComponentProps } from '@/types/component';
-import { first } from 'lodash';
 import { useEffect } from 'react';
 
 import { Container } from '../common';
@@ -15,20 +13,18 @@ const PodcastProgramDetail = ({
   className,
   program,
 }: IPodcastProgramDetailComponentProps) => {
-  const { setProgram, setProgramPosts, setActiveProgramPost } =
-    useSharedPlayer();
+  const { setPosts, setProgram } = useAppContext();
 
   useEffect(() => {
     const posts = Caster.program(program).posts;
 
     setProgram(program);
-    setProgramPosts(posts);
-    setActiveProgramPost(first(posts) || ({} as Post));
+    setPosts(posts);
   }, []);
 
   return (
     <div className={className}>
-      <PodcastHero />
+      <PodcastHero program={program} />
       <Container className="py-5">
         <PodcastPostList />
       </Container>

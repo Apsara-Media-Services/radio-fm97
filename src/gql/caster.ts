@@ -1,6 +1,7 @@
 import { Category, MediaItem, Program, Tag, User } from '@/gql/graphql';
 import { Post } from '@/gql/graphql';
-import { map, split } from 'lodash';
+import { getAudioUrl } from '@/utils/wp';
+import { map } from 'lodash';
 
 export class Caster {
   static post(post = {} as Post) {
@@ -32,8 +33,7 @@ export class Caster {
 
   static program(program = {} as Program) {
     const posts: Post[] = map(program?.posts?.edges, ({ node }) => {
-      const url = split(node.enclosure, '\n', 1);
-      return { ...node, audioUrl: url[0] };
+      return { ...node, audioUrl: getAudioUrl(node) };
     });
 
     return {

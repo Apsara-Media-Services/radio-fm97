@@ -1,6 +1,6 @@
 import app from '@/configs/app';
-import { MediaItem } from '@/gql/graphql';
-import { find } from 'lodash';
+import { MediaItem, Post } from '@/gql/graphql';
+import { find, first, split } from 'lodash';
 
 type Size =
   | 'thumbnail'
@@ -28,4 +28,11 @@ export function getMediaUrl(
   }
 
   return url;
+}
+
+export function getAudioUrl(post: Post) {
+  const url = split(post.enclosure, '\n', 1);
+  const audioUrl = first(url);
+
+  return audioUrl;
 }

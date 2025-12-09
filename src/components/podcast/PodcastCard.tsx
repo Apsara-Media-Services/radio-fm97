@@ -5,7 +5,7 @@ import { IComponentProps } from '@/types/component';
 import { Card, CardFooter, CardHeader, Image } from '@heroui/react';
 import { AccessTimeRounded, CircleRounded } from '@mui/icons-material';
 import classNames from 'classnames';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface IProps extends IComponentProps {
   title?: string;
