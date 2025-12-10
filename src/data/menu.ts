@@ -1,6 +1,6 @@
 export const footerMenus = [
-  { name: 'ផ្សាយផ្ទាល់', key: 'live', href: 'live' },
-  { name: 'កម្មវិធីផ្សាយ', key: 'audio', href: 'audio' },
+  { name: 'ផ្សាយផ្ទាល់', key: 'live', href: '/live' },
+  { name: 'កម្មវិធីផ្សាយ', key: 'audio', href: '/audio' },
 ];
 
 export const amsGroupSites = [
