@@ -1,5 +1,7 @@
-import { Post, Program, User } from '@/gql/graphql';
+import { Post, User } from '@/gql/graphql';
 import { IScheduleProgram } from '@/types/entity';
+import { IPaginatedResponse } from '@/types/fetch';
+import { WP_REST_API_ACF_Post, WP_REST_API_ACF_Program } from '@/types/wp';
 import { ImageProps } from 'next/image';
 
 import { IObject } from './app';
@@ -63,9 +65,10 @@ export interface IRadioProgramComponentProps extends IComponentProps {
 }
 
 export interface IPodcastProgramListComponentProps extends IComponentProps {
-  programs: Program[];
+  programs: WP_REST_API_ACF_Program[];
 }
 
 export interface IPodcastProgramDetailComponentProps extends IComponentProps {
-  program: Program;
+  program: WP_REST_API_ACF_Program;
+  posts: IPaginatedResponse<WP_REST_API_ACF_Post>;
 }

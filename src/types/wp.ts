@@ -1,0 +1,72 @@
+import {
+  WP_REST_API_Attachment,
+  WP_REST_API_Post,
+  WP_REST_API_Term,
+} from 'wp-types';
+
+export interface AcfFile {
+  ID: number;
+  id?: number;
+  title: string;
+  filename: string;
+  filesize: number;
+  url: string;
+  link?: string;
+  alt?: string;
+  author?: string;
+  description?: string;
+  caption?: string;
+  name?: string;
+  status?: string;
+  uploaded_to?: number;
+  date?: string;
+  modified?: string;
+  menu_order?: number;
+  mime_type: string;
+  type: string; // audio, image, application
+  subtype: string; // mpeg, jpeg, pdf
+  icon?: string;
+  media?: WP_REST_API_Attachment; // custom field to hold the full media object
+}
+
+export interface AcfImage extends AcfFile {
+  width: number;
+  height: number;
+  sizes: Record<string, string | number>; // thumbnail, medium, large, etc.
+}
+
+export interface WP_REST_API_ACF_File extends AcfFile {}
+
+export interface WP_REST_API_ACF_Image extends AcfImage {}
+
+export interface WP_REST_API_ACF_Program extends WP_REST_API_Term {
+  acf: {
+    thumbnail?: WP_REST_API_ACF_Image;
+    schedules?: {
+      day: string;
+      start_time: string;
+      end_time: string;
+    }[];
+  };
+}
+
+export interface WP_REST_API_ACF_Post extends WP_REST_API_Post {
+  _embedded?: {
+    /**
+     * The author of the post.
+     */
+    author: unknown[];
+    /**
+     * The featured image post.
+     */
+    'wp:featuredmedia'?: WP_REST_API_Attachment[];
+    /**
+     * The attachment parent post.
+     */
+    'wp:attached-to'?: unknown[];
+    [k: string]: unknown;
+  };
+  acf: {
+    audio?: WP_REST_API_ACF_File;
+  };
+}

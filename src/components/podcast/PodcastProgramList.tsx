@@ -2,7 +2,7 @@ import { SectionHeader } from '@/components/common';
 import PodcastCard from '@/components/podcast/PodcastCard';
 import app from '@/configs/app';
 import { IPodcastProgramListComponentProps } from '@/types/component';
-import { getMediaUrl } from '@/utils/wp';
+import { getAcfMediaUrl } from '@/utils/wp';
 
 const PodcastProgramList = (props: IPodcastProgramListComponentProps) => {
   const { className, programs, title } = props;
@@ -24,7 +24,7 @@ const PodcastProgramList = (props: IPodcastProgramListComponentProps) => {
                 key={key}
                 title={program.name as string}
                 tag={app.tag}
-                imageUrl={getMediaUrl(program.radio?.thumbnail?.node)}
+                imageUrl={getAcfMediaUrl(program.acf.thumbnail)}
                 to={`audio/${program.slug}`}
                 className="h-[300px]"
               />

@@ -4,10 +4,10 @@ import { useSharedPlayer } from '@/components/PlayerContext';
 import { Container } from '@/components/common';
 import PlayerProgress from '@/components/player/PlayerProgress';
 import app from '@/configs/app';
-import { Post, Program } from '@/gql/graphql';
 import { IRadioLiveComponentProps } from '@/types/component';
+import { WP_REST_API_ACF_Post, WP_REST_API_ACF_Program } from '@/types/wp';
 import { dateTo12Hour } from '@/utils/date';
-import { getMediaUrl } from '@/utils/wp';
+import { getAcfMediaUrl } from '@/utils/wp';
 import { Button, Image } from '@heroui/react';
 import {
   PauseCircleFilledRounded,
@@ -30,8 +30,8 @@ const RadioLive = (props: IRadioLiveComponentProps) => {
   const program = activeProgram ?? nextProgram ?? nextTomorrowProgram;
 
   function onPlayPause() {
-    setProgram(program as Program);
-    setPost({} as Post);
+    setProgram(program as WP_REST_API_ACF_Program);
+    setPost({} as WP_REST_API_ACF_Post);
     if (state.live) {
       handlePlayPause();
       return;
@@ -41,8 +41,8 @@ const RadioLive = (props: IRadioLiveComponentProps) => {
 
   useEffect(() => {
     if (pathname.startsWith('/live')) {
-      setProgram(program as Program);
-      setPost({} as Post);
+      setProgram(program as WP_REST_API_ACF_Program);
+      setPost({} as WP_REST_API_ACF_Post);
       if (!state.live || !state.playing) {
         load(app.liveUrl, { live: true, playing: true });
       }
@@ -57,7 +57,7 @@ const RadioLive = (props: IRadioLiveComponentProps) => {
           removeWrapper
           alt={program?.name ?? app.name}
           className="z-0 w-full h-full object-cover opacity-100 absolute inset-0"
-          src={getMediaUrl(program?.thumbnail)}
+          src={getAcfMediaUrl(program?.thumbnail)}
         />
         <Container>
           <div className="flex flex-col md:flex-row items-center justify-center gap-5 md:gap-10 lg:gap-20 max-w-4xl mx-auto">
@@ -66,7 +66,7 @@ const RadioLive = (props: IRadioLiveComponentProps) => {
                 removeWrapper
                 alt={program?.name || app.name}
                 className="w-full h-full object-cover opacity-100 rounded-full"
-                src={getMediaUrl(program?.thumbnail)}
+                src={getAcfMediaUrl(program?.thumbnail)}
               />
             </div>
             {program && (

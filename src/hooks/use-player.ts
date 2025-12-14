@@ -1,7 +1,8 @@
 'use client';
 
-import { Post, Program } from '@/gql/graphql';
+import { WP_REST_API_ACF_Post, WP_REST_API_ACF_Program } from '@/types/wp';
 import { isUrlAccessible } from '@/utils/common';
+import { getPostAudio } from '@/utils/wp';
 import {
   PauseCircleFilledRounded,
   PlayCircleFilledRounded,
@@ -51,8 +52,8 @@ const usePlayer = () => {
   const [PlayingIcon, setPlayingIcon] = useState(() => PlayCircleFilledRounded);
   const [VolumeIcon, setVolumeIcon] = useState(() => VolumeUpRounded);
 
-  const [program, setProgram] = useState({} as Program);
-  const [post, setPost] = useState({} as Post);
+  const [program, setProgram] = useState({} as WP_REST_API_ACF_Program);
+  const [post, setPost] = useState({} as WP_REST_API_ACF_Post);
 
   useEffect(() => {
     if (state.volume <= 0 || state.muted) {
@@ -109,8 +110,8 @@ const usePlayer = () => {
 
   const reset = () => {
     setState(initialState);
-    setProgram({} as Program);
-    setPost({} as Post);
+    setProgram({} as WP_REST_API_ACF_Program);
+    setPost({} as WP_REST_API_ACF_Post);
     setIsVisible(false);
     setIsMinimal(false);
   };
@@ -254,6 +255,29 @@ const usePlayer = () => {
     setState((prevState) => ({ ...prevState, loading: false }));
   };
 
+  const play = (
+    _program: WP_REST_API_ACF_Program,
+    _post: WP_REST_API_ACF_Post
+  ) => {
+    const { url } = getPostAudio(_post);
+
+    if (!url) {
+      return;
+    }
+
+    setProgram(_program);
+    setPost(_post);
+    if (_post.id === post.id) {
+      handlePlayPause(!state.playing);
+      return;
+    }
+    load(url, { live: false, playing: true });
+  };
+
+  function isActivePost(_post: WP_REST_API_ACF_Post) {
+    return _post.id === post?.id;
+  }
+
   return {
     program,
     setProgram,
@@ -285,6 +309,8 @@ const usePlayer = () => {
     handleTimeUpdate,
     handleDurationChange,
     handleEnded,
+    play,
+    isActivePost,
   };
 };
 

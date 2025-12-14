@@ -1,4 +1,4 @@
-import { MediaItem, Program, Radio, RadioSchedules } from '@/gql/graphql';
+import { WP_REST_API_ACF_Program } from '@/types/wp';
 
 export interface IProgramThumbnail {
   id?: string | number;
@@ -20,8 +20,8 @@ export interface ISchedule {
   program?: IProgram;
 }
 
-export interface IScheduleProgram extends Program {
-  thumbnail?: MediaItem;
+export interface IScheduleProgram extends WP_REST_API_ACF_Program {
+  thumbnail?: WP_REST_API_ACF_Program['acf']['thumbnail'];
   dayOfWeek: string;
   startAt: Date | string;
   endAt: Date | string;

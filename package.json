@@ -40,7 +40,9 @@
     "react-toastify": "^11.0.5",
     "sanitize-html": "^2.17.0",
     "sharp": "^0.34.5",
-    "typescript": "5.9.3"
+    "type-fest": "^5.3.1",
+    "typescript": "5.9.3",
+    "wp-types": "^4.69.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "6.1.0",

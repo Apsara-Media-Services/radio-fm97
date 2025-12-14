@@ -3,7 +3,7 @@ import {
   QUERY_ALL_TAGS,
   QUERY_TAG_BY_ID_TYPE_WITH_POSTS,
 } from '@/gql/queries/tag';
-import BaseService from '@/services/BaseService';
+import BaseService from '@/services/graphql/BaseService';
 import { IFetchBody } from '@/types/fetch';
 
 export default class TagService extends BaseService {

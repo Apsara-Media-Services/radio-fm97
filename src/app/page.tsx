@@ -9,7 +9,7 @@ import _, { isEmpty } from 'lodash';
 const programService = new ProgramService();
 
 async function loadPrograms() {
-  const programs = await programService.all();
+  const { data: programs } = await programService.all();
   const today = dayjs();
   const tomorrow = dayjs().add(1, 'day');
 

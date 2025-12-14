@@ -2,7 +2,7 @@
 
 import PostCategoryTag from '@/components/post/PostCategoryTag';
 import PostDate from '@/components/post/PostDate';
-import { ProgramService } from '@/services';
+import { ProgramService } from '@/services/graphql';
 import { IPostComponentProps } from '@/types/components/post';
 import { useAppContext } from '@components/AppContext';
 import { Headset, PlaylistAddRounded } from '@mui/icons-material';

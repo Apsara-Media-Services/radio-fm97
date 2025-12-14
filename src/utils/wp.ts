@@ -1,6 +1,7 @@
 import app from '@/configs/app';
-import { MediaItem, Post } from '@/gql/graphql';
-import { find, first, split } from 'lodash';
+import { WP_REST_API_ACF_Image, WP_REST_API_ACF_Post } from '@/types/wp';
+import { get } from 'lodash';
+import { WP_REST_API_Attachment } from 'wp-types';
 
 type Size =
   | 'thumbnail'
@@ -11,8 +12,8 @@ type Size =
   | '2048x2048'
   | 'post-thumbnail';
 
-export function getMediaUrl(
-  media?: MediaItem,
+export function getAcfMediaUrl(
+  media?: WP_REST_API_ACF_Image,
   size?: Size,
   fallback?: string
 ): string {
@@ -20,19 +21,36 @@ export function getMediaUrl(
   size = size ?? 'medium';
 
   if (media) {
-    url = media.sourceUrl as string;
-    const imageSource = find(media.mediaDetails?.sizes, ['name', size]);
-    if (imageSource && imageSource.sourceUrl) {
-      url = imageSource.sourceUrl;
-    }
+    url = get(media.sizes, size, media.url) as string;
   }
 
   return url;
 }
 
-export function getAudioUrl(post: Post) {
-  const url = split(post.enclosure, '\n', 1);
-  const audioUrl = first(url);
+export function getMediaUrl(
+  media?: WP_REST_API_Attachment,
+  size?: Size,
+  fallback?: string
+): string {
+  let url = fallback ?? app.logo;
+  size = size ?? 'medium';
 
-  return audioUrl;
+  if (media) {
+    url = get(
+      media.media_details?.sizes,
+      `${size}.source_url`,
+      media.source_url
+    );
+  }
+
+  return url;
+}
+
+export function getPostAudio(post: WP_REST_API_ACF_Post) {
+  const { url, media } = post.acf.audio || {};
+
+  return {
+    url,
+    duration: get(media?.media_details, 'length', 0) as number,
+  };
 }

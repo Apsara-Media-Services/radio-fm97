@@ -1,19 +1,22 @@
-import { Program } from '@/gql/graphql';
 import dayjs from '@/libs/dayjs';
 import { IScheduleProgram } from '@/types/entity';
+import { WP_REST_API_ACF_Program } from '@/types/wp';
 import _, { find, findIndex, first, isEmpty, map } from 'lodash';
 
-export function getDailyPrograms(programs: Program[], date: dayjs.Dayjs) {
+export function getDailyPrograms(
+  programs: WP_REST_API_ACF_Program[],
+  date: dayjs.Dayjs
+) {
   const dayOfWeek = date.format('dddd');
   const schedulingPrograms = _.chain(programs)
     .map((program) => {
       return {
         ...program,
         radio: {
-          ...program.radio,
+          ...program.acf,
           schedules:
-            program.radio?.schedules?.filter(
-              (schedule) => first(schedule?.day) === dayOfWeek
+            program.acf.schedules?.filter(
+              (schedule) => schedule.day === dayOfWeek
             ) || [],
         },
       };
@@ -22,14 +25,14 @@ export function getDailyPrograms(programs: Program[], date: dayjs.Dayjs) {
     .flatMap((program) => {
       return map(program.radio?.schedules, (schedule) => {
         const startAt = dayjs(
-          `${date.format('YYYY-MM-DD')} ${schedule?.startTime}`
+          `${date.format('YYYY-MM-DD')} ${schedule.start_time}`
         );
         const endAt = dayjs(
-          `${date.format('YYYY-MM-DD')} ${schedule?.endTime}`
+          `${date.format('YYYY-MM-DD')} ${schedule.end_time}`
         );
         return {
           ...program,
-          thumbnail: program.radio?.thumbnail?.node,
+          thumbnail: program.radio?.thumbnail,
           dayOfWeek: first(schedule?.day) || '',
           startAt: startAt.format('YYYY-MM-DD HH:mm:ss'),
           endAt: endAt.format('YYYY-MM-DD HH:mm:ss'),

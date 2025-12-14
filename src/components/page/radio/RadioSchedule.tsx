@@ -2,7 +2,7 @@ import { SectionHeader } from '@/components/common';
 import PodcastCard from '@/components/podcast/PodcastCard';
 import { IRadioProgramComponentProps } from '@/types/component';
 import { dateTo12Hour } from '@/utils/date';
-import { getMediaUrl } from '@/utils/wp';
+import { getAcfMediaUrl } from '@/utils/wp';
 import { isEmpty, isNil } from 'lodash';
 
 const RadioSchedule = (props: IRadioProgramComponentProps) => {
@@ -26,7 +26,7 @@ const RadioSchedule = (props: IRadioProgramComponentProps) => {
                 key={idx}
                 title={item.name as string}
                 tag={`${dateTo12Hour(item.startAt)} ~ ${dateTo12Hour(item.endAt)}`}
-                imageUrl={getMediaUrl(item.thumbnail)}
+                imageUrl={getAcfMediaUrl(item.thumbnail)}
                 to={`audio/${item.slug}`}
                 isLive={item.isLive}
                 isPlayed={item.isPlayed}

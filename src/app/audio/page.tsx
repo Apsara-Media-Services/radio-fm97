@@ -6,7 +6,7 @@ import ProgramService from '@/services/ProgramService';
 const programService = new ProgramService();
 
 const ProgramListPage = async () => {
-  const programs = await programService.all();
+  const { data: programs } = await programService.all();
 
   return (
     <>

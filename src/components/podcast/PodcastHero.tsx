@@ -1,16 +1,33 @@
+'use client';
+
+import { useSharedPlayer } from '@/components/PlayerContext';
+import LineClamp from '@/components/common/LineClamp';
 import app from '@/configs/app';
-import { Program } from '@/gql/graphql';
 import { IComponentProps } from '@/types/component';
-import { getMediaUrl } from '@/utils/wp';
-import { Image } from '@heroui/react';
+import { WP_REST_API_ACF_Post, WP_REST_API_ACF_Program } from '@/types/wp';
+import { getAcfMediaUrl, getPostAudio } from '@/utils/wp';
+import { Button, Image } from '@heroui/react';
+import {
+  PauseCircleFilledRounded,
+  PlayCircleFilledRounded,
+} from '@mui/icons-material';
 
 import { Container } from '../common';
 
 interface IProps extends IComponentProps {
-  program: Program;
+  program: WP_REST_API_ACF_Program;
+  post: WP_REST_API_ACF_Post;
 }
 
-const PodcastHero = ({ className, program }: IProps) => {
+const PodcastHero = ({ className, program, post }: IProps) => {
+  const { state, post: activePost, play } = useSharedPlayer();
+
+  const { url } = getPostAudio(post);
+
+  function isActivePost() {
+    return post.id === activePost?.id;
+  }
+
   return (
     <div className={className}>
       <div className="min-h-96 flex items-center relative py-8">
@@ -20,7 +37,7 @@ const PodcastHero = ({ className, program }: IProps) => {
           removeWrapper
           alt="Card background"
           className="z-0 w-full h-full object-cover opacity-100 absolute inset-0"
-          src={getMediaUrl(program?.radio?.thumbnail?.node)}
+          src={getAcfMediaUrl(program.acf.thumbnail)}
           fallbackSrc={app.logo}
         />
 
@@ -31,7 +48,7 @@ const PodcastHero = ({ className, program }: IProps) => {
                 removeWrapper
                 alt="Card background"
                 className="w-full h-full object-cover opacity-100 rounded-full"
-                src={getMediaUrl(program?.radio?.thumbnail?.node)}
+                src={getAcfMediaUrl(program.acf.thumbnail)}
                 fallbackSrc={app.logo}
               />
             </div>
@@ -45,9 +62,28 @@ const PodcastHero = ({ className, program }: IProps) => {
                   {program.name}
                 </span>
               </div>
-              <h5 className="my-5 line-clamp-5 text-lg text-slate-200">
-                {program.description}
+              <h5 className="my-5 text-lg text-slate-200">
+                <LineClamp content={program.description} line={4} />
               </h5>
+              {url && (
+                <div>
+                  <Button
+                    variant="solid"
+                    className="bg-ams-primary text-white font-semibold"
+                    isLoading={state.loading && isActivePost()}
+                    onPress={() => play(program, post)}
+                    startContent={
+                      state.playing && isActivePost() ? (
+                        <PauseCircleFilledRounded />
+                      ) : (
+                        <PlayCircleFilledRounded />
+                      )
+                    }
+                  >
+                    ស្តាប់វគ្គចុងក្រោយ
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </Container>

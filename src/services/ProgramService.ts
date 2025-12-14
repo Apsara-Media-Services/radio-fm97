@@ -1,42 +1,14 @@
 import app from '@/configs/app';
-import { Program } from '@/gql/graphql';
-import {
-  QUERY_ALL_PROGRAMS,
-  QUERY_PROGRAM_BY_ID_TYPE_WITH_POSTS,
-} from '@/gql/queries/program';
-import BaseService from '@/services/BaseService';
-import { IFetchBody } from '@/types/fetch';
+import ApiBaseService from '@/services/ApiBaseService';
+import { WP_REST_API_ACF_Program } from '@/types/wp';
 
-export default class ProgramService extends BaseService {
+export default class ProgramService extends ApiBaseService<WP_REST_API_ACF_Program> {
   constructor() {
-    super('program');
-  }
-
-  all(
-    param: IFetchBody = {
-      variables: {
-        where: {
-          parent: app.program.databaseId,
-        },
-        first: 100,
-      },
-    }
-  ) {
-    return this.submit<Program[]>({
-      query: QUERY_ALL_PROGRAMS,
-      ...param,
-    });
-  }
-
-  findBySlugWithPosts(slug: string, param: IFetchBody = {}) {
-    return this.submit<Program>({
-      query: QUERY_PROGRAM_BY_ID_TYPE_WITH_POSTS,
-      ...param,
-      variables: {
-        ...param.variables,
-        idType: 'SLUG',
-        id: slug,
-      },
-    });
+    const resource = 'program';
+    const query = {
+      parent: app.program.databaseId,
+      per_page: 100,
+    };
+    super(resource, query);
   }
 }

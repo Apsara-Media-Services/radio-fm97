@@ -1,39 +1,42 @@
-import { Post } from '@/gql/graphql';
-import { QUERY_ALL_POSTS, QUERY_POST_BY_ID_TYPE } from '@/gql/queries/post';
-import BaseService from '@/services/BaseService';
-import { IFetchBody } from '@/types/fetch';
+import ApiBaseService from '@/services/ApiBaseService';
+import MediaService from '@/services/MediaService';
+import { IFetchQueryParams, IPaginatedResponse } from '@/types/fetch';
+import { WP_REST_API_ACF_Post } from '@/types/wp';
+import { find } from 'lodash';
 
-export default class PostService extends BaseService {
+const mediaService = new MediaService();
+
+export default class PostService extends ApiBaseService<WP_REST_API_ACF_Post> {
   constructor() {
-    super('post');
+    const resource = 'post';
+    super(resource);
   }
 
-  all(param: IFetchBody = {}) {
-    return this.submit<Post[]>({
-      query: QUERY_ALL_POSTS,
-      ...param,
-    });
-  }
+  async all(
+    query: IFetchQueryParams = {}
+  ): Promise<IPaginatedResponse<WP_REST_API_ACF_Post>> {
+    const response = await super.all(query);
+    const { data: posts } = response;
 
-  getByCategorySlug(slug: string | string[], param: IFetchBody = {}) {
-    return this.submit<Post[]>({
-      query: QUERY_ALL_POSTS,
-      ...param,
-      variables: {
-        ...param.variables,
-        where: {
-          orderby: [{ field: 'DATE', order: 'DESC' }],
-          categoryName: slug,
-        },
-      },
-    });
-  }
+    const mediaIds = posts
+      .map((post) => post.acf.audio?.id)
+      .filter(Boolean) as number[];
 
-  find(id: string | number, param: IFetchBody = {}) {
-    return this.submit<Post>({
-      query: QUERY_POST_BY_ID_TYPE,
-      variables: { id },
-      ...param,
+    const { data: medias } = await mediaService.all({
+      include: mediaIds.join(','),
+      per_page: mediaIds.length,
     });
+
+    posts.map((post) => {
+      const media = find(medias, ['id', post.acf.audio?.id]);
+      if (media) {
+        post.acf.audio!.media = media;
+      }
+    });
+
+    return {
+      ...response,
+      data: posts,
+    };
   }
 }

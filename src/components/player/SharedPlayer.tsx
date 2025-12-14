@@ -5,13 +5,13 @@ import LineClamp from '@/components/common/LineClamp';
 import Player from '@/components/player/Player';
 import app from '@/configs/app';
 import { IComponentProps } from '@/types/component';
-import { getMediaUrl } from '@/utils/wp';
+import { getAcfMediaUrl } from '@/utils/wp';
 import { Button, Card, CardBody, Image } from '@heroui/react';
 import { CloseRounded, KeyboardArrowUpRounded } from '@mui/icons-material';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-const FloatingPlayer = ({ className }: IComponentProps) => {
+const SharedPlayer = ({ className }: IComponentProps) => {
   const { state, isVisible, isMinimal, setIsMinimal, program, post, reset } =
     useSharedPlayer();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
@@ -67,9 +67,13 @@ const FloatingPlayer = ({ className }: IComponentProps) => {
                           <div className="relative aspect-square rounded-medium shadow-lg h-40 md:h-40">
                             <Image
                               removeWrapper
-                              alt={post?.title || program?.name || app.name}
+                              alt={
+                                post?.title?.rendered ||
+                                program?.name ||
+                                app.name
+                              }
                               className="w-full h-full object-cover opacity-100"
-                              src={getMediaUrl(program?.radio?.thumbnail?.node)}
+                              src={getAcfMediaUrl(program.acf.thumbnail)}
                               fallbackSrc={app.logo}
                             />
                           </div>
@@ -87,7 +91,7 @@ const FloatingPlayer = ({ className }: IComponentProps) => {
                                 content={
                                   state.live
                                     ? 'ផ្សាយផ្ទាល់'
-                                    : (post?.title ?? app.name)
+                                    : (post?.title?.rendered ?? app.name)
                                 }
                                 line={1}
                               />
@@ -125,4 +129,4 @@ const FloatingPlayer = ({ className }: IComponentProps) => {
   );
 };
 
-export default FloatingPlayer;
+export default SharedPlayer;

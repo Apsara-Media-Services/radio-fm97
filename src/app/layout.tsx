@@ -1,5 +1,5 @@
 import { AppProvider } from '@/components/AppContext';
-import FloatingPlayer from '@/components/player/FloatingPlayer';
+import SharedPlayer from '@/components/player/SharedPlayer';
 import app from '@/configs/app';
 import classNames from 'classnames';
 import { Metadata } from 'next';
@@ -40,9 +40,9 @@ export default function RootLayout({
         <NextTopLoader color={app.theme.colors.primary} />
         <AppProvider>
           {children}
-          <div className="fixed bottom-16 sm:bottom-0 z-10 w-full">
-            <div className="max-w-xl md:max-w-2xl container mx-auto sm:px-5">
-              <FloatingPlayer />
+          <div className="fixed bottom-16 sm:bottom-0 z-10 max-w-xl md:max-w-2xl container mx-auto left-1/2 transform -translate-x-1/2 w-full">
+            <div className="sm:px-5">
+              <SharedPlayer />
             </div>
           </div>
         </AppProvider>

@@ -3,7 +3,7 @@ import {
   QUERY_ALL_CATEGORIES,
   QUERY_CATEGORY_BY_ID_TYPE_WITH_POSTS,
 } from '@/gql/queries/category';
-import BaseService from '@/services/BaseService';
+import BaseService from '@/services/graphql/BaseService';
 import { IFetchBody } from '@/types/fetch';
 
 export default class CategoryService extends BaseService {

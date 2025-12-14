@@ -3,7 +3,7 @@ import {
   QUERY_ALL_USERS,
   QUERY_ALL_USERS_WITH_POSTS,
 } from '@/gql/queries/user';
-import BaseService from '@/services/BaseService';
+import BaseService from '@/services/graphql/BaseService';
 import { IFetchBody } from '@/types/fetch';
 
 export default class UserService extends BaseService {
