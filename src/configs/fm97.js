@@ -5,8 +5,9 @@ export default {
   description:
     'កម្មវិធីផ្សាយប្រចាំថ្ងៃរបស់វិទ្យុសំលេងយុវជន FM 97MHz | ព័ត៌មានពិត អប់រំ កម្សាន្ត និងចំណេះដឹង',
   program: {
-    slug: 'fm97',
-    databaseId: 104,
+    programId: 104,
+    baseCategoryId: 98,
+    categoryId: 38,
   },
   icons: {
     icon: '/favicon/fm97/favicon.ico',
@@ -17,7 +18,11 @@ export default {
   },
   theme: {
     colors: {
-      primary: '#cf0a10',
+      primary: {
+        DEFAULT: '#cf0a10',
+        light: '#cf0a10',
+        dark: '#F04444',
+      },
       secondary: '#362095',
     },
     backgroundImage: {

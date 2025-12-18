@@ -23,7 +23,10 @@ export interface IFetchQueryParams {
   slug?: string;
   after?: string;
   before?: string;
+  include?: string;
+  exclude?: string;
   categories?: string;
+  categories_exclude?: string;
   programs?: string;
   tags?: string;
   page?: number;
@@ -53,10 +56,13 @@ export interface IFetchResponse<T> {
 
 export interface IPaginatedResponse<T> {
   data: T[];
-  page: number;
-  per_page: number;
-  total_pages: number;
-  total: number;
+  pagination: {
+    page: number;
+    per_page: number;
+    total_pages: number;
+    total: number;
+  };
+  query?: Omit<IFetchQueryParams, 'page' | 'per_page'>;
 }
 
 export interface IPaginator {

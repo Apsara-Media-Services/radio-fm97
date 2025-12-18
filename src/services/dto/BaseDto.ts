@@ -1,11 +1,16 @@
 import { keys } from 'lodash';
 
-export default class BaseDto<T> {
+export interface DtoClass<T> {
+  normalize(item: T): T;
+  normalize(item: T[]): T[];
+}
+
+export default class BaseDto {
   static normalize<T>(item: T): T;
   static normalize<T>(item: T[]): T[];
   static normalize<T>(item: T | T[]): T | T[] {
     if (Array.isArray(item)) {
-      return item.map((i) => BaseDto.normalize(i));
+      return item.map((i) => BaseDto.normalize(i)) as T[];
     }
 
     const cloned: any = { ...item };
@@ -21,6 +26,6 @@ export default class BaseDto<T> {
       }
     });
 
-    return cloned;
+    return cloned as T;
   }
 }

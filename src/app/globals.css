@@ -9,6 +9,35 @@ body {
 .btn-profile > * {
   @apply bg-transparent;
 }
-.aspect-video svg {
-  @apply fill-white;
+
+.text-menu {
+  @apply text-gray-800 dark:text-slate-200;
+}
+
+.text-title {
+  @apply text-gray-900 dark:text-white;
+}
+
+.text-body {
+  @apply text-gray-600 dark:text-slate-300;
+}
+
+.text-meta {
+  @apply text-gray-500 dark:text-slate-400;
+}
+
+.text-accent {
+  @apply text-ams-primary dark:text-ams-primary-dark;
+}
+
+.text-hover {
+  @apply hover:text-ams-primary dark:hover:text-ams-primary-dark;
+}
+
+.ams-divider {
+  @apply dark:divide-slate-700 divide-gray-200;
+}
+
+.ams-border {
+  @apply dark:border-slate-700 border-gray-200;
 }

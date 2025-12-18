@@ -13,6 +13,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'asset-api.ams.com.kh',
+      },
+      {
+        protocol: 'https',
         hostname: 'radio.amskh.co',
       },
       {

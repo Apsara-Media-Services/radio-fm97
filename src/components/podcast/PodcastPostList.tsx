@@ -1,13 +1,10 @@
 'use client';
 
 import { useSharedPlayer } from '@/components/PlayerContext';
-import { SectionHeader } from '@/components/common';
-import LineClamp from '@/components/common/LineClamp';
 import usePaginator from '@/hooks/use-paginator';
 import dayjs from '@/libs/dayjs';
-import PostService from '@/services/PostService';
-import { IComponentProps } from '@/types/component';
-import { IPaginator } from '@/types/fetch';
+import ProgramPostService from '@/services/ProgramPostService';
+import { IPaginationComponentProps } from '@/types/component';
 import { WP_REST_API_ACF_Post, WP_REST_API_ACF_Program } from '@/types/wp';
 import { secondToHHMMSS } from '@/utils/date';
 import { getAcfMediaUrl, getMediaUrl, getPostAudio } from '@/utils/wp';
@@ -16,65 +13,46 @@ import {
   PauseCircleFilledRounded,
   PlayCircleFilledRounded,
 } from '@mui/icons-material';
+import classNames from 'classnames';
 import { first } from 'lodash';
-import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
-interface IProps extends IComponentProps {
+interface IProps extends IPaginationComponentProps<WP_REST_API_ACF_Post> {
   program: WP_REST_API_ACF_Program;
-  posts: WP_REST_API_ACF_Post[];
-  paginator: IPaginator;
 }
 
-const postService = new PostService();
+const programPostService = new ProgramPostService();
 
 const PodcastPostList = (props: IProps) => {
   const { program } = props;
 
-  const { items, setItems, paginator, setPaginator } =
-    usePaginator<WP_REST_API_ACF_Post>();
-  const [loading, setLoading] = useState<boolean>(false);
+  const { items, loading, paginator, loadMore } =
+    usePaginator<WP_REST_API_ACF_Post>({
+      service: programPostService,
+      query: props.query,
+      items: props.items,
+      paginator: props.paginator,
+    });
 
   const { state, play, isActivePost } = useSharedPlayer();
 
-  useEffect(() => {
-    setItems(props.posts);
-    setPaginator(props.paginator);
-  }, []);
-
-  const loadMore = async () => {
-    setLoading(true);
-    const posts = await postService.all({
-      programs: program.id.toString(),
-      page: paginator.page + 1,
-      per_page: paginator.per_page,
-    });
-    setItems((prev) => [...prev, ...posts.data]);
-    setPaginator(posts);
-    setLoading(false);
-  };
+  if (!items.length) {
+    return <></>;
+  }
 
   return (
     <>
-      <div className="mt-5 mb-10">
-        <SectionHeader
-          type="primary"
-          title="កម្មវិធីផ្សាយគ្រប់វគ្គ"
-          className="text-xl md:text-3xl font-semibold"
-        />
-      </div>
       <section>
-        <ul
-          role="list"
-          className="p-0 divide-y dark:divide-slate-500 divide-slate-200"
-        >
+        <ul role="list" className="p-0 divide-y ams-divider">
           {items.map((item, key: number) => (
             <li
               key={key}
-              className="flex items-center first:pt-0 last:pb-0 py-3"
+              className="flex items-center first:pt-0 last:pb-0 py-2"
             >
               <div>
                 <Button
-                  className="relative flex items-center justify-center inset-0 min-h-unit-20 min-w-unit-20 w-20 h-20 outline-none px-0"
+                  isIconOnly
+                  className="relative w-17 h-17 outline-none px-0"
                   radius="full"
                   onPress={() => play(program, item)}
                 >
@@ -85,7 +63,7 @@ const PodcastPostList = (props: IProps) => {
                       'thumbnail',
                       getAcfMediaUrl(program.acf?.thumbnail)
                     )}
-                    className="w-18 h-18"
+                    className="w-16 h-16"
                   />
                   <div className="bg-img bg-black/30 absolute inset-0 z-10" />
                   {state.loading && isActivePost(item) && (
@@ -93,14 +71,14 @@ const PodcastPostList = (props: IProps) => {
                   )}
                   {getPostAudio(item).url && (
                     <>
-                      <div className="absolute z-10 text-gray-100">
+                      <div className="absolute z-10 text-slate-200">
                         {state.playing && isActivePost(item) ? (
                           <PauseCircleFilledRounded style={{ fontSize: 30 }} />
                         ) : (
                           <PlayCircleFilledRounded style={{ fontSize: 30 }} />
                         )}
                       </div>
-                      <div className="absolute z-10 bottom-2 text-gray-100 text-xs font-medium">
+                      <div className="absolute z-10 bottom-1.5 text-slate-200 text-xs font-medium">
                         {secondToHHMMSS(getPostAudio(item).duration)}
                       </div>
                     </>
@@ -108,23 +86,21 @@ const PodcastPostList = (props: IProps) => {
                 </Button>
               </div>
               <div className="ml-3 overflow-hidden">
-                <p className="text-sm dark:text-slate-400 text-slate-400 truncate">
-                  {dayjs(item.date).format('DD/MMMM/YYYY')}
+                <p className="text-meta truncate text-sm">
+                  {dayjs(item.date).format('DD/MM/YYYY')}
                 </p>
-                <h5 className="text-md font-medium dark:text-slate-200 text-slate-600 text-left">
-                  <div
-                    className={
+                <Link href={`/audio/detail/${item.id}`}>
+                  <h5
+                    className={classNames(
+                      'font-medium text-left line-clamp-1',
                       isActivePost(item)
-                        ? 'font-semibold dark:text-white text-slate-900'
-                        : ''
-                    }
+                        ? 'text-accent'
+                        : 'text-title text-hover'
+                    )}
                   >
-                    <LineClamp content={item.title.rendered} line={1} />
-                  </div>
-                </h5>
-                <p className="dark:text-slate-200 text-slate-600">
-                  <LineClamp content={item.excerpt.rendered} line={3} />
-                </p>
+                    {item.title.rendered}
+                  </h5>
+                </Link>
               </div>
             </li>
           ))}
@@ -134,7 +110,7 @@ const PodcastPostList = (props: IProps) => {
         <div className="text-center mt-5">
           <Button
             variant="bordered"
-            className="text-ams-primary border-ams-primary font-semibold px-7"
+            className="text-base text-accent border-ams-primary font-semibold px-7"
             isLoading={loading}
             onPress={loadMore}
           >

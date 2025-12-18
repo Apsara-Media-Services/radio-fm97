@@ -11,7 +11,7 @@ const ProgramListPage = async () => {
   return (
     <>
       <MainLayout>
-        <Container className="py-3 sm:py-5 body">
+        <Container className="py-5 md:py-10">
           <PodcastProgramList title="កម្មវិធីផ្សាយ" programs={programs} />
         </Container>
       </MainLayout>

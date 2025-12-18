@@ -1,53 +1,74 @@
-import BaseDto from '@/services/dto/BaseDto';
+import BaseDto, { DtoClass } from '@/services/dto/BaseDto';
 import { IFetchQueryParams, IPaginatedResponse } from '@/types/fetch';
-import { first } from 'lodash';
+import { first, omit } from 'lodash';
 import { HTTP_METHOD } from 'next/dist/server/web/http';
 import { notFound } from 'next/navigation';
 import pluralize from 'pluralize';
 
-const revalidate = process.env.NEXT_PUBLIC_APP_REVALIDATE || 60;
+const revalidate = process.env.NEXT_PUBLIC_APP_REVALIDATE || 900;
 const baseUrl = `${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/wp-json/wp/v2/`;
 
 export default class ApiBaseService<T = unknown> {
   key: string;
   query: IFetchQueryParams = {};
+  dto: DtoClass<T>;
 
-  constructor(key: string, query?: IFetchQueryParams) {
+  constructor(
+    key: string,
+    query: IFetchQueryParams = {},
+    dto: DtoClass<T> = BaseDto
+  ) {
     this.key = key;
     this.query = {
+      page: 1,
+      per_page: 10,
       _embed: true,
       acf_format: 'standard',
       ...query,
     };
+    this.dto = dto;
   }
 
   async all(query: IFetchQueryParams = {}): Promise<IPaginatedResponse<T>> {
     const params: IFetchQueryParams = {
-      page: 1,
-      per_page: 10,
+      ...this.query,
       ...query,
     };
-    const response = await this.request<T[]>('GET', '', query);
+    const response = await this.request<T[]>('GET', '', params);
     const data: T[] = await response.json();
 
     return {
-      page: params.page || 1,
-      per_page: params.per_page || 10,
-      total_pages: Number(response.headers.get('X-WP-TotalPages')) || 1,
-      total: Number(response.headers.get('X-WP-Total')) || data.length,
-      data: BaseDto.normalize<T>(data),
+      data: this.dto.normalize(data),
+      pagination: {
+        page: params.page || 1,
+        per_page: params.per_page || 10,
+        total_pages: Number(response.headers.get('X-WP-TotalPages')) || 1,
+        total: Number(response.headers.get('X-WP-Total')) || data.length,
+      },
+      query: omit(params, ['page', 'per_page']),
     };
   }
 
   async find(id: number | string, query: IFetchQueryParams = {}): Promise<T> {
-    const response = await this.request<T>('GET', id, query);
+    const params = {
+      ...this.query,
+      ...query,
+    };
+    const response = await this.request<T>('GET', id, params);
     const data = await response.json();
-    return BaseDto.normalize<T>(data);
+
+    if (!data) {
+      return notFound();
+    }
+
+    return this.dto.normalize(data);
   }
 
   async findBySlug(slug: string, query: IFetchQueryParams = {}): Promise<T> {
     const params = {
+      ...this.query,
       ...query,
+      per_page: 1,
       slug,
     };
     const response = await this.request<T[]>('GET', '', params);
@@ -58,7 +79,7 @@ export default class ApiBaseService<T = unknown> {
       return notFound();
     }
 
-    return BaseDto.normalize<T>(data);
+    return this.dto.normalize(data);
   }
 
   request = async <D>(
@@ -78,14 +99,8 @@ export default class ApiBaseService<T = unknown> {
       },
       next: { revalidate: Number(revalidate) },
     };
-    const params: IFetchQueryParams = {
-      ...this.query,
-      ...query,
-    };
-    const url = `${baseUrl}${endpoint}?${this.parseQueryParams(params)}`;
-
+    const url = `${baseUrl}${endpoint}?${this.parseQueryParams(query || {})}`;
     const response = await fetch(url, options);
-
     if (!response.ok) {
       const {
         code,

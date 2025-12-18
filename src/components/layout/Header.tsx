@@ -13,7 +13,7 @@ const Header = ({ className }: IComponentProps) => {
   return (
     <div
       className={classNames(
-        'bg-ams-light dark:bg-zinc-800 sticky top-0 z-20 shadow-lg',
+        'bg-white dark:bg-slate-950 sticky top-0 z-20 border-b border-gray-200 dark:border-slate-800',
         className
       )}
     >

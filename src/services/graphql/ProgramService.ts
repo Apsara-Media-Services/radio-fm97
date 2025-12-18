@@ -16,7 +16,7 @@ export default class ProgramService extends BaseService {
     param: IFetchBody = {
       variables: {
         where: {
-          parent: app.program.databaseId,
+          parent: app.program.programId,
         },
         first: 100,
       },

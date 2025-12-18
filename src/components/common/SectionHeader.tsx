@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 
 const SectionHeader = ({
-  className = 'text-xl dark:text-neutral-50',
+  className = 'text-xl text-gray-700 dark:text-slate-300',
   type = 'primary',
   title,
   link,

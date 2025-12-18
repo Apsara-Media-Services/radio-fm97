@@ -24,45 +24,23 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
   return (
     <div
       className={classNames(
-        'bg-ams-light dark:bg-zinc-800 shadow-[0_-3px_6px_0px_rgba(0,0,0,0.16)] block md:hidden',
+        'bg-white dark:bg-slate-950 border-t ams-border block md:hidden',
         className
       )}
     >
       <div className="flex justify-between items-center relative">
-        <Link
-          href={'/'}
-          className="text-zinc-900 dark:text-zinc-400 hover:text-ams-primary dark:hover:text-white p-3 w-28 text-center"
-        >
-          <div
-            className={classNames(
-              active.home ? 'text-ams-primary dark:text-white' : ''
-            )}
-          >
+        <Link href={'/'} className="text-menu text-hover p-3 w-28 text-center">
+          <div className={classNames(active.home ? 'text-accent' : '')}>
             <HomeRounded />
             <div className="text-sm">ទំព័រដើម</div>
           </div>
         </Link>
         <Link
           href={'/live'}
-          className="group py-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white p-3 w-28 text-center"
+          className="group py-3 text-menu text-hover p-3 w-28 text-center"
         >
-          <div
-            className={classNames(
-              active.live ? 'text-ams-red dark:text-white' : ''
-            )}
-          >
-            <div className="relative">
-              <PodcastsRounded />
-              <div
-                className={classNames(
-                  'text-white text-[10px] absolute bottom-[-6px] w-full'
-                )}
-              >
-                <span className={classNames('mx-auto px-0.5 bg-ams-red')}>
-                  LIVE
-                </span>
-              </div>
-            </div>
+          <div className={classNames(active.live ? 'text-accent' : '')}>
+            <PodcastsRounded />
             <div className="text-sm">ផ្សាយផ្ទាល់</div>
           </div>
         </Link>
@@ -71,12 +49,12 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
             return (
               <>
                 {open ? (
-                  <MenuButton className="w-28 p-3 text-ams-primary dark:text-white focus:outline-none">
+                  <MenuButton className="w-28 p-3 text-accent focus:outline-none">
                     <CloseRounded />
                     <div className="text-sm">មីនុយ</div>
                   </MenuButton>
                 ) : (
-                  <MenuButton className="w-28 p-3 text-zinc-900 dark:text-zinc-400 hover:text-ams-primary dark:hover:text-white focus:outline-none">
+                  <MenuButton className="w-28 p-3 text-menu text-hover focus:outline-none">
                     <MenuRounded />
                     <div className="text-sm">មីនុយ</div>
                   </MenuButton>
@@ -90,7 +68,7 @@ const MobileBottomMenu = ({ className }: IComponentProps) => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <MenuItems className="absolute left-0 bottom-[69px] h-[calc(100vh-133px)] origin-bottom-center z-10 w-full overflow-auto bg-white dark:bg-black shadow-lg dark:shadow-sm dark:shadow-zinc-400/70 focus:outline-none">
+                  <MenuItems className="absolute left-0 bottom-[70px] h-[calc(100vh-135px)] origin-bottom-center z-10 w-full overflow-auto bg-white dark:bg-slate-950 focus:outline-none">
                     <HeaderMenuContent className="p-5 grid gap-8" />
                   </MenuItems>
                 </Transition>

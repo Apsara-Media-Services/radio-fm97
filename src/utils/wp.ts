@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import { WP_REST_API_Attachment } from 'wp-types';
 
 type Size =
+  | 'original'
   | 'thumbnail'
   | 'medium'
   | 'large'
@@ -36,18 +37,32 @@ export function getMediaUrl(
   size = size ?? 'medium';
 
   if (media) {
-    url = get(
-      media.media_details?.sizes,
-      `${size}.source_url`,
-      media.source_url
-    );
+    if (size === 'original') {
+      url = media.source_url;
+    } else {
+      url = get(
+        media.media_details?.sizes,
+        `${size}.source_url`,
+        media.source_url
+      );
+    }
   }
 
   return url;
 }
 
+export function getPostFeaturedMediaUrl(
+  post: WP_REST_API_ACF_Post,
+  size?: Size,
+  fallback?: string
+) {
+  const media = post._embedded?.['wp:featuredmedia']?.[0];
+
+  return getMediaUrl(media, size, fallback);
+}
+
 export function getPostAudio(post: WP_REST_API_ACF_Post) {
-  const { url, media } = post.acf.audio || {};
+  const { url, media } = post?.acf?.audio || {};
 
   return {
     url,

@@ -7,11 +7,9 @@ import { Facebook, YouTube } from '@mui/icons-material';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import ReactIcon from '../my-icon/react.svg';
-
 const Footer = () => {
   return (
-    <section className="bg-ams-light dark:bg-zinc-800">
+    <section className="bg-white dark:bg-slate-950 border-t ams-border">
       <Container className="py-3 sm:py-5">
         <section className="flex justify-center sm:justify-start sm:text-left mb-3">
           <Link href="/" className="inline-block">
@@ -32,15 +30,12 @@ const Footer = () => {
               type="secondary"
               title={app.name}
               lineColor="bg-zinc-50"
-              className="text-lg lg:text-xl font-semibold mb-5"
+              className="text-lg lg:text-xl font-semibold mb-5 text-title"
             />
             <div className="grid grid-cols-2 md:grid-cols-none lg:grid-cols-2 gap-3">
               {footerMenus.map((item, index) => (
                 <div key={`footer-ams-${index}`}>
-                  <Link
-                    href={item.href}
-                    className="hover:text-ams-primary dark:text-zinc-200 dark:hover:text-white"
-                  >
+                  <Link href={item.href} className="text-menu text-hover">
                     {item.name}
                   </Link>
                 </div>
@@ -52,7 +47,7 @@ const Footer = () => {
               type="secondary"
               title="បណ្ដាញព័ត៌មានផ្សេងទៀតពី AMS GROUP"
               lineColor="bg-zinc-50"
-              className="text-lg lg:text-xl font-semibold mb-5"
+              className="text-lg lg:text-xl font-semibold mb-5 text-title"
             />
             <div className="grid grid-cols-2 md:grid-cols-none lg:grid-cols-2 gap-3">
               {amsGroupSites.map((item, index) => (
@@ -61,7 +56,7 @@ const Footer = () => {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-ams-primary dark:text-zinc-200 dark:hover:text-white"
+                    className="text-menu text-hover"
                   >
                     {item.name}
                   </a>
@@ -74,7 +69,7 @@ const Footer = () => {
               type="secondary"
               title="តាមដានយើងតាមរយៈ"
               lineColor="bg-zinc-50"
-              className="text-lg lg:text-xl font-semibold mb-5"
+              className="text-lg lg:text-xl font-semibold mb-5 text-title"
             />
             <div className="flex gap-3">
               {/* <ReactIcon className="css-class" /> */}
@@ -84,7 +79,6 @@ const Footer = () => {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-ams-primary dark:text-zinc-200 dark:hover:text-white"
                   >
                     {item.key === 'facebook' && (
                       // <FacebookIcon className="w-8 h-8 text-blue-600" />
@@ -100,12 +94,12 @@ const Footer = () => {
             </div>
           </div>
         </section>
-
-        <section className="copy-right mt-8 py-2 lg:px-0 flex items-center justify-between flex-col md:flex-row text-sm text-center">
-          <div className="md:text-left py-1">
-            ឆ្នាំ{new Date().getFullYear()} © រក្សាសិទ្ធគ្រប់យ៉ាងដោយ
-            អប្សរាមេឌាសឺវីស / Apsara Media Services (AMS)
-          </div>
+      </Container>
+      <div className="border-t ams-border"></div>
+      <Container>
+        <section className="copy-right py-4 lg:px-0 text-base text-center text-body">
+          ឆ្នាំ{new Date().getFullYear()} © រក្សាសិទ្ធគ្រប់យ៉ាងដោយ
+          អប្សរាមេឌាសឺវីស / Apsara Media Services (AMS)
         </section>
       </Container>
     </section>

@@ -1,7 +1,10 @@
 import {
   WP_REST_API_Attachment,
+  WP_REST_API_Category,
   WP_REST_API_Post,
+  WP_REST_API_Tag,
   WP_REST_API_Term,
+  WP_REST_API_User,
 } from 'wp-types';
 
 export interface AcfFile {
@@ -52,21 +55,26 @@ export interface WP_REST_API_ACF_Program extends WP_REST_API_Term {
 
 export interface WP_REST_API_ACF_Post extends WP_REST_API_Post {
   _embedded?: {
-    /**
-     * The author of the post.
-     */
-    author: unknown[];
-    /**
-     * The featured image post.
-     */
+    author: WP_REST_API_User[];
     'wp:featuredmedia'?: WP_REST_API_Attachment[];
-    /**
-     * The attachment parent post.
-     */
-    'wp:attached-to'?: unknown[];
+    'wp:term'?: [
+      WP_REST_API_Category[],
+      WP_REST_API_Tag[],
+      WP_REST_API_ACF_Program[],
+    ];
     [k: string]: unknown;
   };
   acf: {
     audio?: WP_REST_API_ACF_File;
+  };
+  relation?: {
+    author?: WP_REST_API_User;
+    featuredmedia?: WP_REST_API_Attachment;
+    categories?: WP_REST_API_Category[];
+    categories_actual?: WP_REST_API_Category[];
+    tags?: WP_REST_API_Tag[];
+    programs?: WP_REST_API_ACF_Program[];
+    programs_actual?: WP_REST_API_ACF_Program[];
+    program?: WP_REST_API_ACF_Program;
   };
 }

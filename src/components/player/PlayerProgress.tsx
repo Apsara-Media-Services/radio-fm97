@@ -32,15 +32,15 @@ const PlayerProgress = (props: IProps) => {
           size="sm"
           classNames={{
             track: [
-              'data-[fill-start=true]:border-l-ams-red',
-              'data-[fill-end=true]:border-r-ams-red',
+              'data-[fill-start=true]:border-l-ams-red dark:data-[fill-start=true]:border-l-ams-red-dark',
+              'data-[fill-end=true]:border-r-ams-red dark:data-[fill-end=true]:border-r-ams-red-dark',
               'border-x-4',
             ],
-            filler: 'bg-ams-red',
+            filler: 'bg-ams-red dark:bg-ams-red-dark',
             thumb: [
-              'transition-size bg-ams-red',
-              'data-[fill-start=true]:bg-ams-red',
-              'h-3 w-3 after:h-3 after:w-3 before:w-3 before:h-3 after:bg-ams-red overflow-clip',
+              'transition-size bg-ams-red dark:bg-ams-red-dark',
+              'data-[fill-start=true]:bg-ams-red dark:data-[fill-start=true]:bg-ams-red-dark',
+              'h-3 w-3 after:h-3 after:w-3 before:w-3 before:h-3 after:bg-ams-red-dark overflow-clip',
             ],
           }}
           onChange={(value) => handleSeekChange(value as number)}
@@ -95,7 +95,7 @@ const PlayerProgress = (props: IProps) => {
         {isLive && (
           <div className="flex items-center justify-end gap-3 text-gray-100 -mb-3">
             <div className="flex gap-1">
-              <div className="border-2 h-5 w-5 rounded-full grid items-center justify-center border-ams-red animate-pulse">
+              <div className="border-2 h-5 w-5 rounded-full grid items-center justify-center border-ams-red dark:border-ams-red-dark animate-pulse">
                 <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
               </div>
               <p className="text-small">Live</p>
@@ -103,13 +103,9 @@ const PlayerProgress = (props: IProps) => {
           </div>
         )}
         {!isLive && (
-          <div className="flex justify-between -mb-3">
-            <p className="text-small text-gray-100">
-              {secondToHHMMSS(state.duration * state.played)}
-            </p>
-            <p className="text-small text-gray-100">
-              {secondToHHMMSS(state.duration)}
-            </p>
+          <div className="flex justify-between -mb-3 text-small text-gray-100">
+            <p>{secondToHHMMSS(state.duration * state.played)}</p>
+            <p>{secondToHHMMSS(state.duration)}</p>
           </div>
         )}
       </div>

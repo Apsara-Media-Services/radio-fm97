@@ -1,8 +1,7 @@
-import ClientOnly from '@/components/ClientOnly';
+// import ClientOnly from '@/components/ClientOnly';
+import dayjs from '@/libs/dayjs';
 import { IPostComponentProps } from '@/types/components/post';
 import classNames from 'classnames';
-import { differenceInWeeks, format, formatDistance, parseISO } from 'date-fns';
-import { km } from 'date-fns/locale';
 import { isEmpty, isNil } from 'lodash';
 
 const PostDate = (props: IPostComponentProps) => {
@@ -10,29 +9,21 @@ const PostDate = (props: IPostComponentProps) => {
 
   if (isNil(post?.date) || isEmpty(post?.date)) return <></>;
 
-  const classes = {
-    wrapper: '',
-    date: '',
-    ..._classes,
-  };
+  const diff = dayjs().diff(post.date, 'day');
+  let date = dayjs(post.date).format('DD/MM/YYYY');
 
-  const date = parseISO(post?.date as string);
-  const diff = differenceInWeeks(new Date(), date);
-  let displayDate = format(date, 'd LLLL yyyy', { locale: km });
   if (diff < 1) {
-    displayDate = formatDistance(date, new Date(), {
-      addSuffix: true,
-      includeSeconds: true,
-      locale: km,
-    });
+    const relativeDate = dayjs(post.date).locale('km').fromNow();
+    date = `${date} ~ ${relativeDate}`;
   }
 
   return (
-    <ClientOnly>
-      <div className={classNames(className, classes.wrapper)}>
-        {<div className={classes.date}>{`${displayDate}`}</div>}
-      </div>
-    </ClientOnly>
+    <div className={classNames(className)}>
+      ចុះផ្សាយនៅថ្ងៃ៖​​ <span className="font-medium">{date}</span>
+    </div>
+    // <ClientOnly>
+    //   <div className={classNames(className)}>ចុះផ្សាយនៅថ្ងៃ៖​​ {date}</div>
+    // </ClientOnly>
   );
 };
 

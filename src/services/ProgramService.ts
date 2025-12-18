@@ -6,7 +6,7 @@ export default class ProgramService extends ApiBaseService<WP_REST_API_ACF_Progr
   constructor() {
     const resource = 'program';
     const query = {
-      parent: app.program.databaseId,
+      parent: app.program.programId,
       per_page: 100,
     };
     super(resource, query);

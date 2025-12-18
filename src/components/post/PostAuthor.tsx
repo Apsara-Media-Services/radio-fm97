@@ -1,5 +1,4 @@
 import FallbackImage from '@/components/common/FallbackImage';
-import { Caster } from '@/gql/caster';
 import { IPostComponentProps } from '@/types/components/post';
 import classNames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
@@ -7,7 +6,7 @@ import Link from 'next/link';
 
 const PostAuthor = (props: IPostComponentProps) => {
   const { className, classes: _classes, config: _config, post } = props;
-  const { author } = Caster.post(post);
+  const { author } = post.relation || {};
 
   if (isNil(author) || isEmpty(author)) return <></>;
 
@@ -27,24 +26,12 @@ const PostAuthor = (props: IPostComponentProps) => {
 
   return (
     <div className={classNames(className, classes.wrapper)}>
-      {config.showAuthorAvatar && (
-        <div className={classes.avatar}>
-          <FallbackImage
-            fill
-            src={avatar?.url as string}
-            className="rounded-full"
-            alt={name}
-          />
-        </div>
-      )}
-      {config.showAuthorName &&
-        (slug ? (
-          <Link href={`/author/${slug}`}>
-            <div className={classes.name}>{name}</div>
-          </Link>
-        ) : (
-          <div className={classes.name}>{name}</div>
-        ))}
+      <div className={classes.name}>
+        អត្ថបទដោយ៖ <span className="font-medium">{name}</span>
+      </div>
+      {/* <Link href={`/author/${slug}`}>
+        <div className={classes.name}>អត្ថបទដោយ៖ {name}</div>
+      </Link> */}
     </div>
   );
 };

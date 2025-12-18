@@ -1,5 +1,6 @@
 'use client';
 
+import ClientOnly from '@/components/ClientOnly';
 import { IComponentProps } from '@/types/component';
 import { Menu, MenuButton } from '@headlessui/react';
 import {
@@ -9,17 +10,9 @@ import {
 } from '@mui/icons-material';
 import classNames from 'classnames';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
 
 const HeaderMenuThemeSwitcher = ({ className }: IComponentProps) => {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
 
   const handleThemeChange = () => {
     const themes = ['light', 'dark', 'system'];
@@ -30,21 +23,23 @@ const HeaderMenuThemeSwitcher = ({ className }: IComponentProps) => {
   };
 
   return (
-    <Menu
-      as="div"
-      className={classNames('relative inline-block', className as string)}
-    >
-      <MenuButton
-        className="flex focus:outline-none"
-        onClick={handleThemeChange}
+    <ClientOnly>
+      <Menu
+        as="div"
+        className={classNames('relative inline-block', className as string)}
       >
-        <span className="text-zinc-900 dark:text-zinc-400 hover:text-ams-primary dark:hover:text-white">
-          {theme === 'light' && <NightsStayRounded />}
-          {theme === 'dark' && <LightModeRounded />}
-          {theme === 'system' && <Brightness6Rounded />}
-        </span>
-      </MenuButton>
-    </Menu>
+        <MenuButton
+          className="flex focus:outline-none cursor-pointer"
+          onClick={handleThemeChange}
+        >
+          <span className="text-menu text-hover">
+            {theme === 'light' && <NightsStayRounded />}
+            {theme === 'dark' && <LightModeRounded />}
+            {theme === 'system' && <Brightness6Rounded />}
+          </span>
+        </MenuButton>
+      </Menu>
+    </ClientOnly>
   );
 };
 

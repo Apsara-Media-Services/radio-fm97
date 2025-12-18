@@ -36,8 +36,8 @@ export default function RootLayout({
       className={classNames(kantumruy_pro.className)}
       suppressHydrationWarning
     >
-      <body className="bg-ams-light dark:bg-zinc-700">
-        <NextTopLoader color={app.theme.colors.primary} />
+      <body className="bg-gray-50 dark:bg-slate-900">
+        <NextTopLoader color={app.theme.colors.primary.light} />
         <AppProvider>
           {children}
           <div className="fixed bottom-16 sm:bottom-0 z-10 max-w-xl md:max-w-2xl container mx-auto left-1/2 transform -translate-x-1/2 w-full">

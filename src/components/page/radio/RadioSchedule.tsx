@@ -13,13 +13,12 @@ const RadioSchedule = (props: IRadioProgramComponentProps) => {
   return (
     <div className={className}>
       <SectionHeader
-        type="secondary"
+        type="primary"
         title={title}
-        className="text-2xl font-semibold mb-5"
-        lineColor="bg-zinc-300 dark:bg-zinc-50"
+        className="text-2xl md:text-3xl font-semibold mb-5 text-title"
       />
-      <div className="mb-3 xl:mb-5">
-        <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {programs.map((item, idx) => {
             return (
               <PodcastCard

@@ -1,40 +1,34 @@
-import { Caster } from '@/gql/caster';
-import { Category } from '@/gql/graphql';
-import { IPostComponentProps } from '@/types/components/post';
+import app from '@/configs/app';
+import { IComponentProps } from '@/types/component';
+import { WP_REST_API_ACF_Post } from '@/types/wp';
 import classNames from 'classnames';
-import { isEmpty, isNil } from 'lodash';
+import { filter, includes, isEmpty, isNil } from 'lodash';
 import Link from 'next/link';
+import { WP_REST_API_Category } from 'wp-types';
 
-const PostCategoryTag = (props: IPostComponentProps) => {
-  const { className, classes: _classes = {}, config, post } = props;
-  const { categories } = Caster.post(post);
+interface IProps extends IComponentProps {
+  post: WP_REST_API_ACF_Post;
+}
 
-  if (isNil(post?.categories) || isEmpty(post?.categories)) return <></>;
+const PostCategoryTag = (props: IProps) => {
+  const { className, post } = props;
+  const { categories_actual: categories } = post.relation || {};
 
-  const classes = {
-    wrapper: '',
-    innerWrapper: 'flex items-center space-x-1',
-    name: 'py-1 px-2 text-white bg-rose-800 hover:bg-ams-red max-w-[8rem] sm:max-w-none truncate',
-    ..._classes,
-  };
+  if (isNil(categories) || isEmpty(categories)) return <></>;
 
   return (
-    <div className={classNames(className, classes.wrapper)}>
-      <div className={classes.innerWrapper}>
-        {config?.showCategoryTagMultiple && categories.length ? (
-          categories.map((category: Category) => (
-            <div className={classes.name} key={category?.databaseId}>
-              <Link href={category.uri?.replace('/category', '') as string}>
+    <div className={classNames('flex items-center space-x-1', className)}>
+      {categories.map((category: WP_REST_API_Category) => (
+        <div
+          className="py-1 px-3 text-white bg-ams-primary/80 dark:bg-ams-primary-dark/80 hover:bg-ams-primary hover:dark:bg-ams-primary-dark max-w-32 sm:max-w-none truncate rounded-small"
+          key={category.id}
+        >
+          {/* <Link href={category.uri?.replace('/category', '') as string}>
                 {category.name}
-              </Link>
-            </div>
-          ))
-        ) : (
-          <Link href={categories[0].uri?.replace('/category', '') as string}>
-            <div className={classes.name}>{categories[0].name}</div>
-          </Link>
-        )}
-      </div>
+              </Link> */}
+          {category.name}
+        </div>
+      ))}
     </div>
   );
 };

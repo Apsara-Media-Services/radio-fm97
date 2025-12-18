@@ -9,15 +9,15 @@ const PodcastProgramList = (props: IPodcastProgramListComponentProps) => {
 
   return (
     <section className={className}>
-      <div className="my-5">
+      <div className="mb-5 md:mb-10">
         <SectionHeader
           type="primary"
           title={title}
-          className="text-3xl font-semibold"
+          className="text-2xl md:text-3xl font-semibold"
         />
       </div>
       <div className="mb-3 xl:mb-5">
-        <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {programs.map((program, key) => {
             return (
               <PodcastCard

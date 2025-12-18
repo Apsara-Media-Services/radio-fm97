@@ -26,7 +26,7 @@ const PodcastCard = (props: IProps) => {
     <Card
       isPressable
       onPress={() => (to ? router.push(to) : {})}
-      className={className}
+      className={classNames(className, 'dark')}
     >
       <Image
         isZoomed
@@ -42,21 +42,21 @@ const PodcastCard = (props: IProps) => {
       />
       <CardHeader className="absolute z-auto top-1 flex-col items-start!">
         {tag && (
-          <p className="text-sm text-white/60 uppercase font-bold">{tag}</p>
+          <p className="text-title uppercase font-semibold mb-1">{tag}</p>
         )}
-        <h4 className="text-white font-medium text-large bg-ams-primary/90 px-2">
+        <h4 className="text-title font-medium text-large bg-ams-primary dark:bg-ams-primary-dark rounded-small px-2">
           {title}
         </h4>
       </CardHeader>
       {isLive && (
         <CardFooter className="justify-between bg-black/50 before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%-8px)] shadow-small ml-1 z-10">
-          <p className="text-white/80 py-1">Live Now</p>
+          <p className="text-body py-1">Live Now</p>
           <CircleRounded className="text-ams-red animate-pulse" />
         </CardFooter>
       )}
       {isNext && (
         <CardFooter className="justify-between bg-black/50 before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%-8px)] shadow-small ml-1 z-10">
-          <p className="text-white/80 py-1">Up Next</p>
+          <p className="text-body py-1">Up Next</p>
           <AccessTimeRounded className="text-ams-red" />
         </CardFooter>
       )}

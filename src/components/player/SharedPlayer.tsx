@@ -1,13 +1,13 @@
 'use client';
 
 import { useSharedPlayer } from '@/components/PlayerContext';
-import LineClamp from '@/components/common/LineClamp';
 import Player from '@/components/player/Player';
 import app from '@/configs/app';
 import { IComponentProps } from '@/types/component';
-import { getAcfMediaUrl } from '@/utils/wp';
+import { getAcfMediaUrl, getMediaUrl } from '@/utils/wp';
 import { Button, Card, CardBody, Image } from '@heroui/react';
-import { CloseRounded, KeyboardArrowUpRounded } from '@mui/icons-material';
+import { CloseRounded, Crop54Outlined, Remove } from '@mui/icons-material';
+import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
@@ -21,7 +21,7 @@ const SharedPlayer = ({ className }: IComponentProps) => {
   }, [state.canPlay, state.loading]);
 
   return (
-    <div className={className}>
+    <div className={classNames('dark', className)}>
       <AnimatePresence initial={false}>
         {isVisible && (
           <motion.div
@@ -32,11 +32,11 @@ const SharedPlayer = ({ className }: IComponentProps) => {
             transition={{ duration: 0.25, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <div className="h-auto w-full text-center">
+            {/* <div className="h-auto w-full text-center">
               <Button
                 onPress={() => setIsMinimal(!isMinimal)}
                 variant="solid"
-                className="inline data-hover:bg-none bg-ams-primary rounded-none rounded-t-medium text-white w-30 h-8"
+                className="inline data-hover:bg-none bg-ams-primary rounded-none rounded-t-medium text-body w-30 h-8"
               >
                 <KeyboardArrowUpRounded
                   style={{
@@ -45,7 +45,7 @@ const SharedPlayer = ({ className }: IComponentProps) => {
                   }}
                 />
               </Button>
-            </div>
+            </div> */}
             <AnimatePresence initial={false}>
               {
                 <motion.div
@@ -58,7 +58,7 @@ const SharedPlayer = ({ className }: IComponentProps) => {
                 >
                   <Card
                     isBlurred
-                    className="dark border-none bg-background/60 dark:bg-default-100/50 rounded-none rounded-t-medium"
+                    className="border-none bg-background/60 dark:bg-default-100/50 rounded-none rounded-t-medium"
                     shadow="sm"
                   >
                     <CardBody>
@@ -73,7 +73,11 @@ const SharedPlayer = ({ className }: IComponentProps) => {
                                 app.name
                               }
                               className="w-full h-full object-cover opacity-100"
-                              src={getAcfMediaUrl(program.acf.thumbnail)}
+                              src={
+                                program?.acf?.thumbnail
+                                  ? getAcfMediaUrl(program.acf?.thumbnail)
+                                  : getMediaUrl(post?.relation?.featuredmedia)
+                              }
                               fallbackSrc={app.logo}
                             />
                           </div>
@@ -82,19 +86,14 @@ const SharedPlayer = ({ className }: IComponentProps) => {
                         <div className="w-full">
                           <div className="mb-2">
                             {!isMinimal && (
-                              <div className="text-ams-primary font-semibold">
+                              <div className="text-accent font-semibold">
                                 {program?.name ?? app.tag}
                               </div>
                             )}
-                            <h5 className="">
-                              <LineClamp
-                                content={
-                                  state.live
-                                    ? 'ផ្សាយផ្ទាល់'
-                                    : (post?.title?.rendered ?? app.name)
-                                }
-                                line={1}
-                              />
+                            <h5 className="line-clamp-1 text-title">
+                              {state.live
+                                ? 'ផ្សាយផ្ទាល់'
+                                : (post?.title?.rendered ?? app.name)}
                             </h5>
                           </div>
                           <Player
@@ -107,10 +106,20 @@ const SharedPlayer = ({ className }: IComponentProps) => {
 
                       <div className="absolute top-0 right-0">
                         <Button
+                          onPress={() => setIsMinimal(!isMinimal)}
+                          radius="full"
+                          variant="light"
+                          className="text-body"
+                          isIconOnly
+                          data-hover="bg-none"
+                        >
+                          {isMinimal ? <Crop54Outlined /> : <Remove />}
+                        </Button>
+                        <Button
                           onPress={reset}
                           radius="full"
                           variant="light"
-                          className="text-white"
+                          className="text-body hover:text-title"
                           isIconOnly
                           data-hover="bg-none"
                         >

@@ -15,14 +15,16 @@ const HeaderMenu = ({ className }: IComponentProps) => {
       <Menu as="div" className="relative hidden md:inline-block">
         {({ open }) => (
           <>
-            <MenuButton className="flex focus:outline-none">
+            <MenuButton
+              className={classNames(
+                'flex focus:outline-none cursor-pointer text-menu',
+                open ? 'text-accent' : 'text-hover'
+              )}
+            >
               {open ? (
                 <CloseRounded style={{ fontSize: 30 }} />
               ) : (
-                <MenuRounded
-                  style={{ fontSize: 30 }}
-                  className="text-zinc-900 dark:text-zinc-400 hover:text-ams-primary dark:hover:text-white"
-                />
+                <MenuRounded style={{ fontSize: 30 }} className="" />
               )}
             </MenuButton>
 
@@ -35,7 +37,7 @@ const HeaderMenu = ({ className }: IComponentProps) => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <MenuItems className="absolute right-0 top-[47px] origin-top-right z-10 min-w-max overflow-auto bg-white dark:bg-black shadow-lg dark:shadow-sm dark:shadow-zinc-400/70 focus:outline-none">
+              <MenuItems className="absolute right-0 top-[47px] origin-top-right z-10 min-w-max overflow-auto bg-white dark:bg-slate-950 border border-gray-200 dark:border-slate-800 focus:outline-none">
                 <HeaderMenuContent className="p-5 grid gap-8" />
               </MenuItems>
             </Transition>
