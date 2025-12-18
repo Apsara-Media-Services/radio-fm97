@@ -1,0 +1,41 @@
+module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+  },
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'next',
+    'next/core-web-vitals',
+    'prettier',
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 12,
+    sourceType: 'module',
+  },
+  plugins: ['@typescript-eslint'],
+  rules: {
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'index',
+          'sibling',
+          'parent',
+          'internal',
+          'external',
+          'builtin',
+          'object',
+          // "type"
+        ],
+      },
+    ],
+    '@typescript-eslint/no-explicit-any': ['off'],
+    'import/no-anonymous-default-export': 'off',
+  },
+};

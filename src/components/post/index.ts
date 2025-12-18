@@ -1,17 +1,17 @@
 import PostAuthor from './PostAuthor';
+import PostCard from './PostCard';
 import PostCategoryTag from './PostCategoryTag';
-import PostCoverImage from './PostCoverImage';
 import PostDate from './PostDate';
-import PostExcerpt from './PostExcerpt';
-import PostTitle from './PostTitle';
-import PostItemDetail from './PostItemDetail';
+import PostDetail from './PostDetail';
+import PostList from './PostList';
+import PostProgramTag from './PostProgramTag';
 
 export {
   PostAuthor,
   PostCategoryTag,
-  PostCoverImage,
   PostDate,
-  PostExcerpt,
-  PostTitle,
-  PostItemDetail,
+  PostCard,
+  PostList,
+  PostDetail,
+  PostProgramTag,
 };

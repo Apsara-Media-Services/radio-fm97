@@ -1,5 +1,6 @@
-import { Category, Post, User } from '@/gql/graphql';
+import { Category, User } from '@/gql/graphql';
 import { IComponentProps } from '@/types/component';
+import { WP_REST_API_ACF_Post } from '@/types/wp';
 
 export interface IPostConfig {
   showImage?: boolean;
@@ -19,7 +20,7 @@ export interface IPostConfig {
 
 export interface IPostComponentProps extends IComponentProps {
   config?: IPostConfig;
-  post?: Post;
+  post: WP_REST_API_ACF_Post;
 }
 
 export interface IPostAuthorComponentProps extends IPostComponentProps {

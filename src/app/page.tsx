@@ -1,102 +1,70 @@
 import { Container } from '@/components/common';
-import FallbackImage from '@/components/common/FallbackImage';
 import MainLayout from '@/components/layout/MainLayout';
+import HomeLatestNews from '@/components/page/home/HomeLatestNews';
 import { RadioLive, RadioSchedule } from '@/components/page/radio';
-import { APP_NAME_ALT } from '@/constants/app';
-import { LOGO } from '@/constants/app';
-import ScheduleService from '@/services/ScheduleService';
-import { format } from 'date-fns';
-import { find, isEmpty, lowerCase, map } from 'lodash';
-import moment from 'moment-timezone';
+import { getDailyPrograms } from '@/helpers/program';
+import dayjs from '@/libs/dayjs';
+import PostService from '@/services/PostService';
+import ProgramService from '@/services/ProgramService';
+import _, { isEmpty } from 'lodash';
 
+const programService = new ProgramService();
+const postService = new PostService();
 
-moment.tz.setDefault('Asia/Phnom_Penh');
-const scheduleService = new ScheduleService();
+async function loadPrograms() {
+  const { data: programs } = await programService.all();
+  const today = dayjs();
+  const tomorrow = dayjs().add(1, 'day');
 
-async function getSchedules() {
-  const response = await scheduleService.all();
-  const schedules = JSON.parse(response);
-  const today = lowerCase(format(new Date(), 'EEEE'));
+  const {
+    programs: todayPrograms,
+    activeProgram,
+    nextProgram,
+  } = getDailyPrograms(programs, today);
 
-  const programs = map(schedules[today], (program) => {
-    const currentDate = moment().format('YYYY-MM-DD');
-    const startDateTime = moment(`${currentDate} ${program?.time_range[0]}`);
-    const endDateTime = moment(`${currentDate} ${program?.time_range[1]}`);
+  const { programs: tomorrowPrograms, firstProgram: nextTomorrowProgram } =
+    getDailyPrograms(programs, tomorrow);
 
-    return {
-      ...program,
-      startTimestamp: startDateTime.valueOf(),
-      endTimestamp: endDateTime.valueOf(),
-    };
-  });
-
-  const program =
-    find(programs, (program) => {
-      const timestamp = moment().valueOf();
-      return (
-        timestamp >= program.startTimestamp && timestamp < program.endTimestamp
-      );
-    }) || {};
-
-  const nextProgram =
-    find(programs, (_program) => {
-      const timestamp = program?.endTimestamp || moment().valueOf();
-      return _program.startTimestamp >= timestamp;
-    }) || {};
-
-  // console.warn(moment().valueOf(), moment().format('YYYY-MM-DD hh:mm A'));
-  // console.warn('Program: ', program);
-  // console.warn('Next Program: ', nextProgram);
+  const isLive = !!activeProgram || !!nextProgram;
 
   return {
-    radioApiBaseUrl: process.env.RADIO_API_BASE_URL,
-    radioLiveUrl: process.env.RADIO_LIVE_URL,
-    programs,
-    program: isEmpty(program) ? { ...nextProgram, isNext: true } : program,
-    nextProgram: isEmpty(program) ? {} : nextProgram,
+    programs: isLive ? todayPrograms : tomorrowPrograms,
+    activeProgram,
+    nextProgram,
+    nextTomorrowProgram,
+    isLive,
   };
 }
 
 const Live = async () => {
-  const {
-    programs = [],
-    program,
-    nextProgram,
-    radioApiBaseUrl,
-    radioLiveUrl,
-  }: any = await getSchedules();
+  const { programs, activeProgram, nextProgram, nextTomorrowProgram, isLive } =
+    await loadPrograms();
+  const { data: posts } = await postService.all({ per_page: 12 });
+
   return (
     <MainLayout>
-      {programs.length > 0 && (
-        <>
-          <RadioLive
-            program={program}
-            nextProgram={nextProgram}
-            radioApiBaseUrl={radioApiBaseUrl}
-            radioLiveUrl={radioLiveUrl}
-            className="mb-12"
-          />
+      <RadioLive
+        activeProgram={activeProgram}
+        nextProgram={nextProgram}
+        nextTomorrowProgram={nextTomorrowProgram}
+      />
+      {!isEmpty(programs) && (
+        <div className="bg-white dark:bg-slate-950 py-5 md:py-10">
           <Container>
             <RadioSchedule
-              className=""
-              title="កម្មវិធីផ្សាយប្រចាំថ្ងៃ (ម៉ោងកម្ពុជា)"
+              title={
+                isLive ? 'កម្មវិធីផ្សាយប្រចាំថ្ងៃ' : 'កម្មវិធីសម្រាប់ថ្ងៃស្អែក'
+              }
               programs={programs}
             />
           </Container>
-        </>
+        </div>
       )}
-      <Container className="py-3 sm:py-5 body">
-        {!programs.length && (
-          <div className="relative w-72 aspect-square mx-auto">
-            <FallbackImage
-              fill
-              src={LOGO as string}
-              alt={APP_NAME_ALT}
-              className="rounded-lg"
-            />
-          </div>
-        )}
-      </Container>
+      {!isEmpty(posts) && (
+        <Container className="py-5 md:py-10">
+          <HomeLatestNews title="ព័ត៌មានថ្មីៗ" posts={posts} />
+        </Container>
+      )}
     </MainLayout>
   );
 };

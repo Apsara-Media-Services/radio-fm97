@@ -8,67 +8,50 @@ import { usePathname } from 'next/navigation';
 
 const HeaderMenuHighlight = ({ className }: IComponentProps) => {
   const pathname = usePathname();
-  const audio =
-    pathname.startsWith('/audio') && !pathname.startsWith('/audio/daily')
-      ? true
-      : false;
   const active = {
     home: pathname === '/',
     live: pathname.startsWith('/live'),
-    audio: audio,
-    daily: pathname.startsWith('/audio/daily'),
+    audio:
+      pathname.startsWith('/audio') && !pathname.startsWith('/audio/daily'),
+    news: pathname.startsWith('/news'),
   };
 
   return (
     <div
       className={classNames(
-        'hidden md:flex items-center text-center md:text-md gap-x-6',
+        'hidden md:flex items-center text-center md:text-md gap-x-6 text-menu text-lg',
         className
       )}
     >
       <Link
-        href={'/audio'}
-        className="py-2 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white"
+        href={'/live'}
+        className="hover:text-ams-red dark:hover:text-ams-red-dark"
       >
         <div
           className={classNames(
-            active.audio ? 'text-ams-red dark:text-white' : ''
+            active.live || active.home ? 'text-accent' : ''
           )}
         >
-          <div className="text-lg">កម្មវិធីផ្សាយ</div>
-        </div>
-      </Link>
-      <Link
-        href={'/audio/daily'}
-        className="py-2 text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white"
-      >
-        <div
-          className={classNames(
-            active.daily ? 'text-ams-red dark:text-white' : ''
-          )}
-        >
-          <div className="text-lg">កម្មវិធីផ្សាយប្រចាំថ្ងៃ</div>
-        </div>
-      </Link>
-      <Link
-        href={'/'}
-        className="text-zinc-900 dark:text-zinc-400 hover:text-ams-red dark:hover:text-white"
-      >
-        <div
-          className={classNames(
-            active.home ? 'text-ams-red dark:text-white' : ''
-          )}
-        >
-          <div className="relative">
+          <div className="relative -mt-2">
             <div
               className={classNames(
-                'bg-ams-red text-xs text-white absolute bottom-[-10px]'
+                'bg-ams-red dark:bg-ams-red-dark text-xs text-white absolute -bottom-2.5 px-1 left-1/2 -translate-x-1/2 rounded-sm'
               )}
             >
               LIVE
             </div>
             <PodcastsRounded />
           </div>
+        </div>
+      </Link>
+      <Link href={'/audio'} className="py-2 text-hover">
+        <div className={classNames(active.audio ? 'text-accent' : '')}>
+          កម្មវិធីផ្សាយ
+        </div>
+      </Link>
+      <Link href={'/news'} className="py-2 text-hover">
+        <div className={classNames(active.news ? 'text-accent' : '')}>
+          ព័ត៌មាន
         </div>
       </Link>
     </div>

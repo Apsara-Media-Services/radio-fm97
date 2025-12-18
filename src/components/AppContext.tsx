@@ -1,10 +1,16 @@
 'use client';
 
-import { AppContextType } from '@/types/app';
+import { PlayerProvider } from '@/components/PlayerContext';
+import useProgram from '@/hooks/use-program';
 import { IComponentProps } from '@/types/component';
-import { createContext, useContext, useState } from 'react';
+import { HeroUIProvider } from '@heroui/react';
+import { ThemeProvider } from 'next-themes';
+import { createContext, useContext } from 'react';
+import { ToastContainer } from 'react-toastify';
 
-const defaultValues: AppContextType = {};
+export type AppContextType = ReturnType<typeof useProgram>;
+
+const defaultValues: AppContextType = {} as AppContextType;
 const AppContext = createContext<AppContextType>(defaultValues);
 
 export default AppContext;
@@ -14,20 +20,16 @@ export function useAppContext() {
 }
 
 export function AppProvider({ children }: IComponentProps) {
-  // const [Player, setPlayer] = useState<WaveSurfer>({} as WaveSurfer);
-  // const [Player, setPlayer] = useState<ReactPlayerProps>(
-  //   {} as ReactPlayerProps
-  // );
-  const [Player, setPlayer] = useState({});
-  // const [control, setControl] = useState({
-  //   speed: 1,
-  //   volume: 0.025,
-  //   muted: false,
-  // } as any);
+  const useProgramHook = useProgram();
   return (
     <>
-      <AppContext.Provider value={{ Player, setPlayer }}>
-        {children}
+      <AppContext.Provider value={{ ...useProgramHook }}>
+        <PlayerProvider>
+          <HeroUIProvider>
+            <ThemeProvider attribute="class">{children}</ThemeProvider>
+            <ToastContainer aria-label={''} />
+          </HeroUIProvider>
+        </PlayerProvider>
       </AppContext.Provider>
     </>
   );

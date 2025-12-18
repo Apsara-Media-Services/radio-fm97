@@ -1,59 +1,37 @@
-'use client';
-
 import { SectionHeader } from '@/components/common';
-import { Card, CardHeader, Image } from '@nextui-org/react';
+import PodcastCard from '@/components/podcast/PodcastCard';
+import { IRadioProgramComponentProps } from '@/types/component';
+import { dateTo12Hour } from '@/utils/date';
+import { getAcfMediaUrl } from '@/utils/wp';
 import { isEmpty, isNil } from 'lodash';
-import moment from 'moment-timezone';
-import { useRouter } from 'next/navigation';
 
-const RadioSchedule = (props: any) => {
-  const router = useRouter();
+const RadioSchedule = (props: IRadioProgramComponentProps) => {
   const { className, title, programs } = props;
 
   if (isNil(programs) || isEmpty(programs)) return <></>;
 
-  const timestampTo12Hour = (timestamp: number | string) => {
-    return moment(timestamp).format('hh:mm A');
-  };
-
   return (
     <div className={className}>
       <SectionHeader
-        type="secondary"
+        type="primary"
         title={title}
-        className="text-2xl font-semibold mb-5"
-        lineColor="bg-zinc-300 dark:bg-zinc-50"
+        className="text-2xl md:text-3xl font-semibold mb-5 text-title"
       />
-      <div className="mb-3 xl:mb-5">
-        <div className="gap-2 grid grid-cols-12 grid-rows-2">
-          {programs.map((item: any, key: any) => {
+      <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {programs.map((item, idx) => {
             return (
-              <Card
-                key={key}
-                isPressable
-                onPress={() => router.push(`audio/${item?.categories[0]}`)}
-                className="col-span-12 sm:col-span-4 h-[300px]"
-              >
-                <Image
-                  isZoomed
-                  removeWrapper
-                  className="z-0 w-full h-full object-cover opacity-100"
-                  src={item?.cover[0].sizes?.medium?.url as string}
-                  width={400}
-                  alt={item?.title as string}
-                />
-                <CardHeader className="absolute z-auto top-1 flex-col !items-start">
-                  <p className="text-tiny text-white/60 uppercase font-bold">
-                    <time className="text-sm md:text-base block pt-3">
-                      {timestampTo12Hour(item?.startTimestamp)} ~{' '}
-                      {timestampTo12Hour(item?.endTimestamp)}
-                    </time>
-                  </p>
-                  <h4 className="text-white font-medium text-large bg-ams-red/90 px-2">
-                    {item?.title}
-                  </h4>
-                </CardHeader>
-              </Card>
+              <PodcastCard
+                key={idx}
+                title={item.name as string}
+                tag={`${dateTo12Hour(item.startAt)} ~ ${dateTo12Hour(item.endAt)}`}
+                imageUrl={getAcfMediaUrl(item.thumbnail)}
+                to={`audio/${item.slug}`}
+                isLive={item.isLive}
+                isPlayed={item.isPlayed}
+                isNext={item.isNext}
+                className="h-[300px]"
+              />
             );
           })}
         </div>

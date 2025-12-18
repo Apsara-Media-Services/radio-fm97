@@ -1,3 +1,16 @@
+export const MEDIA_ITEM_FIELDS = `
+  fragment MediaItemFields on MediaItem {
+    id
+    sourceUrl
+    mediaDetails {
+      sizes {
+        sourceUrl
+        name
+      }
+    }
+  }
+`;
+
 export const POST_FIELDS = `
   fragment PostFields on Post {
     enclosure
@@ -35,27 +48,23 @@ export const POST_FIELDS = `
       }
     }
     categories {
-      edges {
-        node {
-          id
-          databaseId
-          name
-          slug
-          uri
-          description
-        }
+      nodes {
+        id
+        databaseId
+        name
+        slug
+        uri
+        description
       }
     }
-    podcasts {
-      edges {
-        node {
-          id
-          databaseId
-          name
-          slug
-          uri
-          description
-        }
+    programs {
+      nodes {
+        id
+        databaseId
+        name
+        slug
+        uri
+        description
       }
     }
   }
@@ -69,6 +78,36 @@ export const CATEGORY_FIELDS = `
     slug
     uri
     description
+  }
+`;
+
+export const PROGRAM_FIELDS = `
+  fragment ProgramFields on Program {
+    id
+    databaseId
+    name
+    slug
+    uri
+    description
+    radio {
+      thumbnail {
+        node {
+          id
+            sourceUrl
+            mediaDetails {
+              sizes {
+                sourceUrl
+                name
+              }
+            }
+        }
+      }
+      schedules {
+        day
+        startTime
+        endTime
+      }
+    }
   }
 `;
 
@@ -108,5 +147,14 @@ export const PODCAST_FIELDS = `
     slug
     description
     count
+  }
+`;
+
+export const PAGE_INFO_FIELDS = `
+  fragment PageInfoFields on PageInfo {
+    hasNextPage
+    hasPreviousPage
+    startCursor
+    endCursor
   }
 `;

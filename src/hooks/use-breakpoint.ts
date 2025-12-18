@@ -1,8 +1,8 @@
 'use client';
 
 import { ScreenBreakpointType } from '@/types/app';
-import { useState, useEffect } from 'react';
 import throttle from 'lodash/throttle';
+import { useEffect, useState } from 'react';
 
 export const $breakpoints: ScreenBreakpointType = {
   // Breakpoints

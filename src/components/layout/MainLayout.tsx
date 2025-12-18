@@ -1,4 +1,3 @@
-// import Player from './Player';
 import MobileBottomMenu from '@/components/layout/MobileBottomMenu';
 import { IComponentProps } from '@/types/component';
 import Footer from '@components/layout/Footer';
@@ -8,10 +7,9 @@ const MainLayout = ({ children }: IComponentProps) => {
   return (
     <>
       <Header />
-      <main className="bg-white dark:bg-black">{children}</main>
+      <main>{children}</main>
       <Footer />
-      <div className="sticky bottom-0 z-10 max-w-4xl mx-auto">
-        {/* <Player /> */}
+      <div className="sticky bottom-0 z-20 max-w-4xl mx-auto">
         <MobileBottomMenu />
       </div>
     </>
