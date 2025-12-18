@@ -1,8 +1,8 @@
-import dayjs from '@/libs/dayjs';
+import dayjs, { TIMEZONE } from '@/libs/dayjs';
 import { isFinite, isNaN } from 'lodash';
 
 function timestampTo12Hour(timestamp?: number | string) {
-  return dayjs(timestamp).format('hh:mm A');
+  return dayjs(timestamp).tz(TIMEZONE).format('hh:mm A');
 }
 
 function secondToHHMMSS(seconds: number | string) {
@@ -13,7 +13,7 @@ function secondToHHMMSS(seconds: number | string) {
 }
 
 function dateTo12Hour(date?: Date | string) {
-  return dayjs(date).format('hh:mm A');
+  return dayjs(date).tz(TIMEZONE).format('hh:mm A');
 }
 
 export { timestampTo12Hour, secondToHHMMSS, dateTo12Hour };

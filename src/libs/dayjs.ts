@@ -13,3 +13,5 @@ dayjs.extend(relativeTime);
 dayjs.tz.setDefault('Asia/Phnom_Penh');
 
 export default dayjs;
+
+export const TIMEZONE = 'Asia/Phnom_Penh';

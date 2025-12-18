@@ -2,7 +2,7 @@
 
 import { useSharedPlayer } from '@/components/PlayerContext';
 import usePaginator from '@/hooks/use-paginator';
-import dayjs from '@/libs/dayjs';
+import dayjs, { TIMEZONE } from '@/libs/dayjs';
 import ProgramPostService from '@/services/ProgramPostService';
 import { IPaginationComponentProps } from '@/types/component';
 import { WP_REST_API_ACF_Post, WP_REST_API_ACF_Program } from '@/types/wp';
@@ -87,7 +87,7 @@ const PodcastPostList = (props: IProps) => {
               </div>
               <div className="ml-3 overflow-hidden">
                 <p className="text-meta truncate text-sm">
-                  {dayjs(item.date).format('DD/MM/YYYY')}
+                  {dayjs(item.date).tz(TIMEZONE).format('DD/MM/YYYY')}
                 </p>
                 <Link href={`/audio/detail/${item.id}`}>
                   <h5

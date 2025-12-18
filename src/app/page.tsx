@@ -3,7 +3,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import HomeLatestNews from '@/components/page/home/HomeLatestNews';
 import { RadioLive, RadioSchedule } from '@/components/page/radio';
 import { getDailyPrograms } from '@/helpers/program';
-import dayjs from '@/libs/dayjs';
+import dayjs, { TIMEZONE } from '@/libs/dayjs';
 import PostService from '@/services/PostService';
 import ProgramService from '@/services/ProgramService';
 import _, { isEmpty } from 'lodash';
@@ -13,8 +13,8 @@ const postService = new PostService();
 
 async function loadPrograms() {
   const { data: programs } = await programService.all();
-  const today = dayjs();
-  const tomorrow = dayjs().add(1, 'day');
+  const today = dayjs().tz(TIMEZONE);
+  const tomorrow = dayjs().tz(TIMEZONE).add(1, 'day');
 
   const {
     programs: todayPrograms,
