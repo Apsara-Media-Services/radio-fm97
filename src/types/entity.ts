@@ -28,4 +28,5 @@ export interface IScheduleProgram extends WP_REST_API_ACF_Program {
   isLive: boolean;
   isNext: boolean;
   isPlayed: boolean;
+  isReplayed: boolean;
 }

@@ -49,9 +49,10 @@ const PodcastHero = ({ className, program, post }: IProps) => {
                   {program.name}
                 </span>
               </div>
-              <h5 className="my-5 md:text-lg text-body line-clamp-4">
-                {program.description}
-              </h5>
+              <h5
+                className="my-5 md:text-lg text-body line-clamp-4"
+                dangerouslySetInnerHTML={{ __html: program.description }}
+              />
               <PodcastPlayButton
                 program={program}
                 post={post}

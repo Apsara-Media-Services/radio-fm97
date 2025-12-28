@@ -49,7 +49,9 @@ export interface WP_REST_API_ACF_Program extends WP_REST_API_Term {
       day: string;
       start_time: string;
       end_time: string;
+      replay: boolean;
     }[];
+    archivable?: boolean;
   };
 }
 

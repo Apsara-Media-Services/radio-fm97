@@ -15,16 +15,26 @@ interface IProps extends IComponentProps {
   isLive?: boolean;
   isPlayed?: boolean;
   isNext?: boolean;
+  isReplayed?: boolean;
 }
 
 const PodcastCard = (props: IProps) => {
   const router = useRouter();
-  const { className, title, tag, imageUrl, to, isLive, isPlayed, isNext } =
-    props;
+  const {
+    className,
+    title,
+    tag,
+    imageUrl,
+    to,
+    isLive,
+    isPlayed,
+    isNext,
+    isReplayed,
+  } = props;
 
   return (
     <Card
-      isPressable
+      isPressable={!!to}
       onPress={() => (to ? router.push(to) : {})}
       className={classNames(className, 'dark')}
     >
@@ -45,7 +55,7 @@ const PodcastCard = (props: IProps) => {
           <p className="text-title uppercase font-semibold mb-1">{tag}</p>
         )}
         <h4 className="text-title font-medium text-large bg-ams-primary dark:bg-ams-primary-dark rounded-small px-2">
-          {title}
+          {title} {isReplayed ? '(ផ្សាយឡើងវិញ)' : ''}
         </h4>
       </CardHeader>
       {isLive && (
