@@ -1,12 +1,12 @@
 import { AppProvider } from '@/components/AppContext';
-import SharedPlayer from '@/components/player/SharedPlayer';
+import SharedPlayer from '@/components/player/SharedPlayerClient';
 import app from '@/configs/app';
 import classNames from 'classnames';
 import { Metadata } from 'next';
+import { ThemeProvider } from 'next-themes';
 import { Kantumruy_Pro } from 'next/font/google';
 import Script from 'next/script';
 import NextTopLoader from 'nextjs-toploader';
-import 'react-toastify/dist/ReactToastify.css';
 
 import './globals.css';
 
@@ -38,14 +38,22 @@ export default function RootLayout({
     >
       <body className="bg-gray-50 dark:bg-slate-900">
         <NextTopLoader color={app.theme.colors.primary.light} />
-        <AppProvider>
-          {children}
-          <div className="fixed bottom-16 sm:bottom-0 z-10 max-w-xl md:max-w-2xl container mx-auto left-1/2 transform -translate-x-1/2 w-full">
-            <div className="sm:px-5">
-              <SharedPlayer />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AppProvider>
+            {children}
+            <div className="fixed bottom-16 sm:bottom-0 z-10 max-w-xl md:max-w-2xl container mx-auto left-1/2 transform -translate-x-1/2 w-full">
+              <div className="sm:px-5">
+                <SharedPlayer />
+              </div>
             </div>
-          </div>
-        </AppProvider>
+          </AppProvider>
+        </ThemeProvider>
+
         <Script
           strategy="afterInteractive"
           src="https://analytic.cloud.sovichetra.com/script.js"
