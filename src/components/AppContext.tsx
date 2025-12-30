@@ -3,6 +3,7 @@
 import { PlayerProvider } from '@/components/PlayerContext';
 import { IComponentProps } from '@/types/component';
 import { HeroUIProvider } from '@heroui/react';
+import { useRouter } from 'next/navigation';
 import { createContext, useContext } from 'react';
 
 export type AppContextType = {
@@ -19,11 +20,13 @@ export function useAppContext() {
 }
 
 export function AppProvider({ children }: IComponentProps) {
+  const router = useRouter();
+
   return (
     <>
       <AppContext.Provider value={{}}>
         <PlayerProvider>
-          <HeroUIProvider>{children}</HeroUIProvider>
+          <HeroUIProvider navigate={router.push}>{children}</HeroUIProvider>
         </PlayerProvider>
       </AppContext.Provider>
     </>

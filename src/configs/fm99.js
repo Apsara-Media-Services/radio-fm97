@@ -1,9 +1,11 @@
 export default {
   name: 'វិទ្យុសំឡេងយុវជន ៩៩',
+  name_en: 'Apsara FM99',
   tag: 'FM99',
   logo: '/images/fm99.jpeg',
+  url: 'https://fm99.ams.com.kh',
   description:
-    'កម្មវិធីផ្សាយប្រចាំថ្ងៃរបស់វិទ្យុសំលេងយុវជន FM 99MHz | ព័ត៌មានពិត អប់រំ កម្សាន្ត និងចំណេះដឹង',
+    'វិទ្យុសំឡេងយុវជន ៩៩ ផ្សាយព័ត៌មាន និងកម្សាន្ត ជួយលើកកម្ពស់ចំណេះដឹង និងភាពច្នៃប្រឌិតក្នុងសង្គម។',
   program: {
     programId: 125,
     baseCategoryId: 97,
@@ -34,11 +36,11 @@ export default {
       'gradient-title': 'linear-gradient(to right, #362095, #362095)',
     },
   },
-  followUs: [
+  socials: [
     {
       name: 'Facebook',
       key: 'facebook',
-      href: 'https://www.facebook.com/amsradio99',
+      href: 'https://www.facebook.com/apsarafm99',
     },
     {
       name: 'YouTube',

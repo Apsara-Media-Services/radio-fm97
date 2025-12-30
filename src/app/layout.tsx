@@ -15,15 +15,7 @@ const kantumruy_pro = Kantumruy_Pro({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: `${app.name} | ${app.tag}`,
-  description: app.description,
-  icons: {
-    icon: app.icons.icon,
-    apple: app.icons.apple,
-    shortcut: app.icons.shortcut,
-  },
-};
+export const metadata: Metadata = app.metadata;
 
 export default function RootLayout({
   children,

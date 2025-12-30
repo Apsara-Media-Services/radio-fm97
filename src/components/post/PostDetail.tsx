@@ -15,10 +15,10 @@ const PostDetail = ({ post, className }: IPostComponentProps) => {
       <div className="text-sm">
         <PostCategoryTag post={post} />
       </div>
-      <h3 className="font-semibold text-2xl md:text-3xl my-2">
+      <h1 className="font-semibold text-2xl md:text-3xl my-3">
         {sanitizeHtml(post?.title?.rendered as string, { allowedTags: [] })}
-      </h3>
-      <div className="flex flex-wrap items-center gap-x-4 my-2">
+      </h1>
+      <div className="flex flex-wrap items-center gap-x-4 my-3">
         <PostDate post={post} />
         <span className="hidden md:block">•</span>
         <PostAuthor post={post} />
