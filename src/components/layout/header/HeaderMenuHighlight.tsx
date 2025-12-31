@@ -43,7 +43,7 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
         <Link
           href={'https://fm99.ams.com.kh/live'}
           target="_blank"
-          className="text-fm99  mx-1"
+          className="text-fm99 dark:text-fm99-dark mx-1"
         >
           <div className="relative -mt-2">
             <div
@@ -61,7 +61,7 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
         <Link
           href={'https://fm97.ams.com.kh/live'}
           target="_blank"
-          className="text-fm97  mx-1"
+          className="text-fm97 dark:text-fm97-dark mx-1"
         >
           <div className="relative -mt-2">
             <div
