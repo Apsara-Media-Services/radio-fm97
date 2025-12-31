@@ -21,7 +21,7 @@ const SectionHeader = ({
 
   if (type === 'primary') {
     return (
-      <div className={`flex items-center gap-3 ${className}`}>
+      <h2 className={`flex items-center gap-3 ${className}`}>
         {link ? (
           <>
             <Link href={link}>{title}</Link>
@@ -33,13 +33,13 @@ const SectionHeader = ({
             {/* <div className={primaryClass} /> */}
           </>
         )}
-      </div>
+      </h2>
     );
   }
 
   if (type === 'secondary') {
     return (
-      <div className={`${className}`}>
+      <h2 className={`${className}`}>
         {link ? (
           <>
             <Link href={link}>{title}</Link>
@@ -57,13 +57,13 @@ const SectionHeader = ({
             </div> */}
           </>
         )}
-      </div>
+      </h2>
     );
   }
 
   if (type === 'tertiary') {
     return (
-      <div className={classNames('flex gap-3', className)}>
+      <h2 className={classNames('flex gap-3', className)}>
         {link ? (
           <>
             <div className={tertiaryClass}>{title}</div>
@@ -75,7 +75,7 @@ const SectionHeader = ({
             <div>{title}</div>
           </>
         )}
-      </div>
+      </h2>
     );
   }
 

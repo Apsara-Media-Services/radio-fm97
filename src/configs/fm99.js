@@ -5,7 +5,7 @@ export default {
   logo: '/images/fm99.jpeg',
   url: 'https://fm99.ams.com.kh',
   description:
-    'វិទ្យុសំឡេងយុវជន ៩៩ ផ្សាយព័ត៌មាន និងកម្សាន្ត ជួយលើកកម្ពស់ចំណេះដឹង និងភាពច្នៃប្រឌិតក្នុងសង្គម។',
+    'វិទ្យុសំឡេងយុវជន ៩៩ ផ្សាយព័ត៌មាន និងកម្មវិធីកម្សាន្តប្រកបដោយគុណភាព ផ្តោតលើការលើកកម្ពស់ចំណេះដឹង ភាពច្នៃប្រឌិត និងការចូលរួមអភិវឌ្ឍសង្គម ជាពិសេសសម្រាប់យុវជន។',
   program: {
     programId: 125,
     baseCategoryId: 97,
@@ -31,6 +31,16 @@ export default {
         dark: '#8B7CFF',
       },
       secondary: '#cf0a10',
+      fm97: {
+        DEFAULT: '#cf0a10',
+        light: '#cf0a10',
+        dark: '#F04444',
+      },
+      fm99: {
+        DEFAULT: '#362095',
+        light: '#362095',
+        dark: '#8B7CFF',
+      },
     },
     backgroundImage: {
       'gradient-title': 'linear-gradient(to right, #362095, #362095)',

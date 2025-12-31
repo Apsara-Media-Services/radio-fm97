@@ -54,9 +54,9 @@ const PodcastCard = (props: IProps) => {
         {tag && (
           <p className="text-title uppercase font-semibold mb-1">{tag}</p>
         )}
-        <h4 className="text-title font-medium text-large bg-ams-primary dark:bg-ams-primary-dark rounded-small px-2">
+        <h3 className="text-title font-medium text-large bg-ams-primary dark:bg-ams-primary-dark rounded-small px-2">
           {title} {isReplayed ? '(ផ្សាយឡើងវិញ)' : ''}
-        </h4>
+        </h3>
       </CardHeader>
       {isLive && (
         <CardFooter className="justify-between bg-black/50 before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%-8px)] shadow-small ml-1 z-10">

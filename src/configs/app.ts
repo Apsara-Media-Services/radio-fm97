@@ -34,10 +34,11 @@ export default {
       'radio',
       'news',
       'music',
-      'programs',
       'live',
       'entertainment',
       'education',
+      'Apsara Radio',
+      'AMS',
       app.name,
       app.name_en,
       app.tag,
@@ -48,23 +49,23 @@ export default {
       follow: true,
       nocache: false,
     },
-    icons: [
-      {
-        url: icons.icon,
-        sizes: 'any',
-        type: 'image/x-icon',
-      },
-      {
-        url: icons.apple,
-        sizes: '180x180',
-        type: 'image/png',
-      },
-      {
-        url: icons.shortcut,
-        sizes: '32x32',
-        type: 'image/png',
-      },
-    ],
+    icons: {
+      icon: icons.icon,
+      apple: icons.apple,
+      shortcut: icons.shortcut,
+      other: [
+        {
+          url: icons.icon192x192,
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          url: icons.icon512x512,
+          sizes: '512x512',
+          type: 'image/png',
+        },
+      ],
+    },
     openGraph: {
       title: `${app.name} | ${app.name_en}`,
       description: app.description,
@@ -86,7 +87,7 @@ export default {
       images: [logo],
     },
     alternates: {
-      canonical: app.url,
+      canonical: URL,
     },
   } as Metadata,
 };

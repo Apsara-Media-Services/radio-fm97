@@ -15,9 +15,9 @@ const PodcastDetail = ({ post, className }: IPostComponentProps) => {
       <div className="text-sm">
         <PostProgramTag post={post} />
       </div>
-      <h3 className="font-semibold text-2xl md:text-3xl my-2">
+      <h1 className="font-semibold text-2xl md:text-3xl my-2">
         {sanitizeHtml(post?.title?.rendered as string, { allowedTags: [] })}
-      </h3>
+      </h1>
       <PostDate post={post} />
       <PodcastPlayButton
         className="my-5"

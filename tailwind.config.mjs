@@ -38,6 +38,8 @@ export default {
         },
         'ams-purple': '#721550',
         'ams-light': '#eeeff0',
+        fm97: tailwind.colors.fm97 ?? '#cf0a10',
+        fm99: tailwind.colors.fm99 ?? '#cf0a10',
       },
       backgroundImage: {
         ...tailwind.backgroundImage,

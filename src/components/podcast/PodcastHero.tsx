@@ -41,15 +41,15 @@ const PodcastHero = ({ className, program, post }: IProps) => {
             </div>
             <div className="w-full md:w-auto">
               <div className="text-2xl md:text-3xl font-semibold text-title">
-                <span
+                <h1
                   className={
                     'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-primary relative'
                   }
                 >
                   {program.name}
-                </span>
+                </h1>
               </div>
-              <h5
+              <p
                 className="my-5 md:text-lg text-body line-clamp-4"
                 dangerouslySetInnerHTML={{ __html: program.description }}
               />
