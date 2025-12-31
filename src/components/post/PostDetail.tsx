@@ -2,6 +2,7 @@ import PodcastPlayButton from '@/components/podcast/PodcastPlayButton';
 import PostAuthor from '@/components/post/PostAuthor';
 import PostCategoryTag from '@/components/post/PostCategoryTag';
 import PostDate from '@/components/post/PostDate';
+import PostSocialSharing from '@/components/post/PostSocialSharing';
 import { IPostComponentProps } from '@/types/components/post';
 import { WP_REST_API_ACF_Program } from '@/types/wp';
 import { getMediaUrl } from '@/utils/wp';
@@ -39,6 +40,9 @@ const PostDetail = ({ post, className }: IPostComponentProps) => {
         width={828}
         height={552}
       />
+
+      <PostSocialSharing post={post} />
+
       <div
         className="md:text-lg"
         dangerouslySetInnerHTML={{
