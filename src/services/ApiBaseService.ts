@@ -97,7 +97,7 @@ export default class ApiBaseService<T = unknown> {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      next: { revalidate: Number(revalidate) },
+      next: { revalidate: Number(revalidate), ...query?.next },
     };
     const url = `${baseUrl}${endpoint}?${this.parseQueryParams(query || {})}`;
     const response = await fetch(url, options);

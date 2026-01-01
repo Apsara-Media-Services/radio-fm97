@@ -39,6 +39,7 @@ export function getDailyPrograms(
           isLive: dayjs().isAfter(startAt) && dayjs().isBefore(endAt),
           isNext: false,
           isPlayed: dayjs().isAfter(endAt),
+          isReplayed: schedule.replay ?? false,
         };
       });
     })

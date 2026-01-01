@@ -90,7 +90,7 @@ const PodcastPostList = (props: IProps) => {
                   {dayjs(item.date).format('DD/MM/YYYY')}
                 </p>
                 <Link href={`/audio/detail/${item.id}`}>
-                  <h5
+                  <p
                     className={classNames(
                       'font-medium text-left line-clamp-1',
                       isActivePost(item)
@@ -99,7 +99,7 @@ const PodcastPostList = (props: IProps) => {
                     )}
                   >
                     {item.title.rendered}
-                  </h5>
+                  </p>
                 </Link>
               </div>
             </li>

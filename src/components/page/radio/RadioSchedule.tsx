@@ -26,10 +26,11 @@ const RadioSchedule = (props: IRadioProgramComponentProps) => {
                 title={item.name as string}
                 tag={`${dateTo12Hour(item.startAt)} ~ ${dateTo12Hour(item.endAt)}`}
                 imageUrl={getAcfMediaUrl(item.thumbnail)}
-                to={`audio/${item.slug}`}
+                to={item.acf.archivable ? `audio/${item.slug}` : undefined}
                 isLive={item.isLive}
                 isPlayed={item.isPlayed}
                 isNext={item.isNext}
+                isReplayed={item.isReplayed}
                 className="h-[300px]"
               />
             );

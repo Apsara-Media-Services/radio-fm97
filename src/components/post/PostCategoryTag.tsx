@@ -19,7 +19,7 @@ const PostCategoryTag = (props: IProps) => {
   return (
     <div className={classNames('flex items-center space-x-1', className)}>
       {categories.map((category: WP_REST_API_Category) => (
-        <div
+        <p
           className="py-1 px-3 text-white bg-ams-primary/80 dark:bg-ams-primary-dark/80 hover:bg-ams-primary hover:dark:bg-ams-primary-dark max-w-32 sm:max-w-none truncate rounded-small"
           key={category.id}
         >
@@ -27,7 +27,7 @@ const PostCategoryTag = (props: IProps) => {
                 {category.name}
               </Link> */}
           {category.name}
-        </div>
+        </p>
       ))}
     </div>
   );

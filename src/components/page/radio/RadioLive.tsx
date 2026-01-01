@@ -74,13 +74,13 @@ const RadioLive = (props: IRadioLiveComponentProps) => {
               <>
                 <div className="text-title w-full md:w-auto">
                   <div>
-                    <div className="mt-5 text-title animate-pulse">
+                    <p className="mt-5 text-title animate-pulse">
                       <CircleRounded className="text-ams-red dark:text-ams-red-dark mr-1 mb-1" />
                       LIVE NOW
-                    </div>
-                    <h3 className="font-semibold before:absolute before:-bottom-3 before:h-1 before:w-10 before:bg-ams-primary relative text-2xl md:text-3xl mb-5">
+                    </p>
+                    <h1 className="font-semibold before:absolute before:-bottom-3 before:h-1 before:w-10 before:bg-ams-primary relative text-2xl md:text-3xl mb-5">
                       {program.name}
-                    </h3>
+                    </h1>
                     <div className="flex gap-1 items-center text-lg md:text-xl text-title">
                       <time>
                         {dateTo12Hour(program.startAt)} ~{' '}
@@ -127,16 +127,14 @@ const RadioLive = (props: IRadioLiveComponentProps) => {
             <div className="flex flex-col md:flex-row justify-between gap-y-4 text-lg md:text-xl font-semibold">
               <div className="current-program">
                 <div className="air-now">
-                  <div className="text-accent font-semibold">
-                    {'កំពុងផ្សាយ'}
-                  </div>
+                  <p className="text-accent font-semibold">{'កំពុងផ្សាយ'}</p>
                   {hasActiveProgram && (
                     <>
                       <time className="font-normal text-body">
                         {dateTo12Hour(activeProgram.startAt)} ~{' '}
                         {dateTo12Hour(activeProgram.endAt)}
                       </time>
-                      <h5 className="text-title">{activeProgram.name}</h5>
+                      <h3 className="text-title">{activeProgram.name}</h3>
                     </>
                   )}
                 </div>
@@ -144,14 +142,14 @@ const RadioLive = (props: IRadioLiveComponentProps) => {
               <div className="border-t-2 md:border-r-2 ams-border" />
               <div className="up-next dark:border-white md:text-right">
                 <div>
-                  <h5 className="text-accent">{'កម្មវិធីបន្ទាប់'}</h5>
+                  <p className="text-accent">{'កម្មវិធីបន្ទាប់'}</p>
                   {hasNextProgram && (
                     <>
                       <time className="font-normal text-body">
                         {dateTo12Hour(nextProgram.startAt)} ~{' '}
                         {dateTo12Hour(nextProgram.endAt)}
                       </time>
-                      <h5 className="text-title">{nextProgram.name}</h5>
+                      <h3 className="text-title">{nextProgram.name}</h3>
                     </>
                   )}
                 </div>

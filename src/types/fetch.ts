@@ -41,6 +41,7 @@ export interface IFetchQueryParams {
     | 'title'
     | 'slug'
     | 'modified';
+  next?: NextFetchRequestConfig;
   [key: string]: any;
 }
 

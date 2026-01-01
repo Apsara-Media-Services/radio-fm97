@@ -1,5 +1,6 @@
 'use client';
 
+import app from '@/configs/app';
 import { IComponentProps } from '@/types/component';
 import { PodcastsRounded } from '@mui/icons-material';
 import classNames from 'classnames';
@@ -25,25 +26,55 @@ const HeaderMenuHighlight = ({ className }: IComponentProps) => {
     >
       <Link
         href={'/live'}
-        className="hover:text-ams-red dark:hover:text-ams-red-dark"
+        className=" text-ams-primary dark:text-ams-primary-dark mx-1"
       >
-        <div
-          className={classNames(
-            active.live || active.home ? 'text-accent' : ''
-          )}
+        <div className="relative -mt-2">
+          <div
+            className={classNames(
+              'bg-ams-primary dark:bg-ams-primary-dark text-xs text-white absolute -bottom-2.5 px-1 left-1/2 -translate-x-1/2 rounded-sm'
+            )}
+          >
+            {`${app.tag}`}
+          </div>
+          <PodcastsRounded />
+        </div>
+      </Link>
+      {app.tag === 'FM97' && (
+        <Link
+          href={'https://fm99.ams.com.kh/live'}
+          target="_blank"
+          className="text-fm99 dark:text-fm99-dark mx-1"
         >
           <div className="relative -mt-2">
             <div
               className={classNames(
-                'bg-ams-red dark:bg-ams-red-dark text-xs text-white absolute -bottom-2.5 px-1 left-1/2 -translate-x-1/2 rounded-sm'
+                'bg-fm99 dark:bg-fm99-dark text-xs text-white absolute -bottom-2.5 px-1 left-1/2 -translate-x-1/2 rounded-sm'
               )}
             >
-              LIVE
+              FM99
             </div>
             <PodcastsRounded />
           </div>
-        </div>
-      </Link>
+        </Link>
+      )}
+      {app.tag === 'FM99' && (
+        <Link
+          href={'https://fm97.ams.com.kh/live'}
+          target="_blank"
+          className="text-fm97 dark:text-fm97-dark mx-1"
+        >
+          <div className="relative -mt-2">
+            <div
+              className={classNames(
+                'bg-fm97 dark:bg-fm97-dark text-xs text-white absolute -bottom-2.5 px-1 left-1/2 -translate-x-1/2 rounded-sm'
+              )}
+            >
+              FM97
+            </div>
+            <PodcastsRounded />
+          </div>
+        </Link>
+      )}
       <Link href={'/audio'} className="py-2 text-hover">
         <div className={classNames(active.audio ? 'text-accent' : '')}>
           កម្មវិធីផ្សាយ

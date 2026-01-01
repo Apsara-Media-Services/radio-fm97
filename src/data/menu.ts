@@ -14,4 +14,6 @@ export const amsGroupSites = [
   },
   { name: 'AMS Infotainment', href: 'https://infotainment.ams.com.kh/' },
   { name: 'AMS Sports', href: 'https://sports.ams.com.kh/' },
+  { name: 'Apsara FM97', href: 'https://fm97.ams.com.kh/' },
+  { name: 'Apsara FM99', href: 'https://fm99.ams.com.kh/' },
 ];

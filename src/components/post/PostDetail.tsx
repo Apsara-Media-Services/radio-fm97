@@ -2,6 +2,7 @@ import PodcastPlayButton from '@/components/podcast/PodcastPlayButton';
 import PostAuthor from '@/components/post/PostAuthor';
 import PostCategoryTag from '@/components/post/PostCategoryTag';
 import PostDate from '@/components/post/PostDate';
+import PostSocialSharing from '@/components/post/PostSocialSharing';
 import { IPostComponentProps } from '@/types/components/post';
 import { WP_REST_API_ACF_Program } from '@/types/wp';
 import { getMediaUrl } from '@/utils/wp';
@@ -15,10 +16,10 @@ const PostDetail = ({ post, className }: IPostComponentProps) => {
       <div className="text-sm">
         <PostCategoryTag post={post} />
       </div>
-      <h3 className="font-semibold text-2xl md:text-3xl my-2">
+      <h1 className="font-semibold text-2xl md:text-3xl my-3">
         {sanitizeHtml(post?.title?.rendered as string, { allowedTags: [] })}
-      </h3>
-      <div className="flex flex-wrap items-center gap-x-4 my-2">
+      </h1>
+      <div className="flex flex-wrap items-center gap-x-4 my-3">
         <PostDate post={post} />
         <span className="hidden md:block">•</span>
         <PostAuthor post={post} />
@@ -39,6 +40,9 @@ const PostDetail = ({ post, className }: IPostComponentProps) => {
         width={828}
         height={552}
       />
+
+      <PostSocialSharing post={post} />
+
       <div
         className="md:text-lg"
         dangerouslySetInnerHTML={{
