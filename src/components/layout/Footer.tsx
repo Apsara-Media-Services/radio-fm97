@@ -73,7 +73,7 @@ const Footer = () => {
             />
             <div className="flex gap-3">
               {/* <ReactIcon className="css-class" /> */}
-              {app.followUs.map((item, index) => (
+              {app.socials.map((item, index) => (
                 <div key={`footer-${index}`}>
                   <Link
                     href={item.href}

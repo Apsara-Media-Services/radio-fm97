@@ -25,7 +25,9 @@ const PodcastProgramList = (props: IPodcastProgramListComponentProps) => {
                 title={program.name as string}
                 tag={app.tag}
                 imageUrl={getAcfMediaUrl(program.acf.thumbnail)}
-                to={`audio/${program.slug}`}
+                to={
+                  program.acf.archivable ? `audio/${program.slug}` : undefined
+                }
                 className="h-[300px]"
               />
             );

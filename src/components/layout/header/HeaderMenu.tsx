@@ -1,3 +1,5 @@
+'use client';
+
 import HeaderMenuContent from '@/components/layout/header/HeaderMenuContent';
 import HeaderMenuThemeSwitcher from '@/components/layout/header/HeaderMenuThemeSwitcher';
 import { IComponentProps } from '@/types/component';

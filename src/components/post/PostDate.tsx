@@ -18,9 +18,9 @@ const PostDate = (props: IPostComponentProps) => {
   }
 
   return (
-    <div className={classNames(className)}>
+    <p className={classNames(className)}>
       ចុះផ្សាយនៅថ្ងៃ៖​​ <span className="font-medium">{date}</span>
-    </div>
+    </p>
     // <ClientOnly>
     //   <div className={classNames(className)}>ចុះផ្សាយនៅថ្ងៃ៖​​ {date}</div>
     // </ClientOnly>

@@ -1,3 +1,4 @@
+import JsonLD from '@/components/JsonLD';
 import { Container } from '@/components/common';
 import MainLayout from '@/components/layout/MainLayout';
 import HomeLatestNews from '@/components/page/home/HomeLatestNews';
@@ -36,37 +37,42 @@ async function loadPrograms() {
   };
 }
 
-const Live = async () => {
+const Home = async () => {
   const { programs, activeProgram, nextProgram, nextTomorrowProgram, isLive } =
     await loadPrograms();
   const { data: posts } = await postService.all({ per_page: 12 });
 
   return (
-    <MainLayout>
-      <RadioLive
-        activeProgram={activeProgram}
-        nextProgram={nextProgram}
-        nextTomorrowProgram={nextTomorrowProgram}
-      />
-      {!isEmpty(programs) && (
-        <div className="bg-white dark:bg-slate-950 py-5 md:py-10">
-          <Container>
-            <RadioSchedule
-              title={
-                isLive ? 'កម្មវិធីផ្សាយប្រចាំថ្ងៃ' : 'កម្មវិធីសម្រាប់ថ្ងៃស្អែក'
-              }
-              programs={programs}
-            />
+    <>
+      <JsonLD />
+      <MainLayout>
+        <RadioLive
+          activeProgram={activeProgram}
+          nextProgram={nextProgram}
+          nextTomorrowProgram={nextTomorrowProgram}
+        />
+        {!isEmpty(programs) && (
+          <div className="bg-white dark:bg-slate-950 py-5 md:py-10">
+            <Container>
+              <RadioSchedule
+                title={
+                  isLive
+                    ? 'កម្មវិធីផ្សាយប្រចាំថ្ងៃ'
+                    : 'កម្មវិធីសម្រាប់ថ្ងៃស្អែក'
+                }
+                programs={programs}
+              />
+            </Container>
+          </div>
+        )}
+        {!isEmpty(posts) && (
+          <Container className="py-5 md:py-10">
+            <HomeLatestNews title="ព័ត៌មានថ្មីៗ" posts={posts} />
           </Container>
-        </div>
-      )}
-      {!isEmpty(posts) && (
-        <Container className="py-5 md:py-10">
-          <HomeLatestNews title="ព័ត៌មានថ្មីៗ" posts={posts} />
-        </Container>
-      )}
-    </MainLayout>
+        )}
+      </MainLayout>
+    </>
   );
 };
 
-export default Live;
+export default Home;

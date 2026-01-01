@@ -49,7 +49,9 @@ export interface WP_REST_API_ACF_Program extends WP_REST_API_Term {
       day: string;
       start_time: string;
       end_time: string;
+      replay: boolean;
     }[];
+    archivable?: boolean;
   };
 }
 
@@ -67,6 +69,7 @@ export interface WP_REST_API_ACF_Post extends WP_REST_API_Post {
   acf: {
     audio?: WP_REST_API_ACF_File;
   };
+  yoast_head_json: WP_REST_API_YoastSEO;
   relation?: {
     author?: WP_REST_API_User;
     featuredmedia?: WP_REST_API_Attachment;
@@ -77,4 +80,35 @@ export interface WP_REST_API_ACF_Post extends WP_REST_API_Post {
     programs_actual?: WP_REST_API_ACF_Program[];
     program?: WP_REST_API_ACF_Program;
   };
+}
+
+export interface WP_REST_API_YoastSEO {
+  title: string;
+  description: string;
+  robots: {
+    index: string;
+    follow: string;
+    'max-snippet': string;
+    'max-image-preview': string;
+    'max-video-preview': string;
+  };
+  canonical: string;
+  og_locale: string;
+  og_type: string;
+  og_title: string;
+  og_description: string;
+  og_url: string;
+  og_site_name: string;
+  article_published_time: string;
+  article_modified_time: string;
+  og_image: Array<{
+    url: string;
+    width?: number;
+    height?: number;
+    type?: string;
+  }>;
+  author: string;
+  twitter_card: string;
+  twitter_misc: Record<string, unknown>;
+  schema: Record<string, unknown>;
 }
