@@ -11,7 +11,7 @@ const app =
   _app[(process.env.NEXT_PUBLIC_APP_TAG as keyof typeof _app) ?? 'fm97'];
 const URL = process.env.NEXT_PUBLIC_APP_URL || app.url;
 
-const logo = URL + app.logo;
+const logo_full_url = URL + app.logo;
 const icons = {
   icon: URL + app.icons.icon,
   apple: URL + app.icons.apple,
@@ -22,7 +22,7 @@ const icons = {
 
 export default {
   ...app,
-  logo,
+  logo_full_url,
   liveUrl: process.env.NEXT_PUBLIC_APP_LIVE_URL || '',
   url: process.env.NEXT_PUBLIC_APP_URL || app.url,
   icons,
@@ -73,7 +73,7 @@ export default {
       siteName: app.name_en,
       images: [
         {
-          url: logo,
+          url: logo_full_url,
           alt: `${app.name} | ${app.name_en}`,
         },
       ],
@@ -84,7 +84,7 @@ export default {
       card: 'summary_large_image',
       title: `${app.name} | ${app.name_en}`,
       description: app.description,
-      images: [logo],
+      images: [logo_full_url],
     },
     alternates: {
       canonical: URL,

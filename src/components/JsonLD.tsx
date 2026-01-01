@@ -30,8 +30,8 @@ const JsonLD = ({ breadcrumbs, post }: IProps) => {
         name={app.name}
         alternateName={app.name_en}
         url={app.url}
-        logo={app.logo}
-        image={app.logo}
+        logo={app.logo_full_url}
+        image={app.logo_full_url}
         description={app.description}
         sameAs={app.socials.map((social) => social.href)}
       />
