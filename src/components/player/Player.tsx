@@ -143,6 +143,7 @@ const Player = (props: IProps) => {
       {state.canPlay && (
         <ReactPlayer
           ref={setPlayerRef}
+          playsInline={true}
           src={state.src}
           playing={state.playing}
           volume={state.volume}
