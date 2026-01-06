@@ -9,6 +9,7 @@ import { Button, Card, CardBody, Image } from '@heroui/react';
 import { CloseRounded, Crop54Outlined, Remove } from '@mui/icons-material';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
+import NextImage from 'next/image';
 import { useEffect, useState } from 'react';
 
 const SharedPlayer = ({ className }: IComponentProps) => {
@@ -66,6 +67,9 @@ const SharedPlayer = ({ className }: IComponentProps) => {
                         {!isMinimal && (
                           <div className="relative aspect-square rounded-medium shadow-lg h-40 md:h-40">
                             <Image
+                              fill
+                              as={NextImage}
+                              sizes="(max-width: 768px) 100vw, 50vw"
                               removeWrapper
                               alt={
                                 post?.title?.rendered ||
@@ -78,7 +82,6 @@ const SharedPlayer = ({ className }: IComponentProps) => {
                                   ? getAcfMediaUrl(program.acf?.thumbnail)
                                   : getMediaUrl(post?.relation?.featuredmedia)
                               }
-                              fallbackSrc={app.logo}
                             />
                           </div>
                         )}

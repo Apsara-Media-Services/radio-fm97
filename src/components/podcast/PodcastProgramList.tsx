@@ -28,7 +28,6 @@ const PodcastProgramList = (props: IPodcastProgramListComponentProps) => {
                 to={
                   program.acf.archivable ? `audio/${program.slug}` : undefined
                 }
-                className="h-[300px]"
               />
             );
           })}

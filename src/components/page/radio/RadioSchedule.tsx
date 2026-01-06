@@ -31,7 +31,6 @@ const RadioSchedule = (props: IRadioProgramComponentProps) => {
                 isPlayed={item.isPlayed}
                 isNext={item.isNext}
                 isReplayed={item.isReplayed}
-                className="h-[300px]"
               />
             );
           })}
