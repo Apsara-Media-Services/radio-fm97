@@ -30,7 +30,7 @@ const PodcastSocialSharing = (props: IPostComponentProps) => {
         className={classNames('flex items-center justify-center gap-4 py-5')}
       >
         <FacebookShareButton
-          url={`${app.url}/audio/detail/${post.databaseId}`}
+          url={`${app.url}/audio/detail/${post.id}`}
           hashtag={`#AMS #${app.name_en.replaceAll(' ', '')}`}
         >
           <FacebookIcon size={32} round />

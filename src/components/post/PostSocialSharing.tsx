@@ -30,7 +30,7 @@ const PostSocialSharing = (props: IPostComponentProps) => {
         className={classNames('flex items-center justify-center gap-4 py-5')}
       >
         <FacebookShareButton
-          url={`${app.url}/news/detail/${post.databaseId}`}
+          url={`${app.url}/news/detail/${post.id}`}
           hashtag={`#AMS #${app.name_en.replaceAll(' ', '')}`}
         >
           <FacebookIcon size={32} round />
