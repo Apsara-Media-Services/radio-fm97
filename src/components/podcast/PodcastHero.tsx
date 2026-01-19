@@ -48,7 +48,7 @@ const PodcastHero = ({ className, program, post }: IProps) => {
               <div className="text-2xl md:text-3xl font-semibold text-title">
                 <h1
                   className={
-                    'before:absolute before:-bottom-3 before:h-1 before:w-9 before:bg-ams-primary relative'
+                    'before:absolute before:-bottom-3 before:h-1 before:w-16 before:bg-ams-primary relative'
                   }
                 >
                   {program.name}

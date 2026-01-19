@@ -15,6 +15,7 @@ import {
   PlayCircleFilledRounded,
 } from '@mui/icons-material';
 import NextImage from 'next/image';
+import Link from 'next/link';
 
 const RadioLive = (props: IRadioLiveComponentProps) => {
   const { className, activeProgram, nextProgram, nextTomorrowProgram } = props;
@@ -72,7 +73,9 @@ const RadioLive = (props: IRadioLiveComponentProps) => {
                       LIVE NOW
                     </p>
                     <h1 className="font-semibold before:absolute before:-bottom-3 before:h-1 before:w-16 before:bg-ams-primary relative text-2xl md:text-3xl mt-2 mb-5">
-                      {program.name}
+                      <Link href={`/audio/${program.slug}`}>
+                        {program.name}
+                      </Link>
                     </h1>
                     <div className="flex gap-1 items-center text-lg md:text-xl text-title">
                       <time>
