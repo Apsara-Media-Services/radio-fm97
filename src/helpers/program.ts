@@ -45,21 +45,15 @@ export function getDailyPrograms(
     })
     .sortBy(['startAt'])
     .thru((programs) => {
-      const activeProgramIdx = findIndex(programs, (program) => program.isLive);
-      return map(programs, (program, idx) => {
-        if (program.isLive) {
-          return program;
-        }
+      const nextProgramIdx = findIndex(programs, (program) =>
+        dayjs().isBefore(program.startAt)
+      );
 
-        const isNext =
-          activeProgramIdx === -1
-            ? idx === 0 && dayjs().isBefore(program.startAt)
-            : idx === activeProgramIdx + 1;
-        return {
-          ...program,
-          isNext,
-        };
-      });
+      if (nextProgramIdx !== -1) {
+        programs[nextProgramIdx].isNext = true;
+      }
+
+      return programs;
     })
     .value() as IScheduleProgram[];
   const firstProgram = first(schedulingPrograms);
